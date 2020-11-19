@@ -7,4 +7,48 @@ z2
 !i10e 25
 !i10f 100
 cModel Technology
-dC:/questasim64_10.4/examples
+Z0 dC:/questasim64_10.4/examples
+vbanco_registros
+Z1 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+r1
+!s85 0
+31
+!i10b 1
+!s100 [i<:HTeHhz;@4Z=gOVogm2
+IdG>hEHTUkb[Oi`l[[1KB61
+!s105 banco_registros_sv_unit
+S1
+R0
+w1605801587
+8C:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3/banco_registros.sv
+FC:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3/banco_registros.sv
+L0 1
+Z3 OL;L;10.4;61
+!s108 1605801659.490000
+!s107 C:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3/banco_registros.sv|
+!s90 -reportprogress|300|-work|Regs|-L|mtiAvm|-L|mtiRnm|-L|mtiOvm|-L|mtiUvm|-L|mtiUPF|-L|infact|C:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3/banco_registros.sv|
+!i113 0
+Z4 o-work Regs -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+vtb_banco_registros
+R1
+R2
+r1
+!s85 0
+31
+!i10b 1
+!s100 DR6]GbC12LXX7NKG^4`Pl1
+IgX6=@d1NKPZ9cWCLFzd>_2
+!s105 tb_banco_registros_sv_unit
+S1
+R0
+w1605801654
+8C:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3/tb_banco_registros.sv
+FC:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3/tb_banco_registros.sv
+L0 2
+R3
+!s108 1605801661.210000
+!s107 C:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3/tb_banco_registros.sv|
+!s90 -reportprogress|300|-work|Regs|-L|mtiAvm|-L|mtiRnm|-L|mtiOvm|-L|mtiUvm|-L|mtiUPF|-L|infact|C:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3/tb_banco_registros.sv|
+!i113 0
+R4
