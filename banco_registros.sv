@@ -1,5 +1,6 @@
 module banco_registros(
     input CLK,
+    input RESET,
     input logic [4:0] ReadReg1,
     input logic [4:0] ReadReg2,
     input logic [4:0] WriteReg,
@@ -14,10 +15,13 @@ logic [31:0] Regs [31:0];
 initial begin
     Regs[0] <= 32'b0;
 end
-always @(posedge CLK)
+
+always @(posedge CLK, negedge RESET)
 begin
     if(!RESET)
-         Regs <= 0;
+        for (int i = 0; i < 32; i++) begin
+           Regs[i] <= 32'b0; 
+        end         
     else
     begin
         if(RegWrite)

@@ -4,6 +4,7 @@ module tb_banco_registros();
 localparam T = 20;
 
 reg CLK;
+reg RESET;
 reg [4:0] ReadReg1;
 reg [4:0] ReadReg2;
 reg [4:0] WriteReg;
@@ -22,6 +23,7 @@ end
 
 initial begin
     CLK = 1'b0;
+    RESET = 1'b1;
     ReadReg1 = 5'b0;
     ReadReg2 = 5'b0;
     WriteReg = 5'b0;
