@@ -11,17 +11,25 @@ module banco_registros(
 
 logic [31:0] Regs [31:0]; 
 
+initial begin
+    Regs[0] <= 32'b0;
+end
 always @(posedge CLK)
 begin
-    if(RegWrite)
-    begin
-        if(WriteReg != 0)
-            Regs[WriteReg] <= WriteData;
-        else
-            Regs[WriteReg] <= 32'b0;
-    end
+    if(!RESET)
+         Regs <= 0;
     else
-        Regs <= Regs;
+    begin
+        if(RegWrite)
+        begin
+            if(WriteReg != 0)
+                Regs[WriteReg] <= WriteData;
+            else
+                Regs[WriteReg] <= 32'b0;
+        end
+        else
+            Regs <= Regs;
+    end
 end
 
 assign ReadData1 = Regs[ReadReg1];
