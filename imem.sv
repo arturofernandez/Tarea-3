@@ -1,12 +1,23 @@
-module imem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (
-    input iaddr[$clog2(MEM_DEPTH)-1:0],
-    output idata [DATA_WIDTH-1:0]
-);
-    reg [DATA_WIDTH-1:0] IMEM [0:MEM_DEPTH-1];
+/*
+ * Module: imem
+ *    Instruction Memory of 32KB
+ *
+ * Inputs:
+ *
+ *  iaddr - Read memory address.
+ *  
+ * Outputs:
+ *  idata - Read Instruction output.
+*/
+module imem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (iaddr,idata);
+    input [$clog2(MEM_DEPTH)-1:0] iaddr;
+    output [DATA_WIDTH-1:0] idata;
+
+    logic [DATA_WIDTH-1:0] IMEM [0:MEM_DEPTH-1]; //packed and unpacked array
 
     initial begin
-        $readmemh("instructions_hex.mem", IMEM); //Preguntar si hay que alojar el programa en alguna dirección en especifico
+        $readmemh("dump_hex.txt", IMEM);
     end
-
+    //Asynchronous Read
     assign idata = IMEM[iaddr];
 endmodule
