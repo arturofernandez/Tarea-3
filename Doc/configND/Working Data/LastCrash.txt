@@ -1,0 +1,25 @@
+Generated on 21/11/2020 10:06:47
+
+Crash Message:
+
+   Referencia a objeto no establecida como instancia de un objeto.
+   (System.NullReferenceException)
+
+Stack Trace:
+
+   en CodeClear.NaturalDocs.Engine.CommentTypes.Comments_txt.Load(Path filename, PropertySource propertySource, List`1& fileCommentTypes, List`1& fileIgnoredKeywords, List`1& fileTags, ErrorList errorList)
+   en CodeClear.NaturalDocs.Engine.CommentTypes.Manager.Start(ErrorList errorList)
+   en CodeClear.NaturalDocs.Engine.Instance.Start(ErrorList errors, ProjectConfig commandLineConfig)
+   en CodeClear.NaturalDocs.CLI.Application.BuildDocumentation(ErrorList errorList)
+   en CodeClear.NaturalDocs.CLI.Application.Main(String[] commandLine)
+
+Command Line:
+
+   NaturalDocs.exe  D:\ISDIGI_PROYECTO\Tarea-3\Doc\configND
+
+Versions:
+
+   Natural Docs 2.1
+   Windows 10 Home version 2004
+   .NET 4.8
+   SQLite 3.31.1

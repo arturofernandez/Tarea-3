@@ -1,19 +1,5 @@
 ﻿Format: 2.1
 
-Language: SystemVerilog
-
-Extensions: sv svh
-Line Comment: //
-Block Comment: /* */
-Member Operator: ::
-Line Extender: \
-Enum Values: Global
-
-Class Prototype Ender: ;
-Function Prototype Ender: ;
-Variable Prototype Ender: ;
-
-
 # This is the Natural Docs languages file for this project.  If you change
 # anything here, it will apply to THIS PROJECT ONLY.  You can edit the version
 # in Natural Docs' Config folder to make the changes apply to all projects,
@@ -31,6 +17,27 @@ Variable Prototype Ender: ;
 
 # Languages
 # ------------------------------------------------------------------------
+
+Language: SystemVerilog
+
+   Extensions: sv svh
+
+   Line Comment: //
+   Block Comment: /* */
+   Member Operator: ::
+   Line Extender: /
+   Enum Values: Global
+   Case Sensitive: Yes
+
+   Task Automatic Prototype Enders: ) ;
+   Function Prototype Enders: ; begin
+   Class Prototype Ender: ;
+   Interface Prototype Ender: ;
+   Macro Prototype Enders: \ \n
+   Variable Prototype Ender: rand
+   Module Prototype Enders: ) ;
+   Program Prototype Ender: ;
+
 
 # These settings define the languages Natural Docs knows how to parse.  You
 # can define your own here or override the settings of the existing ones.

@@ -20,6 +20,49 @@
 
 # Comment Types
 # ------------------------------------------------------------------------
+# The syntax reference is after the definitions.
+
+Comment Type: hola
+
+   Plural Display Name: Random Variable
+
+   Scope: Normal
+
+   Keywords:
+      randc
+
+
+Comment Type: Module
+
+   Plural Display Name: Modules
+
+   Scope: Normal
+
+   Keywords:
+      module, endmodule
+
+
+Comment Type: Program
+
+   Display Name: Program
+   Plural Display Name: Programs
+
+   Scope: Start
+   Flags: Code
+
+   Keywords:
+      program, endprogram
+
+
+Comment Type: Task Automatic
+
+   Plural Display Name: Tasks
+
+   Scope: Normal
+
+   Keywords:
+      task automatic, endtask
+
 
 # Each Natural Docs comment has a corresponding type which determine its
 # behavior.  You can define your own here or override the settings of the
