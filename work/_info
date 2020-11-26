@@ -1,0 +1,91 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dD:/ISDIGI_PROYECTO/Tarea-3
+T_opt
+!s110 1605955083
+VATBCzgX8ON:oZzzhjML[]1
+04 6 4 work tb_ROM fast 0
+=1-00e04a688272-5fb8ee0a-2dd-1b30
+o-quiet -auto_acc_if_foreign -work work
+n@_opt
+OL;O;10.4;61
+R0
+vimem
+Z1 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+r1
+!s85 0
+31
+!i10b 1
+!s100 FOo=gVBbBWFmQ0D4?CGGf3
+I5hcL]a4FE`7H8oMR^oCgP1
+!s105 imem_sv_unit
+S1
+R0
+Z3 w1605977817
+8imem.sv
+Fimem.sv
+L0 12
+Z4 OL;L;10.4;61
+!s108 1606384458.492000
+!s107 imem.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|imem.sv|
+!i113 0
+Z5 !s102 -cover sbcet3
+Z6 o-work work -sv -cover sbcet3 -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+vtb_ROM
+R1
+DXx4 work 14 tb_ROM_sv_unit 0 22 7V8zS[bFCAagJ2F?m1hM]2
+R2
+r1
+!s85 0
+31
+!i10b 1
+!s100 Sj59N@@5D^YERJK^^D=7N3
+I2B4ejDJ3HVFdIQn2XXPEa3
+!s105 tb_ROM_sv_unit
+S1
+R0
+R3
+Z7 8tb_ROM.sv
+Z8 Ftb_ROM.sv
+L0 20
+R4
+Z9 !s108 1606384458.630000
+Z10 !s107 tb_ROM.sv|
+Z11 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|tb_ROM.sv|
+!i113 0
+R5
+R6
+ntb_@r@o@m
+Xtb_ROM_sv_unit
+R1
+V7V8zS[bFCAagJ2F?m1hM]2
+r1
+!s85 0
+31
+!i10b 1
+!s100 a3CVYe1?f`d=C877ZPNg23
+I7V8zS[bFCAagJ2F?m1hM]2
+!i103 1
+S1
+R0
+R3
+R7
+R8
+L0 10
+R4
+R9
+R10
+R11
+!i113 0
+R5
+R6
+ntb_@r@o@m_sv_unit
