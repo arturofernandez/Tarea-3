@@ -1,9 +1,25 @@
+/*
+ * Module: RVI32_Core
+ *    RISC V I 32 bits Core
+ *
+ * Inputs:
+ *  CLK - clock signal required for synchronous events.
+ *  RESET_N
+ *  idata - Intruction (ROM data output).
+ *  ddata_r - Data RAM (DMEM data output).
+ *  
+ * Outputs:
+ *  iaddr - Intruccion Address (ROM address input).
+ *  daddr - RAM (DMEM input address).
+ *  ddata_w - Data RAM (DMEM data input). 
+ *  d_rw - R/W Control signal RAM (DMEM).
+*/
 module RVI32_Core (
-    input CLK, RESET_N, //reloj, reset
-    input logic [31:0] idata, ddata_r, //bus de datos IMEM, bus de datos de lectura DMEM
-    output logic [31:0] iaddr, daddr, ddata_w, d_rw //bus de direcciones IMEM, bus de direcciones DMEM, bus de datos de escritura DMEM, señal de lecutra/escritura
+    input CLK, RESET_N, 
+    input logic [31:0] idata, ddata_r, 
+    output logic [31:0] iaddr, daddr, ddata_w, d_rw 
 );
-    //cables
+    // Conections:
     logic ALUSrc, MemtoReg, PCSrc, RegWrite, Zero;
     logic [3:0] Operation;
     

@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("File:RVI32_Core.sv","RVI32_Core.sv");NDSummary.OnSummaryLoaded("File:RVI32_Core.sv",[["SystemVerilog","SystemVerilog"]],[["Groups","Group"],["Modules","Module"]],[[5,0,0,"Modules","Modules"],[11,0,1,"RVI32_Core","RVI32_Core"]]);
