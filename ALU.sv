@@ -44,17 +44,7 @@ always_comb begin
             ALU_result = op1 | op2;
         4'b0110:  //XOR
             ALU_result = op1 ^ op2;
-        4'b0111:  //BEQ
-            if (op1 == op2)  
-                ALU_result = 1;
-            else
-                ALU_result = 0;
-        4'b1000:  //BNE
-            if (op1 != op2)  
-                ALU_result = 1; 
-            else
-                ALU_result = 0;
-    endcase
+        endcase
     end
     
 assign Zero = (ALU_result == 32'b0)? 1:0; 
