@@ -7,11 +7,10 @@ module datapath
     input clock, reset, ALUSrc ,MemtoReg, PCSrc, RegWrite,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
-    output [31:0] PC, ALU_result, Read_data2,
+    output [31:0] current_PC, ALU_result, Read_data2,
     output Zero
 );
-    logic [31:0] Instruction, Immediate, next_PC, current_PC, effective_addr, Sum,ALU_B, ALU_result, Write_data_reg, Read_data1;
-
+    logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1;
     /*
     * Module: ALU
     *    Main RISC-V Arithmetic Logic Unit 
@@ -24,7 +23,21 @@ module datapath
     */
     ALU ALU (.ALU_operation(ALU_operation), .op1(Read_data1), .op2(ALU_B), .ALU_result(ALU_result), .Zero(Zero));
 
-    
+    /*
+    * Module: banco_registros
+    *    Register bank of the RISC-V core 
+    * Inputs:
+    *   CLK: Syncronization signal.
+    *   RESET
+    *   ReadReg1: register 1.
+    *   ReadReg2: register 2.
+    *   WriteReg: register where you write.
+    *   WriteData: data you write on WriteReg.
+    *   RegWrite: flag that activates writting.
+    * Outputs:
+    *   ReadData1: data on register 1
+    *   ReadData2: data on register 2.
+    */
     banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
     /*
@@ -57,7 +70,7 @@ module datapath
     * Outputs:
     *   PC: Next Instruction Address. 
     */
-    adder #(.size(32)) adder1 (.a(current_PC), .b(32'd4). .res(sum_adder1));
+    adder #(.size(32)) adder1 (.a(current_PC), .b(32'd4), .res(sum_adder1));
 
     /*
     * Module: adder2
@@ -80,7 +93,7 @@ module datapath
     * Outputs:
     *   next_PC: Next Instruction Address to be loaded into PC Register. 
     */
-    mux #(.size(32)) muxPC ( .a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
+    mux #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
 
     /*
     * Module: muxALU
@@ -100,35 +113,45 @@ module datapath
     *
     */
     mux #(.size(32)) muxtoReg (.a(ALU_result), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
+
+    // Asserts: RTL Asserts
+    R_format:assert property (@(posedge clock) Instruction[6:0] == 7'b0110011 |-> PCSrc == 1'b0 && ALUSrc == 1'b0 && MemtoReg == 1'b0) else $error("R_format no funciona");
+    I_format:assert property (@(posedge clock) Instruction[6:0] == 7'b0010011 |-> PCSrc == 1'b0 && ALUSrc == 1'b1 && MemtoReg == 1'b0) else $error("I_format no funciona");
+    Load_I_format:assert property (@(posedge clock) Instruction[6:0] == 7'b0000011 |-> PCSrc == 1'b0 && ALUSrc == 1'b1 && MemtoReg == 1'b1) else $error("Load_I_format no funciona");
+    S_format:assert property (@(posedge clock) Instruction[6:0] == 7'b0100011 |-> PCSrc == 1'b0 && ALUSrc == 1'b1 && MemtoReg == 1'b0) else $error("S_format no funciona");
+    B_format_efectivo:assert property (@(posedge clock) Instruction[6:0] == 7'b1100011 && Zero == 1'b1 |-> PCSrc == 1'b1 && ALUSrc == 1'b0 && MemtoReg == 1'bx) else $error("B_format_efectivo no funciona");
+    B_format_noefectivo:assert property (@(posedge clock) Instruction[6:0] == 7'b1100011 && Zero == 1'b0 |-> PCSrc == 1'b0 && ALUSrc == 1'b0 && MemtoReg == 1'bx) else $error("B_format_noefectivo no funciona");
 endmodule:datapath
 
 module ImmGen 
 (
     input [31:0] Instruction,
-    output [31:0] Immediate
+    output logic [31:0] Immediate
 );
-    case(Instruction[6:0])
+always_comb begin
+    case (Instruction[6:0])
         7'b0010011: // I-Format Intructions:
-            Immediate = {20{Instruction[31]},Instruction[31:20]};
-        7'b0000011: // I-Format Intructions: 
-            Immediate = {20{Instruction[31]},Instruction[31:20]};
+            Immediate = {{20{Instruction[31]}},Instruction[31:20]};
+        7'b0000011: // Load I-Format Intructions: 
+            Immediate = {{20{Instruction[31]}},Instruction[31:20]};
         7'b0100011:// S-Format Intructions:
-            Immediate = {20{Instruction[31]},Instruction[31:25],Instruction[11:7]};
-        7'b1100011: // S-Format Intructions:
-            Immediate = {19{Instruction[31]},Instruction[31],Instruction[7],Instruction[30:25],Instruction[11:8],1'b0};
+            Immediate = {{20{Instruction[31]}},Instruction[31:25],Instruction[11:7]};
+        7'b1100011: // B-Format Intructions:
+            Immediate = {{19{Instruction[31]}},Instruction[31],Instruction[7],Instruction[30:25],Instruction[11:8],1'b0};
         default: Immediate = {32{1'b0}};   
     endcase
+end
 endmodule:ImmGen
 
 module register 
 (
     input clock, reset,
     input [31:0] a,
-    output [31:0] b
+    output logic [31:0] b
 );
-always_ff (@posedge clock or negedge reset)
+always_ff @(posedge clock or negedge reset)
     if (!reset)
-        b <= {32{1'b0}}
+        b <= {32{1'b0}};
     else
         b <= a;
 endmodule:register
