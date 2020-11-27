@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("tb_",["Module"],[["tb_ROM",,[["inData",,,,0,"File:tb_ROM.sv:inData.tb_ROM","SystemVerilogClass:inData:tb_ROM"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("tb_",["Module"],[["tb_RAM",,[["inData",,,,0,"File:tb_RAM.sv:inData.tb_RAM","SystemVerilogClass:inData:tb_RAM"]]],["tb_ROM",,[["inData",,,,0,"File:tb_ROM.sv:inData.tb_ROM","SystemVerilogClass:inData:tb_ROM"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ban",["Module"],[["banco_registros",,[[,,,,0,"File:datapath.sv:banco_registros"]]]]);

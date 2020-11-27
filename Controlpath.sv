@@ -6,7 +6,7 @@ module controlpath (
     output logic MemWrite,
     output logic ALUSrc,
     output logic RegWrite,
-    output logic [3:0] Operation
+    output logic [3:0] Operation,
     output logic PCSrc
 );
 

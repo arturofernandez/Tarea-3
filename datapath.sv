@@ -1,6 +1,26 @@
 /*
  * Module: Data Path
  *    Englobes all the intances of the Data Path Modules.
+ *
+ * Inputs:
+ *
+ *  clock - clock signal required for synchronous events.
+ *  reset - aaa.
+ *  ALUSrc - aa.
+ *  MemtoReg - aa. 
+ *  PCSrc - aaa.
+ *  RegWrite - aaa.
+ *  Instruction - aa.
+ *  Read_data - aa.
+ *  ALU_operation - aa.
+ *  RegWrite - aa.
+ *  
+ * Outputs:
+ *
+ *  current_PC - 
+ *  ALU_result - 
+ *  Read_data2 -   
+ *  Zero -  
 */
 module datapath 
 (
@@ -14,37 +34,43 @@ module datapath
     /*
     * Module: ALU
     *    Main RISC-V Arithmetic Logic Unit 
+    *
     * Inputs:
-    *   Op1: First instruction operand.
-    *   Op2: Second instruction operand.
+    *   Op1 - First instruction operand.
+    *   Op2 - Second instruction operand.
+    *
     * Outputs:
     *   ALU_result
-    *   Zero: Sets to high if the result is 0. 
+    *   Zero - Sets to high if the result is 0. 
     */
     ALU ALU (.ALU_operation(ALU_operation), .op1(Read_data1), .op2(ALU_B), .ALU_result(ALU_result), .Zero(Zero));
 
     /*
     * Module: banco_registros
     *    Register bank of the RISC-V core 
+    *
     * Inputs:
-    *   CLK: Syncronization signal.
+    *   CLK - Syncronization signal.
     *   RESET
-    *   ReadReg1: register 1.
-    *   ReadReg2: register 2.
-    *   WriteReg: register where you write.
-    *   WriteData: data you write on WriteReg.
-    *   RegWrite: flag that activates writting.
+    *   ReadReg1 - register 1.
+    *   ReadReg2 - register 2.
+    *   WriteReg - register where you write.
+    *   WriteData - data you write on WriteReg.
+    *   RegWrite - flag that activates writting.
+    *
     * Outputs:
-    *   ReadData1: data on register 1
-    *   ReadData2: data on register 2.
+    *   ReadData1 - data on register 1
+    *   ReadData2 - data on register 2.
     */
     banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
     /*
     * Module: ImmGen
     *    Generates the immediate sign extension obtained form the instruction decode. 
+    *
     * Inputs:
-    *   Instruction: Intruction to be processed.
+    *   Instruction - Intruction to be processed.
+    *
     * Outputs:
     *   Immediate 
     */
@@ -53,57 +79,67 @@ module datapath
     /*
     * Module: PC
     *    Stores the address of the next instruction to be executed. 
+    *
     * Inputs:
-    *   clock: Syncronization signal.
+    *   clock - Syncronization signal.
     *   reset
-    *   next_PC: Program Counter Register input.
+    *   next_PC - Program Counter Register input.
+    *
     * Outputs:
-    *   current_PC: Next Instruction Address. 
+    *   current_PC - Next Instruction Address. 
     */
     register PC (.clock(clock), .reset(reset), .a(next_PC), .b(current_PC));
 
     /*
     * Module: adder1
     *    Calculates the PC counter.
+    *
     * Inputs:
-    *   current_PC: Addr of the next instrucion to be read.
+    *   current_PC - Addr of the next instrucion to be read.
+    *
     * Outputs:
-    *   PC: Next Instruction Address. 
+    *   PC - Next Instruction Address. 
     */
     adder #(.size(32)) adder1 (.a(current_PC), .b(32'd4), .res(sum_adder1));
 
     /*
     * Module: adder2
     *    Calculates the Effective Adrres. (for Branch Instructions)
+    *
     * Inputs:
-    *   current_PC: output of the PC Register.
-    *   Immediate: output of the Inmediate Generator module.
+    *   current_PC - output of the PC Register.
+    *   Immediate - output of the Inmediate Generator module.
+    *
     * Outputs:
-    *   effective_addr: current_PC + Immediate * 4. 
+    *   effective_addr - current_PC + Immediate * 4. 
     */
     adder #(.size(32)) adder2 ( .a(current_PC), .b(Immediate), .res(effective_addr));
 
     /*
     * Module: muxPC
     *    Selects the type of PC Source (Effective adrres = PC + imm*4 or not PC + 4)
+    *
     * Inputs:
-    *   Incremented PC: Current PC + 4.
-    *   effective_addr: PC + (Inmediate Value)*4.
-    *   PCSrc: Control signal. (If Branch Instruction its value is high)
+    *   Incremented PC - Current PC + 4.
+    *   effective_addr - PC + (Inmediate Value)*4.
+    *   PCSrc - Control signal. (If Branch Instruction its value is high)
+    *
     * Outputs:
-    *   next_PC: Next Instruction Address to be loaded into PC Register. 
+    *   next_PC - Next Instruction Address to be loaded into PC Register. 
     */
     mux #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
 
     /*
     * Module: muxALU
     *    Selects the type of operand of the ALUs second operand (immediate or register).
+    *
     * Inputs:
-    *   Read_data2: Second operand (Bank of registers output).
-    *   Inmmediate: Immediate Generator output.
-    *   ALUSrc: Control signal.
+    *   Read_data2 -  Second operand (Bank of registers output).
+    *   Inmmediate -  Immediate Generator output.
+    *   ALUSrc -  Control signal.
+    *
     * Outputs:
-    *   ALU_B: ALU Second Operand. 
+    *   ALU_B -  ALU Second Operand. 
     */
     mux #(.size(32)) muxALU (.a(Read_data2), .b(Immediate), .select(ALUSrc), .res(ALU_B));
 
@@ -126,7 +162,7 @@ always_comb begin
             Immediate = {{20{Instruction[31]}},Instruction[31:20]};
         7'b0000011: // Load I-Format Intructions: 
             Immediate = {{20{Instruction[31]}},Instruction[31:20]};
-        7'b0100011:// S-Format Intructions:
+        7'b0100011: // S-Format Intructions:
             Immediate = {{20{Instruction[31]}},Instruction[31:25],Instruction[11:7]};
         7'b1100011: // B-Format Intructions:
             Immediate = {{19{Instruction[31]}},Instruction[31],Instruction[7],Instruction[30:25],Instruction[11:8],1'b0};
