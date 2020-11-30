@@ -127,7 +127,7 @@ module datapath
     * Outputs:
     *   next_PC - Next Instruction Address to be loaded into PC Register. 
     */
-    mux #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
+    MUX #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
 
     /*
     * Module: muxALU
@@ -141,14 +141,14 @@ module datapath
     * Outputs:
     *   ALU_B -  ALU Second Operand. 
     */
-    mux #(.size(32)) muxALU (.a(Read_data2), .b(Immediate), .select(ALUSrc), .res(ALU_B));
+    MUX #(.size(32)) muxALU (.a(Read_data2), .b(Immediate), .select(ALUSrc), .res(ALU_B));
 
     /*
     * Module: muxtoReg
     *    Englobes all the intances of the Data Path Modules.
     *
     */
-    mux #(.size(32)) muxtoReg (.a(ALU_result), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
+    MUX #(.size(32)) muxtoReg (.a(ALU_result), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
 endmodule:datapath
 
 module ImmGen 
@@ -184,14 +184,14 @@ always_ff @(posedge clock or negedge reset)
         b <= a;
 endmodule:register
 
-module mux #(parameter size = 32) 
+module MUX #(parameter size = 32) 
 (
     input [size-1:0] a, b,
     input select,
     output [size-1:0] res
 );
     assign res = (select)?b:a;  
-endmodule:mux
+endmodule:MUX
 
 module adder #(parameter size = 32) 
 (

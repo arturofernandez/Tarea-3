@@ -18,36 +18,53 @@ module ALU (
 logic [31:0] auxSLT;
 
 always_comb begin
-    case (ALU_operation)
-        4'b0000: //ADD
-            ALU_result = op1 + op2;
-        4'b0001:  //SUB
-            ALU_result = op1 - op2;
-        4'b0010:  //SLT                                        
-            begin               
-                auxSLT = op1-op2;      
-                if (auxSLT[31] == 1'b1)  
-                    ALU_result = 1;
-                else
-                    ALU_result = 0;
-            end             
-        4'b0011:  //SLTU                                      
-            begin
-                if(op1<op2)
-                    ALU_result = 1;
-                else
-                    ALU_result = 0;
-            end
-        4'b0100:  //AND
-            ALU_result = op1 & op2;
-        4'b0101:  //OR
-            ALU_result = op1 | op2;
-        4'b0110:  //XOR
-            ALU_result = op1 ^ op2;
-        endcase
-    end
+	case (ALU_operation)
+		4'b0000: //ADD
+			begin
+				ALU_result = op1 + op2;
+				auxSLT = 0;
+			end
+      4'b0001:  //SUB
+			begin
+				ALU_result = op1 - op2;
+				auxSLT = 0;
+			end
+      4'b0010:  //SLT                                        
+			begin               
+				auxSLT = op1-op2;      
+            if (auxSLT[31] == 1'b1)  
+					ALU_result = 0;
+            else
+               ALU_result = 1;
+			end             
+		4'b0011:  //SLTU                                      
+			begin
+				auxSLT = 0;
+				if(op1<op2)
+					ALU_result = 0;
+            else
+					ALU_result = 1;
+         end
+      4'b0100:  //AND
+			begin
+				ALU_result = op1 & op2;
+				auxSLT = 0;
+			end
+      4'b0101:  //OR
+			begin
+				ALU_result = op1 | op2;
+				auxSLT = 0;
+			end
+      4'b0110:  //XOR
+         begin
+				ALU_result = op1 ^ op2;
+				auxSLT = 0;
+			end
+		default: begin ALU_result = 0; auxSLT = 0; end
+	endcase
+end
     
-assign Zero = (ALU_result == 32'b0)? 1:0; 
+assign Zero = (ALU_result == 0)? 1:0; 
 
 endmodule
 
