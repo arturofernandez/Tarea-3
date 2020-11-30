@@ -74,17 +74,6 @@ initial begin
     //xor
     operar(clock,ALU_op,op1,op2,4'b0110,12,13);
     assert (ALU_res == op1^op2) else $error("XOR error");
-    //beq
-    operar(clock,ALU_op,op1,op2,4'b0111,12,13);
-    assert (ALU_res == 0) else $error("BEQ error");
-    operar(clock,ALU_op,op1,op2,4'b0111,12,12);
-    assert (ALU_res == 1) else $error("BEQ error");
-    //bne
-    operar(clock,ALU_op,op1,op2,4'b1000,12,13);
-    assert (ALU_res == 1) else $error("BNE error");
-    operar(clock,ALU_op,op1,op2,4'b1000,12,12);
-    assert (ALU_res == 0) else $error("BNE error");
-
     $stop;
 end
 
