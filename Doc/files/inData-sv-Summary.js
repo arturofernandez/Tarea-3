@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("File:inData.sv","inData.sv");NDSummary.OnSummaryLoaded("File:inData.sv",[["SystemVerilog","SystemVerilog"]],[["Classes","Class"]],[[13,0,0,"inData","inData"]]);

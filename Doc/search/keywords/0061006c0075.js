@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("alu",["Module"],[["ALU",,[[,,,,0,"File:datapath.sv:ALU"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("rvi",["Module"],[["RVI32_Core",,[[,,,,0,"File:RVI32_Core.sv:RVI32_Core"]]]]);
