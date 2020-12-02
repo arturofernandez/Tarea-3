@@ -113,7 +113,7 @@ module datapath
     * Outputs:
     *   effective_addr - current_PC + Immediate * 4. 
     */
-    adder #(.size(32)) adder2 ( .a(current_PC), .b(Immediate), .res(effective_addr));
+    adder #(.size(32)) adder2 (.a(current_PC), .b(Immediate), .res(effective_addr));
 
     /*
     * Module: muxPC

@@ -25,6 +25,7 @@ case (ALUOp)
         case (Instruction[2:0])
             3'b000: Operation = 4'b0000;
             3'b010: Operation = 4'b0010;
+            3'b011: Operation = 4'b0011;
             3'b111: Operation = 4'b0100;
             3'b110: Operation = 4'b0101;
             3'b100: Operation = 4'b0110;
