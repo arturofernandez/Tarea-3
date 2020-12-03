@@ -23,7 +23,7 @@ module RVI32_Core (
     logic ALUSrc, MemtoReg, PCSrc, RegWrite, Zero;
     logic [3:0] Operation;
     
-    controlpath controlpath ( 
+    Controlpath Controlpath ( 
         .Instruction(idata),
         .Zero(Zero),
         .MemRead(),

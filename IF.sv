@@ -1,3 +1,5 @@
+`timescale 1ns/1ps 
+
 interface IF (
     input CLK, RESET_N     
 );
@@ -24,7 +26,7 @@ interface IF (
     endclocking:cb_monitor
 
     /*!< INTERFACE MODPORT DEFINITIONS: */
-    modport monitor (clocking cb_monitor);
+    modport monitor (clocking cb_monitor, input CLK);
     modport mem (
         input CLK, 
         input iaddr,

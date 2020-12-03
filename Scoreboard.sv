@@ -2,9 +2,9 @@ class Scoreboard;
     /*!< MONITOR QUEUE DEFINITION: */
      reg [31:0] targets_queue [$]; // Infinite Queue Definition
      reg [31:0] dest_queue [$];
-    // reg [2*WIDTH-1:0] ideal_output, dut_output;
+     reg [31:0] inst_queue [$];
 
-    //instanciacion de la interfaz, el core y las memorias
+    //instanciacion de la interfaz, el core y la memoria
     virtual IF.monitor mon;
     virtual RVI32_Core Core;
     virtual dmem RAM;
@@ -15,21 +15,19 @@ class Scoreboard;
         this.RAM = mRAM;
     endfunction
 
-    //cables para las tasks
-    logic [31:0] target, op1, op2, rd, target_out, dest_data_out;
+    //variables para las tasks
+    logic [31:0] target, target_out, dest_data_out, inst_out;
     logic Zero;
     
-
-    // op1 = Core.datapath.Registers.Regs[mon.cb_monitor.idata[19:15]]; //dato en rs1
-    // op2 = Core.datapath.Registers.Regs[mon.cb_monitor.idata[24:20]]; //dato en rs2
-    // rd = mon.cb_monitor.idata[11:7];
-    // assign oprd = Core.datapath.Registers.Regs[mon.cb_monitor.idata[11:7]]; //dato en rd
-    
-    
+    // Core.datapath.Registers.Regs[mon.cb_monitor.idata[19:15]] es el dato en rs1 (registro 1)
+    // Core.datapath.Registers.Regs[mon.cb_monitor.idata[24:20]] es el dato en rs2 (registro 2)
+    // mon.cb_monitor.idata[11:7] es el rd (registro destino)
+        
     task monitor_input(); //cada vez que se activa el reloj miramos la instrucción para buscar el resultado correcto y comparar
         begin
             while (1) begin       
-                @(mon.cb_monitor); //Disparo del evento, cuando salta ejecuto el código que le sigue                
+                @(mon.cb_monitor); //Disparo del evento, cuando salta ejecuto el código que le sigue
+                inst_queue.push_front(mon.cb_monitor.idata);              
                 case (mon.cb_monitor.idata[6:0])
                     7'b0110011: //R-format
                         case ({mon.cb_monitor.idata[30],mon.cb_monitor.idata[14:12]})
@@ -131,32 +129,52 @@ class Scoreboard;
                                 end
                             default: target = 0;
                         endcase
-                    // 7'b1100011: //B-format                  
-                    // 7'b0000011: //Load-I-format
-                    // 7'b0100011: //S-format
+                    7'b1100011: //B-format  
+                        case (mon.cb_monitor.idata[14:12]) 
+                            3'b000: //BEQ
+                                begin
+                                    if (Core.datapath.Registers.Regs[mon.cb_monitor.idata[19:15]] == Core.datapath.Registers.Regs[mon.cb_monitor.idata[24:20]]) 
+                                        target = Core.iaddr + Core.datapath.Immediate;
+                                    else
+                                        target = Core.iaddr + 4;
+                                    targets_queue.push_front(target);
+                                end
+                            3'b001: //BNE
+                                begin
+                                     if (Core.datapath.Registers.Regs[mon.cb_monitor.idata[19:15]] != Core.datapath.Registers.Regs[mon.cb_monitor.idata[24:20]]) 
+                                        target = Core.iaddr + Core.datapath.Immediate;
+                                    else
+                                        target = Core.iaddr + 4;
+                                    targets_queue.push_front(target);
+                                end
+                            default: target = 0;
+                        endcase                    
+                    7'b0000011: //Load-I-format
+                        begin
+                            target = RAM.DMEM[Core.datapath.Registers.Regs[mon.cb_monitor.idata[19:15]] + Core.datapath.Immediate];
+                            targets_queue.push_front(target);
+                            dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                        end
+                    7'b0100011: //S-format
+                        begin
+                            target = Core.datapath.Registers.Regs[mon.cb_monitor.idata[24:20]];
+                            targets_queue.push_front(target);
+                            dest_queue.push_front(Core.datapath.Registers.Regs[mon.cb_monitor.idata[19:15]] + Core.datapath.Immediate);
+                        end
                     default: target = 0; 
                 endcase
             end
         end
         endtask
-        task monitor_output;//cada vez que habilito el fin, extraigo de la cola el valor de la raiz cuadrada calculada de modo ideal con una funcion preestablecida y lo comparo con el que da nuestro disenyo
-        // begin
-        //     while (1) begin       
-        //         @(virtual_monitor.cb_monitor); // Control de evento
-        //         if (virtual_monitor.cb_monitor.END_MULT == 1'b1) begin                    // Compruebo que la operación ha acabado
-        //             target = targets_queue.pop_back();                      // Tomo el último valor de la pila de valores precalculados 
-        //             dut_output = virtual_monitor.cb_monitor.S;                             // Obtengo la salida del DUT (respetando los skews de su CB)
-        //             assert (dut_output == target)                           // Compruebo si son iguales con una asercion continua
-        //             else $error("ERROR: the result of %d*%d=%d and DUT obtains %d",virtual_monitor.cb_monitor.A, virtual_monitor.cb_monitor.B,target,dut_output); 
-        //         end
-        //     end
-        // end
+
+    task monitor_output; //esta task funcionará un ciclo de reloj después de la monitor_input
         begin
             while (1) begin       
-                @(mon.cb_monitor); //Disparo del evento, cuando salta ejecuto el código que le sigue                
-                case (mon.cb_monitor.idata[6:0])
+                @(mon.cb_monitor); //Disparo del evento, cuando salta ejecuto el código que le sigue   
+                inst_out = inst_queue.pop_back(); //Recuperamos la instrucción debido a que la comprobación se hará un ciclo después y la instrucción se actualizaría lo que daría a error en esta task         
+                case (inst_out[6:0])
                     7'b0110011: //R-format
-                        case ({mon.cb_monitor.idata[30],mon.cb_monitor.idata[14:12]})
+                        case ({inst_out[30],inst_out[14:12]})
                             4'b0000: //ADD
                                 begin
                                     target_out = targets_queue.pop_back();
@@ -208,8 +226,8 @@ class Scoreboard;
                                 end
                             default: begin target_out = 0; dest_data_out = 0; assert(1==1) else $error("Si esto falla nos dejamos la carrera"); end
                         endcase
-                     7'b0010011: //I-format
-                        case (mon.cb_monitor.idata[14:12])
+                    7'b0010011: //I-format
+                        case (inst_out[14:12])
                             3'b000: //ADDI
                                 begin
                                     target_out = targets_queue.pop_back();
@@ -254,10 +272,37 @@ class Scoreboard;
                                 end
                             default: begin target_out = 0; dest_data_out = 0; assert(1==1) else $error("Si esto falla nos dejamos la carrera"); end
                         endcase
-                    // 7'b1100011: //B-format                  
-                    // 7'b0000011: //Load-I-format
-                    // 7'b0100011: //S-format
-                    default: begin target_out = 0; dest_data_out = 0; assert(1==1) else $error("Si esto falla nos dejamos la carrera"); end
+                    7'b1100011: //B-format 
+                        case (inst_out[14:12]) 
+                            3'b000: //BEQ
+                                begin
+                                    target_out = targets_queue.pop_back();
+                                    assert (target_out == Core.iaddr) 
+                                    else $error("BEQ ERROR: the PC should be %d and DUT points to %d",target_out,Core.iaddr);
+                                end
+                            3'b001: //BNE
+                                begin
+                                    target_out = targets_queue.pop_back();
+                                    assert (target_out == Core.iaddr) 
+                                    else $error("BNE ERROR: the PC should be %d and DUT points to %d",target_out,Core.iaddr); 
+                                end
+                            default: target = 0;
+                        endcase                                   
+                    7'b0000011: //Load-I-format
+                        begin
+                            target_out = targets_queue.pop_back();
+                            dest_data_out = Core.datapath.Registers.Regs[dest_queue.pop_back()];
+                            assert (target_out == dest_data_out)
+                            else $error("LW ERROR: the value should be %d and DUT obtains %d",target_out,dest_data_out);
+                        end
+                    7'b0100011: //S-format
+                        begin
+                            target_out = targets_queue.pop_back();
+                            dest_data_out = RAM.DMEM[dest_queue.pop_back()];
+                            assert (target_out == dest_data_out)
+                            else $error("SW ERROR: the value should be %d and DUT obtains %d",target_out,dest_data_out);
+                        end
+                    default: begin target_out = 0; dest_data_out = 0; inst_out = 0; assert(1==1) else $error("Si esto falla nos dejamos la carrera"); end
                 endcase
             end
         end
