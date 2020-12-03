@@ -1,9 +1,23 @@
+/*
+ * Class: random_inst
+ *    Generates a random instruction for the RISC-V Core
+ *
+ * Parameters:
+ *    instr - Randomized 32 bit RISC-V instruction.
+ *    opcode - Randomized Operation Code of an instruction.
+*/
 class random_inst;
     rand logic [31:0] instr;
-    rand logic [6:0] opcode
+    rand logic [6:0] opcode;
+
+    enum logic [6:0] {R_format==7'b0110011, I_format==7'b0010011, I_format_l==7'b0000011, S_format==7'b0100011, B_format==7'b1100011} opcodes;
+
+    //Generates a random operation code of the instruction form a finite range
+    constraint opcode_const {opcode==7'b0110011 || opcode==7'b0010011 || opcode==7'b0000011 || opcode==7'b0100011 || opcode==7'b1100011}
+
     // Con esta primera constraint nos quitamos sra y srl
     constraint R_format {instr[6:0] == 7'b0110011 && instr[14:12]!=3'b101 && instr[14:12]!=3'b001;}
-    constraint R_format_a {(instr[6:0] == 7'b0110011 && instr[14:12]!=3'b000) -> instr[31:25]==7'b0000000 ;}
+    constraint R_format_a {(instr[6:0] == 7'b0110011 && instr[14:12]!=3'b000) -> instr[31:25]==7'b0000000;}
     constraint R_format_b {(instr[6:0] == 7'b0110011 && instr[14:12]=3'b000) -> instr[31:25]==7'b0000000 || instr[31:25]==7'b0100000 ;}
     // Con esta nos quitamos slli srli srai
     constraint I_format {instr[6:0] == 7'b0010011 && instr[14:12]!=3'b001 && instr[14:12]!=3'b101;}
@@ -14,11 +28,9 @@ class random_inst;
     // Solo se permite BEQ y BNE
     constraint B_format {instr[6:0] == 7'b1100011  && instr[14:12]=3'b000  && instr[14:12]=3'b001;}
 
-    constraint opcode_const{opcode==7'b0110011 || opcode==7'b0010011 || opcode==7'b0000011 || opcode==7'b0100011 || opcode==7'b1100011}
-
     function generar_inst;
         this.opcode_const.constraintmode(1);
-        this.randomize();
+        this.randomize(); //Type of instruction to be randomized
         case(this.opcode)
             7'b0110011:
                 begin
@@ -87,10 +99,6 @@ class covergroups_CORE; // se quita la clase pero por ahora por decorar
             bins r_xor = {4'b0100};
             bins r_or = {4'b0110};
             bins r_and = {4'b0111};
-            // aqui habria que meter illegal bins y los bins de las instrucciones que no 
-            // hemos implementado, con nuestro randomize solo se generan estas instrucciones
-            // que ya tienen bin
-
         }
 
         iformat : coverpoint({monitor.idata[14:12]}) iff (monitor.idata[6:0]==7'b0010011)
@@ -101,25 +109,26 @@ class covergroups_CORE; // se quita la clase pero por ahora por decorar
             bins xori = {3'b100};
             bins ori = {3'b110};
             bins andi = {3'b111};
-            // lo mismo de las illegal bins y las bins de instrucciones no implementadas
         }
 
         iformatl : coverpoint({monitor.idata[14:12]}) iff (monitor.idata[6:0]==7'b0000011)
         {  
             bins lw = {3'b011};
-            // lo mismo de las illegal bins y las bins de instrucciones no implementadas
         }
 
         sformat : coverpoint({monitor.idata[14:12]}) iff (monitor.idata[6:0]==7'b0100011)
         {  
             bins sw = {3'b010};
-            // lo mismo de las illegal bins y las bins de instrucciones no implementadas
         }
 
         bformat : coverpoint({monitor.idata[14:12]}) iff (monitor.idata[6:0]==7'b1100011)
         {  
             bins beq = {3'b000};
             bins bne = {3'b001};
-            // lo mismo de las illegal bins y las bins de instrucciones no implementadas
+        }
+
+        illegal_format : cross  rformat, iformat, iformatl, sformat, bformat 
+        {
+            illegal_bins illegal_formats = !binsof(rformat) || !binsof(iformat) !binsof(iformatl) || !binsof(sformat) || !binsof(bformat);
         }
 endclass
