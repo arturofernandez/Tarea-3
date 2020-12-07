@@ -18,7 +18,7 @@ module tb_RVI32_Core;
         .d_rw(d_rw) 
     );
 
-    dmem (.DATA_WIDTH(32), .MEM_DEPTH(1024)) RAM (
+    dmem #(.DATA_WIDTH(32), .MEM_DEPTH(1024)) RAM (
         .clk(CLK), 
         .write_data(ddata_w), 
         .addr(daddr),
@@ -32,7 +32,7 @@ module tb_RVI32_Core;
     );
 
     // instanciación de la interfaz
-    IF (.DATA_WIDTH(32), .MEM_DEPTH(1024)) interfaz (.CLK(CLK), .RESET_N(RESET_N), .Regs(Core.datapath.Registers.Regs), .RAM(RAM.DMEM), .imm(Core.datapath.ImmGen.Immediate), .idata(idata), .ddata_r(ddata_r), .iaddr(iaddr), .daddr(daddr), .ddata_w(ddata_w), .d_rw(d_rw));
+    IF #(.DATA_WIDTH(32), .MEM_DEPTH(1024)) interfaz (.CLK(CLK), .RESET_N(RESET_N), .Regs(Core.datapath.Registers.Regs), .RAM(RAM.DMEM), .imm(Core.datapath.ImmGen.Immediate), .idata(idata), .ddata_r(ddata_r), .iaddr(iaddr), .daddr(daddr), .ddata_w(ddata_w), .d_rw(d_rw));
 
     //instanciación del program
     estimulos estimulos (.mon(interfaz));
