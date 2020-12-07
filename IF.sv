@@ -18,7 +18,7 @@ interface IF #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (
     //     output #1ns B;
     // endclocking:cb_stimulus
     
-    clocking cb_monitor @(posedge CLK); //Anyadir descripcion
+    clocking cb_monitor @(negedge CLK); //Anyadir descripcion
         default input #1ns output #1ns; /*!< input and output skews sample */
         input #1ns idata;  
         input #1ns ddata_r; 

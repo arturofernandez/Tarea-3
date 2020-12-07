@@ -54,15 +54,15 @@ program estimulos (IF.monitor monitor);
         inData = new;
         $display("INICIO SIMULACION");
 
-        repeat (3) @(posedge monitor.CLK);
+        repeat (2) @(posedge monitor.CLK);
         fork
             sb.monitor_input();
+            @(posedge monitor.CLK)
             sb.monitor_output();
         join_none  
 
-        @(posedge monitor.CLK)
-        @(negedge monitor.CLK) 
         wait(monitor.cb_monitor.idata === {32{1'bx}});
+        repeat (1) @(posedge monitor.CLK);
         $display("FIN SIMULACION");
         $stop;
     end
