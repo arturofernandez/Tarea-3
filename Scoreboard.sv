@@ -1,32 +1,40 @@
+/*
+ * Class: Scoreboard
+ *    DUT input data class.
+ *
+ * Parameters:
+ *
+ *  targets_queue - Queue of the target values (sum, subtraction etc)
+ *  dest_queue - 
+ *  inst_queue - 
+*/
 class Scoreboard;
-    /*!< MONITOR QUEUE DEFINITION: */
+    /*!< MONITOR QUEUEs DEFINITION: */
      reg [31:0] targets_queue [$]; // Infinite Queue Definition
      reg [31:0] dest_queue [$];
      reg [31:0] inst_queue [$];
 
-    //instanciacion de la interfaz, el core y la memoria
+    /*!< Interface Instance: */
     virtual IF.monitor mon;
 
     function new (virtual IF.monitor mpuertos);
         this.mon = mpuertos;
     endfunction
 
-    //variables para las tasks
+    /*!< Class members: */
     logic [31:0] target, target_out, dest_data_out, inst_out;
-
-    //Display varible:
-    int num_instructions = 0;
-    
-    // mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] es el dato en rs1 (registro 1)
-    // mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]] es el dato en rs2 (registro 2)
-    // mon.cb_monitor.idata[11:7] es el rd (registro destino)
-        
-    task monitor_input(); //cada vez que se activa el reloj miramos la instrucción para buscar el resultado correcto y comparar
+    int num_instructions = 0; // Just to know the number of instructions executed
+ 
+    /*
+    * Task: monitor_input
+    *    monitors the input stimulus of the Device under test (DUT). This function is trigered each time positive CLK edge occours.
+    *
+    */   
+    task monitor_input(); 
         begin
             while (1) begin       
-                @(posedge mon.CLK); //Disparo del evento, cuando salta ejecuto el código que le sigue
-                num_instructions++;
-                //$display("monitor input call: target_queue=%0d dest_queue=%0d. Num. Instruction(%0d) Time:%0t",target,mon.cb_monitor.idata[11:7],num_instructions,$time);
+                @(posedge mon.CLK); 
+                num_instructions++; 
                 inst_queue.push_front(mon.cb_monitor.idata);              
                 case (mon.cb_monitor.idata[6:0])
                     7'b0110011: //R-format
@@ -43,6 +51,8 @@ class Scoreboard;
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] - mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instrcution(%0d): sub x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+
                                 end
                             4'b0010: //SLT
                                 begin
@@ -53,6 +63,7 @@ class Scoreboard;
                                        target = 1;
                                     targets_queue.push_front(target);
                                    dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instrcution(%0d): slt x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             4'b0011: //SLTU
                                 begin
@@ -62,24 +73,29 @@ class Scoreboard;
                                         target = 1;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instrcution(%0d): sltu x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             4'b0111: //AND
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] & mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instrcution(%0d): and x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             4'b0110: //OR
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] | mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instrcution(%0d): or x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+
                                 end
                             4'b0100: //XOR 
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] ^ mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instrcution(%0d): xor x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             default: target = 0;
                         endcase        
@@ -168,12 +184,16 @@ class Scoreboard;
             end
         end
         endtask
-
-    task monitor_output; //esta task funcionará un ciclo de reloj después de la monitor_input
+    /*
+    * Task: monitor_output
+    *    monitors the output stimulus of the Device under test (DUT). This function is trigered each time positive CLK edge occours.
+    *
+    */ 
+    task monitor_output; 
         begin
             while (1) begin       
-                @(posedge mon.CLK); //Disparo del evento, cuando salta ejecuto el código que le sigue   
-                inst_out = inst_queue.pop_back(); //Recuperamos la instrucción debido a que la comprobación se hará un ciclo después y la instrucción se actualizaría lo que daría a error en esta task         
+                @(posedge mon.CLK); 
+                inst_out = inst_queue.pop_back(); 
                 case (inst_out[6:0])
                     7'b0110011: //R-format
                         case ({inst_out[30],inst_out[14:12]})
