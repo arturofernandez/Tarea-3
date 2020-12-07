@@ -17,7 +17,8 @@
 module RVI32_Core (
     input CLK, RESET_N, 
     input logic [31:0] idata, ddata_r, 
-    output logic [31:0] iaddr, daddr, ddata_w, d_rw 
+    output logic [31:0] iaddr, daddr, ddata_w,
+    output logic d_rw 
 );
     // Conections:
     logic ALUSrc, MemtoReg, PCSrc, RegWrite, Zero;

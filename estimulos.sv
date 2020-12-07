@@ -50,16 +50,19 @@ program estimulos (IF.monitor monitor);
     endgroup
 
     initial begin
-        repeat(20) @(posedge monitor.CLK);
         sb = new(monitor);
         inData = new;
         $display("INICIO SIMULACION");
 
+        repeat (3) @(posedge monitor.CLK);
         fork
             sb.monitor_input();
-            @(posedge monitor.CLK) 
             sb.monitor_output();
         join_none  
+
+        @(posedge monitor.CLK)
+        @(negedge monitor.CLK) 
+        wait(monitor.cb_monitor.idata === {32{1'bx}});
         $display("FIN SIMULACION");
         $stop;
     end

@@ -5,8 +5,8 @@ module tb_RVI32_Core ();
     parameter DATA_WIDTH = 32;
     parameter MEM_DEPTH = 1024;
     
-    logic CLK, RESET_N;
-    logic [31:0] idata, ddata_r, iaddr, daddr, ddata_w, d_rw; 
+    logic CLK, RESET_N, d_rw;
+    logic [31:0] idata, ddata_r, iaddr, daddr, ddata_w; 
 
     // instanciación del core 
     RVI32_Core Core (
@@ -23,7 +23,7 @@ module tb_RVI32_Core ();
     dmem #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) RAM (
         .clk(CLK), 
         .write_data(ddata_w), 
-        .addr(daddr),
+        .addr(daddr[9:0]),
         .mem_write(d_rw), 
         .dout(ddata_r)
     );
@@ -52,9 +52,9 @@ module tb_RVI32_Core ();
 
     task automatic RESET(ref CLK, ref RESET);
         begin
-            repeat(1) @(negedge CLK);
+            repeat(1) @(posedge CLK);
             RESET = 1'b0;
-            repeat(1) @(negedge CLK);
+            repeat(1) @(posedge CLK);
             RESET = 1'b1;
         end
     endtask
