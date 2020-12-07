@@ -29,7 +29,7 @@ module tb_RVI32_Core ();
     );
 
     imem ROM (
-        .iaddr(iaddr),
+        .iaddr(iaddr[11:2]),
         .idata(idata)
     );
 
