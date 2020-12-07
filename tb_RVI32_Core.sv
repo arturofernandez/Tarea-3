@@ -37,7 +37,7 @@ module tb_RVI32_Core ();
     IF #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) interfaz (.CLK(CLK), .RESET_N(RESET_N), .Regs(Core.datapath.Registers.Regs), .RAM(RAM.DMEM), .imm(Core.datapath.ImmGen.Immediate), .idata(idata), .ddata_r(ddata_r), .iaddr(iaddr), .daddr(daddr), .ddata_w(ddata_w), .d_rw(d_rw));
 
     //instanciación del program
-    estimulos estimulos (.mon(interfaz));
+    estimulos estimulos (.monitor(interfaz));
 
     always begin
         #(T/2) CLK <= ~CLK;
