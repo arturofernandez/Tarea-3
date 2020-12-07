@@ -1,7 +1,7 @@
 `include "Scoreboard.sv"
 `timescale 1ns/1ps 
-program estimulos (IF.monitor mon, RVI32_Core Core, dmem RAM);
-    Scoreboard sb = new(mon, Core, RAM);
+program estimulos (IF.monitor mon);
+    Scoreboard sb = new(mon);
 
     initial begin
         // repeat(3) @(posedge mon.CLK);

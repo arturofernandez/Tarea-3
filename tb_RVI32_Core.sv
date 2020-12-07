@@ -3,39 +3,39 @@
 module tb_RVI32_Core;
     localparam T = 50;
 
-    reg CLK, RESET_N;
-    reg [31:0] idata, ddata_r; 
-    wire [31:0] iaddr, daddr, ddata_w, d_rw; 
-
-    // instanciación de la interfaz
-    IF interfaz (.CLK(CLK), .RESET_N(RESET_N));
+    logic CLK, RESET_N;
+    logic [31:0] idata, ddata_r, iaddr, daddr, ddata_w, d_rw; 
 
     // instanciación del core 
-    RVI32_Core myCorason (
-        .CLK(interfaz.core.CLK), 
-        .RESET_N(interfaz.core.RESET_N), 
-        .idata(interfaz.core.idata), 
-        .ddata_r(interfaz.core.ddata_r), 
-        .iaddr(interfaz.core.iaddr), 
-        .daddr(interfaz.core.daddr), 
-        .ddata_w(interfaz.core.ddata_w), 
-        .d_rw(interfaz.core.d_rw) 
+    RVI32_Core Core (
+        .CLK(CLK), 
+        .RESET_N(RESET_N), 
+        .idata(idata), 
+        .ddata_r(ddata_r), 
+        .iaddr(iaddr), 
+        .daddr(daddr), 
+        .ddata_w(ddata_w), 
+        .d_rw(d_rw) 
     );
 
-    dmem RAM (
-        .clk(interfaz.mem.CLK), 
-        .write_data(interfaz.mem.ddata_w), 
-        .addr(interfaz.mem.daddr),
-        .mem_write(interfaz.mem.d_rw), 
-        .dout(interfaz.mem.ddata_r)
+    dmem (.DATA_WIDTH(32), .MEM_DEPTH(1024)) RAM (
+        .clk(CLK), 
+        .write_data(ddata_w), 
+        .addr(daddr),
+        .mem_write(d_rw), 
+        .dout(ddata_r)
     );
 
     imem ROM (
-        .iaddr(interfaz.mem.iaddr),
-        .idata(interfaz.mem.idata)
+        .iaddr(iaddr),
+        .idata(idata)
     );
 
-    estimulos estimulos (.mon(interfaz), .Core(myCorason), .RAM(RAM));
+    // instanciación de la interfaz
+    IF (.DATA_WIDTH(32), .MEM_DEPTH(1024)) interfaz (.CLK(CLK), .RESET_N(RESET_N), .Regs(Core.datapath.Registers.Regs), .RAM(RAM.DMEM), .imm(Core.datapath.ImmGen.Immediate), .idata(idata), .ddata_r(ddata_r), .iaddr(iaddr), .daddr(daddr), .ddata_w(ddata_w), .d_rw(d_rw));
+
+    //instanciación del program
+    estimulos estimulos (.mon(interfaz));
 
     always begin
         #(T/2) CLK <= ~CLK;
