@@ -1,9 +1,7 @@
 `include "Scoreboard.sv"
 `include "aleatorizacion.sv"
 `timescale 1ns/1ps 
-program estimulos (IF.monitor monitor);
-    Scoreboard sb;
-    random_inst inData;
+program estimulos (IF.monitor monitor, output logic Start_Simulation);
 
     covergroup instrucciones; 
         rformat : coverpoint({monitor.cb_monitor.idata[30],monitor.cb_monitor.idata[14:12]}) iff (monitor.cb_monitor.idata[6:0]==7'b0110011&&monitor.cb_monitor.idata[31]==1'b0&&monitor.cb_monitor.idata[29:25]==5'b0000)
@@ -49,9 +47,31 @@ program estimulos (IF.monitor monitor);
         }
     endgroup
 
+    Scoreboard sb;
+    random_inst inData;
+    instrucciones my_cg;
+
+    int i;
+
     initial begin
         sb = new(monitor);
         inData = new;
+        my_cg = new;
+        Start_Simulation = 1'b0;
+        i = 0;
+        int fd;
+        fd = $fopen("fubinachi","a")
+
+        while (my_cg.get_coverage()< 100) begin
+            inData.generar_inst();
+            $fwrite(fd, inData.instr);
+            my_cg.sample();
+        end
+
+        ROM.escribirROM("fubinachi.txt"); //escribimos en la memoria de instrucciones
+        $display("ROM CARGADA");
+        Start_Simulation = 1'b1;
+
         $display("INICIO SIMULACION");
 
         repeat (2) @(posedge monitor.CLK);

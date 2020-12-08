@@ -7,6 +7,7 @@ module tb_RVI32_Core ();
     
     logic CLK, RESET_N, d_rw;
     logic [31:0] idata, ddata_r, iaddr, daddr, ddata_w; 
+    logic Start_Simulation;
 
     // instanciación del core 
     RVI32_Core Core (
@@ -37,15 +38,14 @@ module tb_RVI32_Core ();
     IF #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) interfaz (.CLK(CLK), .RESET_N(RESET_N), .Regs(Core.datapath.Registers.Regs), .RAM(RAM.DMEM), .imm(Core.datapath.ImmGen.Immediate), .idata(idata), .ddata_r(ddata_r), .iaddr(iaddr), .daddr(daddr), .ddata_w(ddata_w), .d_rw(d_rw));
 
     //instanciación del program
-    estimulos estimulos (.monitor(interfaz));
+    estimulos estimulos (.monitor(interfaz), .Start_Simulation(Start_Simulation));
 
     always begin
         #(T/2) CLK <= ~CLK;
     end
     
-    initial begin
-        ROM.escribirROM("fubinachi.txt"); //escribimos en la memoria de instrucciones
-        $display("ROM CARGADA");
+    initial begin  
+        wait(Start_Simulation == 1'b1)
         CLK = 1'b0;
         RESET(CLK,RESET_N);
     end
