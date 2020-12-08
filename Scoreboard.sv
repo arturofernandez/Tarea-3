@@ -134,8 +134,7 @@ class Scoreboard;
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] ^ mon.cb_monitor.imm;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instruction(%0d): xori
-                                     x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
+                                    $display("instruction(%0d): xori x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
                                 end
                             3'b110: //ORI
                                 begin
