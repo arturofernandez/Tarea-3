@@ -7,12 +7,12 @@ module Controlpath (
     output logic ALUSrc,
     output logic RegWrite,
     output logic [3:0] Operation,
-    output logic PCSrc
-);
+    output logic PCSrc,
+    output logic [1:0] AuipcLui
+); 
 
 wire Branch;
-wire [1:0] ALUOp;
-
+wire [2:0] ALUOp;
 // assign PCSrc = Branch & Zero;
 
 always_comb begin
@@ -35,7 +35,8 @@ Control Control(
     .ALUOp(ALUOp),
     .MemWrite(MemWrite),
     .ALUSrc(ALUSrc),
-    .RegWrite(RegWrite)
+    .RegWrite(RegWrite),
+    .AuipcLui(AuipcLui)
 );
 
 ALU_Control ALU_Control(

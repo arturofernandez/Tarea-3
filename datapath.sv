@@ -24,13 +24,14 @@
 */
 module datapath 
 (
-    input clock, reset, ALUSrc ,MemtoReg, PCSrc, RegWrite,
+    input clock, reset, ALUSrc ,MemtoReg, PCSrc, RegWrite, 
+    input [1:0] AuipcLui,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
     output [31:0] current_PC, ALU_result, Read_data2,
     output Zero
 );
-    logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1;
+    logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1, ALU_A;
     /*
     * Module: ALU
     *    Main RISC-V Arithmetic Logic Unit 
@@ -43,7 +44,7 @@ module datapath
     *   ALU_result
     *   Zero - Sets to high if the result is 0. 
     */
-    ALU ALU (.ALU_operation(ALU_operation), .op1(Read_data1), .op2(ALU_B), .ALU_result(ALU_result), .Zero(Zero));
+    ALU ALU (.ALU_operation(ALU_operation), .op1(ALU_A), .op2(ALU_B), .ALU_result(ALU_result), .Zero(Zero));
 
     /*
     * Module: banco_registros
@@ -130,7 +131,7 @@ module datapath
     MUX #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
 
     /*
-    * Module: muxALU
+    * Module: muxALU_B
     *    Selects the type of operand of the ALUs second operand (immediate or register).
     *
     * Inputs:
@@ -141,14 +142,36 @@ module datapath
     * Outputs:
     *   ALU_B -  ALU Second Operand. 
     */
-    MUX #(.size(32)) muxALU (.a(Read_data2), .b(Immediate), .select(ALUSrc), .res(ALU_B));
+    MUX #(.size(32)) muxALU_B (.a(Read_data2), .b(Immediate), .select(ALUSrc), .res(ALU_B));
 
     /*
     * Module: muxtoReg
-    *    Englobes all the intances of the Data Path Modules.
+    *    Selects the type of operand of the Bank of Registers input data (ALU_Result or Read_data).
     *
+    * Inputs:
+    *   ALU_result -  ALU output.
+    *   Read_data -  RAM output (DMEM output).
+    *   MemtoReg -  Control signal.
+    *
+    * Outputs:
+    *   Write_data_reg -  Register input data (Bank of registers input). 
     */
     MUX #(.size(32)) muxtoReg (.a(ALU_result), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
+
+    /*
+    * Module: muxALU_A
+    *    Selects the type of operand of the ALUs first operand (pc, zeros or register).
+    *
+    * Inputs:
+    *   Current_PC -  PC.
+    *   32'b0 - Zeros.
+    *   Read_data1 -  First operand (Bank of registers output).
+    *   AuipcLui -  Control signal.
+    *
+    * Outputs:
+    *   ALU_A -  ALU First Operand. 
+    */
+    MUX3 #(.size(32)) muxALU_A (.a(current_PC), .b({32{1'b0}}), .c(Read_data1), .select(AuipcLui), .res(ALU_A));
 endmodule:datapath
 
 module ImmGen 
@@ -166,6 +189,10 @@ always_comb begin
             Immediate = {{20{Instruction[31]}},Instruction[31:25],Instruction[11:7]};
         7'b1100011: // B-Format Intructions:
             Immediate = {{19{Instruction[31]}},Instruction[31],Instruction[7],Instruction[30:25],Instruction[11:8],1'b0};
+        7'b0010111: //U-Format (AUIPC)
+            Immediate = {Instruction[31:12], {12{1'b0}}};
+        7'b0110111: //U-Format (LUI)
+            Immediate = {Instruction[31:12], {12{1'b0}}};
         default: Immediate = {32{1'b0}};   
     endcase
 end
@@ -192,6 +219,22 @@ module MUX #(parameter size = 32)
 );
     assign res = (select)?b:a;  
 endmodule:MUX
+
+module MUX3 #(parameter size = 32) 
+(
+    input [size-1:0] a, b, c,
+    input [1:0] select,
+    output reg [size-1:0] res
+);
+    always_comb begin
+        case(select)
+            2'b00: res = a;
+            2'b01: res = b;
+            2'b10: res = c;
+            default: res = c;
+        endcase
+    end 
+endmodule:MUX3
 
 module adder #(parameter size = 32) 
 (

@@ -37,6 +37,7 @@ Language: SystemVerilog
    Variable Prototype Ender: rand
    Module Prototype Enders: ) ;
    Program Prototype Ender: ;
+   Interface Prototype Enders: ) ;
 
 
 # These settings define the languages Natural Docs knows how to parse.  You

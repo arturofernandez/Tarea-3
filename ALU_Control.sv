@@ -1,13 +1,13 @@
 module ALU_Control (
     input logic [3:0] Instruction,
-    input logic [1:0] ALUOp,
+    input logic [2:0] ALUOp,
     output logic [3:0] Operation
 );
 
 always @(Instruction,ALUOp)
 begin
 case (ALUOp)
-    2'b00:
+    3'b000: //Instrucciones R-format
     begin
         case (Instruction)
             4'b0000: Operation = 4'b0000; //ADD
@@ -20,7 +20,7 @@ case (ALUOp)
             default: Operation = 4'b0000;
         endcase
     end
-    2'b01:
+    3'b001: //Instrucciones I-format
     begin
         case (Instruction[2:0])
             3'b000: Operation = 4'b0000;
@@ -32,9 +32,10 @@ case (ALUOp)
             default: Operation = 4'b0000;
         endcase
     end
-    2'b10: Operation = 4'b0001;
-    2'b11: Operation = 4'b0000; 
-    default: Operation = 4'b0000; 
+    3'b010: Operation = 4'b0001; //Instrucciones B-format
+    3'b011: Operation = 4'b0000; //Load-I format y S-format
+    3'b100: Operation = 4'b0000; //U-format
+    default: Operation = 4'b0000;  
 endcase
 end
 endmodule

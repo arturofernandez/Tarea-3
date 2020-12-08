@@ -44,14 +44,14 @@ class Scoreboard;
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] + mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instrcution(%0d): add x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+                                    $display("instruction(%0d): add x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             4'b1000: //SUB
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] - mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instrcution(%0d): sub x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+                                    $display("instruction(%0d): sub x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
 
                                 end
                             4'b0010: //SLT
@@ -63,7 +63,7 @@ class Scoreboard;
                                        target = 1;
                                     targets_queue.push_front(target);
                                    dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instrcution(%0d): slt x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+                                    $display("instruction(%0d): slt x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             4'b0011: //SLTU
                                 begin
@@ -73,21 +73,21 @@ class Scoreboard;
                                         target = 1;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instrcution(%0d): sltu x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+                                    $display("instruction(%0d): sltu x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             4'b0111: //AND
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] & mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instrcution(%0d): and x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+                                    $display("instruction(%0d): and x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             4'b0110: //OR
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] | mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instrcution(%0d): or x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+                                    $display("instruction(%0d): or x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
 
                                 end
                             4'b0100: //XOR 
@@ -95,7 +95,7 @@ class Scoreboard;
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] ^ mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instrcution(%0d): xor x%0d, x%0d,x%0d :: 0x%0h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
+                                    $display("instruction(%0d): xor x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
                                 end
                             default: target = 0;
                         endcase        
@@ -106,7 +106,7 @@ class Scoreboard;
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] + mon.cb_monitor.imm;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                                    $display("instrcution(%0d): addi x%0d, x%0d,x%0d :: 0x%0h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
+                                    $display("instruction(%0d): addi x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
                                 end
                             3'b010: //SLTI
                                 begin
@@ -116,7 +116,8 @@ class Scoreboard;
                                     else
                                        target = 1;
                                     targets_queue.push_front(target);
-                                   dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instruction(%0d): slti x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
                                 end         
                             3'b011: //SLTIU
                                 begin
@@ -126,24 +127,29 @@ class Scoreboard;
                                         target = 1;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instruction(%0d): sltiu x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
                                 end
                             3'b100: //XORI
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] ^ mon.cb_monitor.imm;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instruction(%0d): xori
+                                     x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
                                 end
                             3'b110: //ORI
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] | mon.cb_monitor.imm;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instruction(%0d): ori x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
                                 end
                             3'b111: //ANDI
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] & mon.cb_monitor.imm;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                                    $display("instruction(%0d): andi x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
                                 end
                             default: target = 0;
                         endcase
@@ -156,6 +162,7 @@ class Scoreboard;
                                     else
                                         target = mon.cb_monitor.iaddr + 4;
                                     targets_queue.push_front(target);
+                                    $display("instruction(%0d): beq x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[19:15],mon.cb_monitor.idata[24:20], (mon.cb_monitor.iaddr+mon.cb_monitor.imm), mon.cb_monitor.idata);
                                 end
                             3'b001: //BNE
                                 begin
@@ -164,6 +171,7 @@ class Scoreboard;
                                     else
                                         target = mon.cb_monitor.iaddr + 4;
                                     targets_queue.push_front(target);
+                                    $display("instruction(%0d): bne x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[19:15],mon.cb_monitor.idata[24:20], (mon.cb_monitor.iaddr+mon.cb_monitor.imm), mon.cb_monitor.idata);
                                 end
                             default: target = 0;
                         endcase                    
@@ -172,12 +180,28 @@ class Scoreboard;
                             target = mon.cb_monitor.RAM[mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] + mon.cb_monitor.imm];
                             targets_queue.push_front(target);
                             dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                            $display("instruction(%0d): lw x%0d, %0d(x%0d) :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7], mon.cb_monitor.imm, mon.cb_monitor.idata[19:15], mon.cb_monitor.idata);
                         end
                     7'b0100011: //S-format
                         begin
                             target = mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                             targets_queue.push_front(target);
                             dest_queue.push_front(mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] + mon.cb_monitor.imm);
+                            $display("instruction(%0d): sw x%0d, %0d(x%0d) :: 0x%08h ", num_instructions, mon.cb_monitor.idata[24:20], mon.cb_monitor.imm, mon.cb_monitor.idata[19:15], mon.cb_monitor.idata);
+                        end
+                    7'b0010111: //Auipc
+                        begin
+                            target = mon.cb_monitor.imm + mon.cb_monitor.iaddr;
+                            targets_queue.push_front(target);
+                            dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                            $display("instruction(%0d): auipc x%0d, 0x%0h :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7], mon.cb_monitor.imm, mon.cb_monitor.idata);
+                        end
+                    7'b0110111: //Lui
+                        begin
+                            target = mon.cb_monitor.imm;
+                            targets_queue.push_front(target);
+                            dest_queue.push_front(mon.cb_monitor.idata[11:7]);
+                            $display("instruction(%0d): lui x%0d, 0x%0h :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7], mon.cb_monitor.imm, mon.cb_monitor.idata);
                         end
                     default: target = 0; 
                 endcase
@@ -323,6 +347,20 @@ class Scoreboard;
                             dest_data_out = mon.cb_monitor.RAM[dest_queue.pop_back()];
                             assert (target_out === dest_data_out)
                             else $error("SW ERROR: the value should be %0d and DUT obtains %0d",target_out,dest_data_out);
+                        end
+                    7'b0010111: //Auipc
+                        begin
+                            target_out = targets_queue.pop_back();
+                            dest_data_out = mon.cb_monitor.Regs[dest_queue.pop_back()];
+                            assert (target_out === dest_data_out)
+                            else $error("AUIPC ERROR: the value should be %0d and DUT obtains %0d",target_out,dest_data_out);
+                        end
+                    7'b0110111: //Lui
+                        begin
+                            target_out = targets_queue.pop_back();
+                            dest_data_out = mon.cb_monitor.Regs[dest_queue.pop_back()];
+                            assert (target_out === dest_data_out)
+                            else $error("LUI ERROR: the value should be %0d and DUT obtains %0d",target_out,dest_data_out);
                         end
                     default: begin target_out = 0; dest_data_out = 0; inst_out = 0; assert(1===1) else $error("Si esto falla nos dejamos la carrera"); end
                 endcase
