@@ -67,6 +67,10 @@ wlf*
 *.wlf
 *.vstf
 *.ucdb
+*.qdb
+*.qtl
+work/
+*.qpg
 cov*/
 transcript*
 sc_dpiheader.h
