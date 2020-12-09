@@ -51,7 +51,7 @@ module tb_RVI32_Core ();
         wait(Start_Simulation == 1'b1)
 
         ROM.escribirROM("fubinachi.txt"); //escribimos en la memoria de instrucciones
-        $display("ROM Writed - %0t\n", $time);
+        $display("ROM Writed - time=%0t\n", $time);
         
         CLK = 1'b0;
         RESET(CLK,RESET_N);

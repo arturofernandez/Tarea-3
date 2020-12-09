@@ -54,29 +54,94 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation);
     logic [31:0] inst;
     int fd, i;
 
+
+task generar_inst;
+        inData.opcode_const.constraint_mode(1);
+        inData.I_format.constraint_mode(0);
+        inData.I_format_l.constraint_mode(0);
+        inData.S_format.constraint_mode(0);
+        inData.B_format.constraint_mode(0);
+        inData.R_format.constraint_mode(0);
+        inData.randomize(); //Type of instruction to be randomized
+        assert (inData.randomize()) else $fatal("Op Code Randomization failed");
+        //$display("OP CODE %0b - %0t\n", inData.opcode, $time);
+        case(inData.opcode)
+            0:
+                begin
+    	            inData.R_format.constraint_mode(1);
+                    inData.I_format.constraint_mode(0);
+                    inData.I_format_l.constraint_mode(0);
+                    inData.S_format.constraint_mode(0);
+                    inData.B_format.constraint_mode(0);
+                end
+            1:
+                begin
+    	            inData.R_format.constraint_mode(0);
+                    inData.I_format.constraint_mode(1);
+                    inData.I_format_l.constraint_mode(0);
+                    inData.S_format.constraint_mode(0);
+                    inData.B_format.constraint_mode(0);
+                end
+            2:
+                begin
+    	            inData.R_format.constraint_mode(0);
+                    inData.I_format.constraint_mode(0);
+                    inData.I_format_l.constraint_mode(1);
+                    inData.S_format.constraint_mode(0);
+                    inData.B_format.constraint_mode(0);
+                end
+            3:
+                begin
+    	            inData.R_format.constraint_mode(0);
+                    inData.I_format.constraint_mode(0);
+                    inData.I_format_l.constraint_mode(0);
+                    inData.S_format.constraint_mode(1);
+                    inData.B_format.constraint_mode(0);
+                end
+            4:
+                begin
+    	            inData.R_format.constraint_mode(0);
+                    inData.I_format.constraint_mode(0);
+                    inData.I_format_l.constraint_mode(0);
+                    inData.S_format.constraint_mode(0);
+                    inData.B_format.constraint_mode(1);
+                end
+            default:
+                begin
+                    $error("ERROR: Illegar Operation Code Randomized");
+                end
+        endcase
+        inData.randomize();
+    endtask
+
     initial begin
         sb = new(monitor);
         inData = new;
         my_cg = new;
+
         Start_Simulation = 1'b0;
-        $display("INIT random instruction generation - %0t", $time);
+        $display("INIT random instruction generation - time=%0t", $time);
 
         fd = $fopen("./fubinachi.txt","w"); 
 
-        if(fd) $display("   File was opened succesfully: %0d",fd);
+        if(fd) $display("   File was opened succesfully with Code: %0d",fd);
         else $display("     ERROR: File was NOT opened succesfully: %0d", fd);
 
-        for (i=0; i<5; i++) begin
-            inData.generar_inst();
+        $display("   Random Instructions generated");
+        for (i=0; i<12; i++) begin
+            generar_inst();
             $fdisplay(fd, "%h",inData.instr);
+            $display("      0x%h",inData.instr);
         end
 
-        $display("END random instruction generation - %0t\n", $time);
+        $fclose(fd);
+
+        $display("END random instruction generation - time=%0t\n", $time);
         Start_Simulation = 1'b1;
         repeat (2) @(posedge monitor.CLK);
-        $display("INIT verification - %0t", $time);
+        $display("INIT verification - time=%0t", $time);
 
-        repeat (2) @(posedge monitor.CLK);
+        //repeat (2) @(posedge monitor.CLK);
         fork
             sb.monitor_input();
             @(posedge monitor.CLK)
@@ -85,7 +150,7 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation);
 
         wait(monitor.cb_monitor.idata === {32{1'bx}});
         repeat (1) @(posedge monitor.CLK);
-        $display("END verification - %0t\n", $time);
+        $display("END verification - time=%0t\n", $time);
         $stop;
     end
 endprogram
