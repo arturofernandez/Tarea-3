@@ -1,7 +1,7 @@
 `include "Scoreboard.sv"
 `include "aleatorizacion.sv"
 `timescale 1ns/1ps 
-program estimulos (IF.monitor monitor, output logic Start_Simulation, output logic [31:0] inst_queue [$]);
+program estimulos (IF.monitor monitor, output logic Start_Simulation);
 
     covergroup instrucciones; 
         rformat : coverpoint({monitor.cb_monitor.idata[30],monitor.cb_monitor.idata[14:12]}) iff (monitor.cb_monitor.idata[6:0]==7'b0110011&&monitor.cb_monitor.idata[31]==1'b0&&monitor.cb_monitor.idata[29:25]==5'b0000)
@@ -40,33 +40,41 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation, output log
             bins beq = {3'b000};
             bins bne = {3'b001};
         }
-
+        /*
         illegal_format : cross  rformat, iformat, iformatl, sformat, bformat 
         {
             illegal_bins illegal_formats = !binsof(rformat) || !binsof(iformat) || !binsof(iformatl) || !binsof(sformat) || !binsof(bformat);
-        }
+        }*/
     endgroup
 
     Scoreboard sb;
     random_inst inData;
     instrucciones my_cg;
+    logic [31:0] instt_queue [$];
+    logic [31:0] inst;
+    int fd, i;
 
     initial begin
         sb = new(monitor);
         inData = new;
         my_cg = new;
         Start_Simulation = 1'b0;
-        
+        $display("INIT random instruction generation - %0t", $time);
 
-        while (my_cg.get_coverage()< 100) begin
+        fd = $fopen("./fubinachi.txt","w"); 
+
+        if(fd) $display("   File was opened succesfully: %0d",fd);
+        else $display("     ERROR: File was NOT opened succesfully: %0d", fd);
+
+        for (i=0; i<5; i++) begin
             inData.generar_inst();
-            inst_queue.push_front(inData.instr);
-            my_cg.sample();
+            $fdisplay(fd, "%h",inData.instr);
         end
-        
-        Start_Simulation = 1'b1;
 
-        $display("INICIO SIMULACION");
+        $display("END random instruction generation - %0t\n", $time);
+        Start_Simulation = 1'b1;
+        repeat (2) @(posedge monitor.CLK);
+        $display("INIT verification - %0t", $time);
 
         repeat (2) @(posedge monitor.CLK);
         fork
@@ -77,7 +85,7 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation, output log
 
         wait(monitor.cb_monitor.idata === {32{1'bx}});
         repeat (1) @(posedge monitor.CLK);
-        $display("FIN SIMULACION");
+        $display("END verification - %0t\n", $time);
         $stop;
     end
 endprogram
