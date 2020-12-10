@@ -22,7 +22,7 @@ class Scoreboard;
     endfunction
 
     /*!< Class members: */
-    logic [31:0] target, target_out, dest_data_out, inst_out;
+    logic [31:0] target, target_out, dest_data_out, inst_out, dir;
     int num_instructions = 0; // Just to know the number of instructions executed
  
     /*
@@ -36,6 +36,7 @@ class Scoreboard;
                 @(posedge mon.CLK); 
                 num_instructions++; 
                 //$display("0x%08h", mon.cb_monitor.idata);
+                dir = 0;
                 inst_queue.push_front(mon.cb_monitor.idata);              
                 case (mon.cb_monitor.idata[6:0])
                     7'b0110011: //R-format
@@ -101,7 +102,7 @@ class Scoreboard;
                             default: 
                                 begin
                                     target = 0;
-                                    $display("monitor_input didn't find instruction with op code: %0b", mon.cb_monitor.idata[6:0]);
+                                    $display("    instruction(%0d): monitor_input didn't find instruction with op code: %0b", num_instructions, mon.cb_monitor.idata[6:0]);
                                 end
                         endcase        
                     7'b0010011: //I-format
@@ -158,7 +159,7 @@ class Scoreboard;
                             default: 
                                 begin
                                     target = 0;
-                                    $display("monitor_input didn't find instruction with op code: %0b", mon.cb_monitor.idata[6:0]);
+                                    $display("    instruction(%0d): monitor_input didn't find instruction with op code: %0b", num_instructions, mon.cb_monitor.idata[6:0]);
                                 end
                         endcase
                     7'b1100011: //B-format  
@@ -184,22 +185,24 @@ class Scoreboard;
                             default: 
                                 begin
                                     target = 0;
-                                    $display("monitor_input didn't find instruction with op code: %0b", mon.cb_monitor.idata[6:0]);
+                                    $display("    instruction(%0d): monitor_input didn't find instruction with op code: %0b", num_instructions, mon.cb_monitor.idata[6:0]);
                                 end
                         endcase                    
                     7'b0000011: //Load-I-format
                         begin
-                            target = mon.cb_monitor.RAM[mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] + mon.cb_monitor.imm];
+                            dir = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] + mon.cb_monitor.imm;
+                            target = mon.cb_monitor.RAM[dir[11:2]];
                             targets_queue.push_front(target);
                             dest_queue.push_front(mon.cb_monitor.idata[11:7]);
-                            $display("    instruction(%0d): lw x%0d, %0d(x%0d) :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7], mon.cb_monitor.imm, mon.cb_monitor.idata[19:15], mon.cb_monitor.idata);
+                            $display("    instruction(%0d): lw x%0d, %0d(x%0d) :: 0x%08hh", num_instructions, mon.cb_monitor.idata[11:7], mon.cb_monitor.imm, mon.cb_monitor.idata[19:15], mon.cb_monitor.idata);
                         end
                     7'b0100011: //S-format
                         begin
                             target = mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                             targets_queue.push_front(target);
-                            dest_queue.push_front(mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] + mon.cb_monitor.imm);
-                            $display("    instruction(%0d): sw x%0d, %0d(x%0d) :: 0x%08h ", num_instructions, mon.cb_monitor.idata[24:20], mon.cb_monitor.imm, mon.cb_monitor.idata[19:15], mon.cb_monitor.idata);
+                            dir = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] + mon.cb_monitor.imm;
+                            dest_queue.push_front(dir[11:2]);
+                            $display("    instruction(%0d): sw x%0d, %0d(x%0d) :: 0x%08h", num_instructions, mon.cb_monitor.idata[24:20], mon.cb_monitor.imm, mon.cb_monitor.idata[19:15], mon.cb_monitor.idata);
                         end
                     7'b0010111: //Auipc
                         begin
@@ -215,7 +218,11 @@ class Scoreboard;
                             dest_queue.push_front(mon.cb_monitor.idata[11:7]);
                             $display("    instruction(%0d): lui x%0d, 0x%0h :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7], mon.cb_monitor.imm, mon.cb_monitor.idata);
                         end
-                    default: target = 0; 
+                    default: 
+                        begin
+                            target = 0;
+                            $display("    instruction(%0d): monitor_input didn't find instruction with op code: %0b", num_instructions, mon.cb_monitor.idata[6:0]);
+                        end
                 endcase
             end
         end

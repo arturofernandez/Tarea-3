@@ -26,7 +26,7 @@ module tb_RVI32_Core ();
     dmem #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) RAM (
         .clk(CLK), 
         .write_data(ddata_w), 
-        .addr(daddr[9:0]),
+        .addr(daddr[11:2]),
         .mem_write(d_rw), 
         .dout(ddata_r)
     );
@@ -50,7 +50,7 @@ module tb_RVI32_Core ();
 
         wait(Start_Simulation == 1'b1)
 
-        ROM.escribirROM("fubinachi.txt"); //escribimos en la memoria de instrucciones
+        ROM.escribirROM("fibonacci_adaptado.txt"); //escribimos en la memoria de instrucciones
         $display("ROM Writed - time=%0t\n", $time);
         
         CLK = 1'b0;
