@@ -32,10 +32,22 @@ initial begin
 
     repeat(4) @(posedge CLK);
 
+    $display("Test de la salida 1:");
+
     for (int i=0;i<32;i++) begin
         write(2*i+1,i,WriteData,WriteReg,RegWrite);
         read(i,ReadReg1);
         #1 $display("Registro %d: Escribo %d Leo %d",i,2*i+1,ReadData1);
+        assert ((2*i+1==ReadData1&i!=0)|(0==ReadData1&i==0)) else  $error("Error en el registro %d: se lee %d y debería leerse %d",i,ReadData1,2*i+1);
+    end
+
+    $display("Test de la salida 2:");
+
+    for (int i=0;i<32;i++) begin
+        write(4*i+1,i,WriteData,WriteReg,RegWrite);
+        read(i,ReadReg2);
+        #1 $display("Registro %d: Escribo %d Leo %d",i,4*i+1,ReadData2);
+        assert ((4*i+1==ReadData2&i!=0)|(0==ReadData2&i==0)) else  $error("Error en el registro %d: se lee %d y debería leerse %d",i,ReadData2,4*i+1);
     end
     $display("Fin Simulación");
     $stop;
