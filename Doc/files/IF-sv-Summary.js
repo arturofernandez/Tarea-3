@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("File:IF.sv","IF.sv");NDSummary.OnSummaryLoaded("File:IF.sv",[["SystemVerilog","SystemVerilog"]],[["Interfaces","Interface"]],[[24,0,0,"IF","IF"]]);

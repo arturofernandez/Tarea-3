@@ -51,7 +51,7 @@ module tb_RVI32_Core ();
 
         wait(Start_Simulation == 1'b1)
 
-        ROM.escribirROM("fubinachi.txt"); //escribimos en la memoria de instrucciones las instrucciones aleatorias generadas en estimulos.sv
+        ROM.escribirROM("./MachineCode/random_program.txt"); //escribimos en la memoria de instrucciones las instrucciones aleatorias generadas en estimulos.sv
         //ROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones del código del bubble sort
         //ROM.escribirROM("./MachineCode/fibonacci_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones del código de fibonacci para 20 ítems de la sucesión
         $display("ROM Writed - time=%0t\n", $time);

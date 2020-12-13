@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("File:Scoreboard.sv","Scoreboard.sv");NDSummary.OnSummaryLoaded("File:Scoreboard.sv",[["SystemVerilog","SystemVerilog"]],[["Classes","Class"]],[[8,0,0,"Scoreboard","Scoreboard"]]);

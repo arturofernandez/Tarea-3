@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("File:aleatorizacion.sv","aleatorizacion.sv");NDSummary.OnSummaryLoaded("File:aleatorizacion.sv",[["SystemVerilog","SystemVerilog"]],[["Classes","Class"]],[[27,0,0,"random_inst","random_inst"]]);

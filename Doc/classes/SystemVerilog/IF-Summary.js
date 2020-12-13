@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("SystemVerilogClass:IF","IF");NDSummary.OnSummaryLoaded("SystemVerilogClass:IF",[["SystemVerilog","SystemVerilog"]],[["Interfaces","Interface"]],[[24,0,0,"IF"]]);

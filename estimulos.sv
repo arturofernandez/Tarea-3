@@ -122,7 +122,7 @@ task generar_inst;
         Start_Simulation = 1'b0;
         $display("INIT random instruction generation - time=%0t", $time);
 
-        fd = $fopen("./fubinachi.txt","w"); 
+        fd = $fopen("./MachineCode/random_program.txt","w"); 
 
         if(fd) $display("   File was opened succesfully with Code: %0d",fd);
         else $display("     ERROR: File was NOT opened succesfully: %0d", fd);
@@ -144,7 +144,6 @@ task generar_inst;
         repeat (2) @(posedge monitor.CLK);
         $display("INIT verification - time=%0t", $time);
 
-        //repeat (2) @(posedge monitor.CLK);
         fork
             sb.monitor_input();
             @(posedge monitor.CLK)

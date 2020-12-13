@@ -1,1 +1,1 @@
-﻿NDMenu.OnSectionLoaded("files.js",[[1,"datapath.sv"],[1,"dmem.sv"],[1,"imem.sv"],[1,"inData.sv"],[1,"RVI32_Core.sv"],[1,"tb_RAM.sv"],[1,"tb_ROM.sv"]]);
+﻿NDMenu.OnSectionLoaded("files.js",[[1,"aleatorizacion.sv"],[2,["covhtmlreport","scripts"],"File:covhtmlreport/scripts/",[[1,"jquery.js"]]],[1,"datapath.sv"],[1,"dmem.sv"],[1,"IF.sv"],[1,"imem.sv"],[1,"inData.sv"],[1,"RVI32_Core.sv"],[1,"Scoreboard.sv"],[1,"tb_RAM.sv"],[1,"tb_ROM.sv"]]);

@@ -42,16 +42,6 @@ Comment Type: Module
       module, endmodule
 
 
-Comment Type: Interface
-
-   Plural Display Name: Interfaces
-
-   Scope: Normal
-
-   Keywords:
-      interface, endinterface
-
-
 Comment Type: Program
 
    Display Name: Program

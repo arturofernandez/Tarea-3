@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("sco",["Class"],[["Scoreboard",,[[,,,,0,"File:Scoreboard.sv:Scoreboard","SystemVerilogClass:Scoreboard"]]]]);

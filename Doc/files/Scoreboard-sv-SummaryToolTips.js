@@ -1,0 +1,1 @@
+﻿NDSummary.OnToolTipsLoaded("File:Scoreboard.sv",{8:"<div class=\"NDToolTip TClass LSystemVerilog\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype8\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">Scoreboard</div></div></div><div class=\"TTSummary\">DUT input data class.</div></div>"});

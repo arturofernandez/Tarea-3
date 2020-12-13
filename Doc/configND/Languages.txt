@@ -32,12 +32,11 @@ Language: SystemVerilog
    Task Automatic Prototype Enders: ) ;
    Function Prototype Enders: ; begin
    Class Prototype Ender: ;
-   Interface Prototype Ender: ;
+   Interface Prototype Enders: ) ;
    Macro Prototype Enders: \ \n
    Variable Prototype Ender: rand
    Module Prototype Enders: ) ;
    Program Prototype Ender: ;
-   Interface Prototype Enders: ) ;
 
 
 # These settings define the languages Natural Docs knows how to parse.  You

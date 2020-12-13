@@ -1,1 +1,1 @@
-﻿NDMenu.OnSectionLoaded("classes.js",[[1,"inData"]]);
+﻿NDMenu.OnSectionLoaded("classes.js",[[1,"IF"],[1,"inData"],[1,"random_inst"],[1,"Scoreboard"]]);

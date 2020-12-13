@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("mux",["Module"],[["muxALU",,[[,,,,0,"File:datapath.sv:muxALU"]]],["muxPC",,[[,,,,0,"File:datapath.sv:muxPC"]]],["muxtoReg",,[[,,,,0,"File:datapath.sv:muxtoReg"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("mux",["Module"],[["muxALU_A",,[[,,,,0,"File:datapath.sv:muxALU_A"]]],["muxALU_B",,[[,,,,0,"File:datapath.sv:muxALU_B"]]],["muxPC",,[[,,,,0,"File:datapath.sv:muxPC"]]],["muxtoReg",,[[,,,,0,"File:datapath.sv:muxtoReg"]]]]);

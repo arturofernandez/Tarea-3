@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("if",["Interface"],[["IF",,[[,,,,0,"File:IF.sv:IF","SystemVerilogClass:IF"]]]]);

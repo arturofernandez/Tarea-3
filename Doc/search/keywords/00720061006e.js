@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ran",["Class"],[["random_inst",,[[,,,,0,"File:aleatorizacion.sv:random_inst","SystemVerilogClass:random_inst"]]]]);

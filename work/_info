@@ -28,42 +28,42 @@ r1
 I><HzNh?ge;S^4?[VAKchO0
 Z3 !s105 datapath_sv_unit
 S1
-Z4 dC:/Users/Nciosda/OneDrive - UPV/3o Teleco/ISDIGI/Tarea3Repo/Tarea-3
-Z5 w1607883262
-Z6 8datapath.sv
-Z7 Fdatapath.sv
+R0
+Z4 w1607425827
+Z5 8datapath.sv
+Z6 Fdatapath.sv
 L0 239
-Z8 OL;L;10.4;61
-Z9 !s108 1607885629.546000
-Z10 !s107 datapath.sv|
-Z11 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|datapath.sv|
+Z7 OL;L;10.4;61
+Z8 !s108 1607895469.429000
+Z9 !s107 datapath.sv|
+Z10 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|datapath.sv|
 !i113 0
-Z12 !s102 -cover sbcet3
-Z13 o-work work -sv -cover sbcet3 -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z11 !s102 -cover sbcet3
+Z12 o-work work -sv -cover sbcet3 -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
 Xaleatorizacion_sv_unit
 R1
-!s110 1607885629
+!s110 1607895468
 !i10b 1
 !s100 z53YP[=l0z5TjMcknd[520
 IC=JVUXABB2c:=OJh4Y>fE1
 VC=JVUXABB2c:=OJh4Y>fE1
 !i103 1
 S1
-R4
-w1607884623
+R0
+Z13 w1607891193
 8aleatorizacion.sv
 Z14 Faleatorizacion.sv
 L0 9
-R8
+R7
 r1
 !s85 0
 31
-!s108 1607885628.990000
+!s108 1607895468.502000
 !s107 aleatorizacion.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|aleatorizacion.sv|
 !i113 0
+R11
 R12
-R13
 vALU
 R1
 R2
@@ -75,18 +75,18 @@ r1
 I0RV]:;7>[Gd1daIi4Xc:`2
 !s105 ALU_sv_unit
 S1
-R4
-w1607858302
+R0
+R13
 8ALU.sv
 FALU.sv
 Z15 L0 10
-R8
-!s108 1607885629.174000
+R7
+!s108 1607895468.844000
 !s107 ALU.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|ALU.sv|
 !i113 0
+R11
 R12
-R13
 n@a@l@u
 vALU_Control
 R1
@@ -99,18 +99,18 @@ r1
 IB_HTA4Zjn1Zdn@TPkGWQV2
 !s105 ALU_Control_sv_unit
 S1
-R4
-Z16 w1607857144
+R0
+Z16 w1607891191
 8ALU_Control.sv
 FALU_Control.sv
 L0 1
-R8
-!s108 1607885629.085000
+R7
+!s108 1607895468.678000
 !s107 ALU_Control.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|ALU_Control.sv|
 !i113 0
+R11
 R12
-R13
 n@a@l@u_@control
 vbanco_registros
 R1
@@ -123,18 +123,18 @@ r1
 IMn0O:5`Z115n4XU`:g[9Y0
 !s105 banco_registros_sv_unit
 S1
-R4
-w1607881912
+R0
+w1606476232
 8banco_registros.sv
 Fbanco_registros.sv
 L0 1
-R8
-!s108 1607885629.272000
+R7
+!s108 1607895469.025000
 !s107 banco_registros.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|banco_registros.sv|
 !i113 0
+R11
 R12
-R13
 vControl
 R1
 R2
@@ -146,18 +146,18 @@ r1
 IZTBKYi[QKJ1C[hJ_IFW<o3
 !s105 Control_sv_unit
 S1
-R4
+R0
 R16
 8Control.sv
 FControl.sv
 L0 1
-R8
-!s108 1607885629.360000
+R7
+!s108 1607895469.201000
 !s107 Control.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|Control.sv|
 !i113 0
+R11
 R12
-R13
 n@control
 vControlpath
 R1
@@ -170,18 +170,18 @@ r1
 I22e<GmYD0LN9KG2a_G1zY2
 !s105 Controlpath_sv_unit
 S1
-R4
-R5
+R0
+R16
 8Controlpath.sv
 FControlpath.sv
 L0 1
-R8
-!s108 1607885629.454000
+R7
+!s108 1607895469.326000
 !s107 Controlpath.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|Controlpath.sv|
 !i113 0
+R11
 R12
-R13
 n@controlpath
 vdatapath
 R1
@@ -194,18 +194,18 @@ r1
 IRMHLmo=hVdY:bVL1ocQ;c0
 R3
 S1
+R0
 R4
 R5
 R6
-R7
 L0 25
+R7
 R8
 R9
 R10
-R11
 !i113 0
+R11
 R12
-R13
 vdmem
 R1
 R2
@@ -217,18 +217,18 @@ r1
 INh8_nAWlNXQWOa<RNCY@D1
 !s105 dmem_sv_unit
 S1
-R4
-w1607883261
+R0
+R13
 8dmem.sv
 Fdmem.sv
 L0 18
-R8
-!s108 1607885629.653000
+R7
+!s108 1607895469.555000
 !s107 dmem.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|dmem.sv|
 !i113 0
+R11
 R12
-R13
 4estimulos
 R1
 DXx4 work 17 estimulos_sv_unit 0 22 i<=0RjSG8M;h=R_>05nWn3
@@ -237,22 +237,22 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 4908;9mOo8LnBXTW@F?Qi2
-IBBZio@S@RY1GJS5:HB^Jh2
+!s100 7g;1TEWoQagandFdMPmjT2
+IlOMMZ8S^fY_aLb8L6OH5b2
 !s105 estimulos_sv_unit
 S1
-R4
-Z17 w1607885272
+R0
+Z17 w1607895447
 Z18 8estimulos.sv
 Z19 Festimulos.sv
 L0 4
-R8
-Z20 !s108 1607885629.750000
+R7
+Z20 !s108 1607895469.691000
 Z21 !s107 aleatorizacion.sv|Scoreboard.sv|estimulos.sv|
 Z22 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|estimulos.sv|
 !i113 0
+R11
 R12
-R13
 Xestimulos_sv_unit
 R1
 Vi<=0RjSG8M;h=R_>05nWn3
@@ -264,20 +264,20 @@ r1
 Ii<=0RjSG8M;h=R_>05nWn3
 !i103 1
 S1
-R4
+R0
 R17
 R18
 R19
 Z23 FScoreboard.sv
 R14
 Z24 L0 11
-R8
+R7
 R20
 R21
 R22
 !i113 0
+R11
 R12
-R13
 YIF
 R1
 R2
@@ -289,18 +289,18 @@ r1
 IXHlKE6R9F@VDi3fgkYL@B2
 !s105 IF_sv_unit
 S1
-R4
-w1607883263
+R0
+w1607383365
 8IF.sv
 FIF.sv
 R24
-R8
-!s108 1607885629.919000
+R7
+!s108 1607895469.833000
 !s107 IF.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|IF.sv|
 !i113 0
+R11
 R12
-R13
 n@i@f
 vimem
 R1
@@ -313,18 +313,18 @@ r1
 I7UGSHW42]@0=U[7M29b6_1
 !s105 imem_sv_unit
 S1
-R4
-R16
+R0
+w1606953960
 8imem.sv
 Fimem.sv
 L0 12
-R8
-!s108 1607885630.017000
+R7
+!s108 1607895470.089000
 !s107 imem.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|imem.sv|
 !i113 0
+R11
 R12
-R13
 vImmGen
 R1
 R2
@@ -336,18 +336,18 @@ r1
 I^NgRWS<CLH`4N22JgiC5E2
 R3
 S1
+R0
 R4
 R5
 R6
-R7
 L0 177
+R7
 R8
 R9
 R10
-R11
 !i113 0
+R11
 R12
-R13
 n@imm@gen
 vMUX
 R1
@@ -360,18 +360,18 @@ r1
 IY;TIFYz_V8MCIE^7Ff7Bc1
 R3
 S1
+R0
 R4
 R5
 R6
-R7
 L0 214
+R7
 R8
 R9
 R10
-R11
 !i113 0
+R11
 R12
-R13
 n@m@u@x
 vMUX3
 R1
@@ -384,18 +384,18 @@ r1
 I7zfHTTaKkf^Q`hL7z:Beh1
 R3
 S1
+R0
 R4
 R5
 R6
-R7
 L0 223
+R7
 R8
 R9
 R10
-R11
 !i113 0
+R11
 R12
-R13
 n@m@u@x3
 vregister
 R1
@@ -408,18 +408,18 @@ r1
 I7ViFI=2;7SNN4cm8z:L7B1
 R3
 S1
+R0
 R4
 R5
 R6
-R7
 L0 201
+R7
 R8
 R9
 R10
-R11
 !i113 0
+R11
 R12
-R13
 vRVI32_Core
 R1
 R2
@@ -431,43 +431,43 @@ r1
 IO7YY0kDbB`;RSGecn^8eG1
 !s105 RVI32_Core_sv_unit
 S1
-R4
-R16
+R0
+w1607500787
 8RVI32_Core.sv
 FRVI32_Core.sv
 L0 17
-R8
-!s108 1607885630.180000
+R7
+!s108 1607895470.274000
 !s107 RVI32_Core.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|RVI32_Core.sv|
 !i113 0
+R11
 R12
-R13
 n@r@v@i32_@core
 XScoreboard_sv_unit
 R1
-!s110 1607885630
+!s110 1607895470
 !i10b 1
 !s100 8MHW<WBDSXjCi:oE:5<HJ0
 I]eBF0T<n3mfjTI:J2AG2A0
 V]eBF0T<n3mfjTI:J2AG2A0
 !i103 1
 S1
-R4
-w1607881910
+R0
+R13
 8Scoreboard.sv
 R23
 R24
-R8
+R7
 r1
 !s85 0
 31
-!s108 1607885630.271000
+!s108 1607895470.414000
 !s107 Scoreboard.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|Scoreboard.sv|
 !i113 0
+R11
 R12
-R13
 n@scoreboard_sv_unit
 vtb_ROM
 R1
@@ -486,13 +486,13 @@ Z25 w1605977817
 Z26 8tb_ROM.sv
 Z27 Ftb_ROM.sv
 L0 20
-R8
+R7
 Z28 !s108 1606384458.630000
 Z29 !s107 tb_ROM.sv|
 Z30 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|tb_ROM.sv|
 !i113 0
+R11
 R12
-R13
 ntb_@r@o@m
 Xtb_ROM_sv_unit
 R1
@@ -510,13 +510,13 @@ R25
 R26
 R27
 R15
-R8
+R7
 R28
 R29
 R30
 !i113 0
+R11
 R12
-R13
 ntb_@r@o@m_sv_unit
 vtb_RVI32_Core
 R1
@@ -525,20 +525,20 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 feY6<zlXeUB`06MjE?WLR0
-ICa]XaLm860@3V:Q5;^S@B3
+!s100 A7<_RFT><=kE9kPa^od`U3
+IJoZa3ZfTK]P1f>bWO^M=?3
 !s105 tb_RVI32_Core_sv_unit
 S1
-R4
-w1607885592
+R0
+w1607895456
 8tb_RVI32_Core.sv
 Ftb_RVI32_Core.sv
 L0 3
-R8
-!s108 1607885630.366000
+R7
+!s108 1607895470.526000
 !s107 tb_RVI32_Core.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|tb_RVI32_Core.sv|
 !i113 0
+R11
 R12
-R13
 ntb_@r@v@i32_@core

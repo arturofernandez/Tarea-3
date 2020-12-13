@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("$",["Variable"],[["$",,[["$(html) "," $",,"$",0,"File:covhtmlreport/scripts/jquery.js:$(html)->$"],[,,,,0,"File:covhtmlreport/scripts/jquery.js:$"]]]]);
