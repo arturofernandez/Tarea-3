@@ -33,17 +33,17 @@ always_comb begin
 			begin               
 				auxSLT = op1-op2;      
             	if (auxSLT[31] == 1'b1)  
-					ALU_result = 0;
+					ALU_result = 1;
             	else
-               		ALU_result = 1;
+               		ALU_result = 0;
 			end             
 		4'b0011:  //SLTU                                      
 			begin
 				auxSLT = 0;
 				if(op1<op2)
-					ALU_result = 0;
-            	else
 					ALU_result = 1;
+            	else
+					ALU_result = 0;
          	end
       4'b0100:  //AND
 			begin

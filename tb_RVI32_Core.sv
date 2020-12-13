@@ -50,7 +50,7 @@ module tb_RVI32_Core ();
 
         wait(Start_Simulation == 1'b1)
 
-        ROM.escribirROM("fibonacci_adaptado.txt"); //escribimos en la memoria de instrucciones
+        ROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones
         $display("ROM Writed - time=%0t\n", $time);
         
         CLK = 1'b0;

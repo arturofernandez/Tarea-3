@@ -1,0 +1,55 @@
+.data
+#metemos en memoria la serie numerica
+num1: .word 6
+num2: .word 9
+num3: .word 3
+num4: .word 1
+numelementos: .word 4
+
+.text
+add x2,x0,x0
+addi x1,x0,6
+sw x1,num1(x2) 
+add x2,x0,x0
+addi x1,x0,9
+sw x1,num2(x2)
+add x2,x0,x0
+addi x1,x0,3
+sw x1,num3(x2)
+add x2,x0,x0
+addi x1,x0,1
+sw x1,num4(x2)
+add x2,x0,x0
+addi x1,x0,4
+sw x1,numelementos(x2)
+
+#bucles
+addi t3,x0,1 #guardamos en t3 la i, inicializada a 1 
+addi t4,x0,1 #guardamos en t4 la j, inicializada a 1 porque nosotros no necesitamos la j para mirar la posicon en la lista
+
+loopi:
+la t1,numelementos
+lw t2,0(t1) #guardamos en t2 el Nelementos, de este modo podemos usar t2 y t1 para cargar los valores de memoria en el bucle
+beq t3,t2,done #cuando i=N acaba
+addi t3,t3,1 #i++
+la t1,num1 #guardamos en t1 la posicion del primer elemento de la serie numerica
+loopj:
+la t5,numelementos
+lw t2,0(t5) #guardamos en t2 el Nelementos y no alteramos t1 que debe ser fija durante todo el bucle j
+beq t4,t2,done2 #cuando j=Nelementos acaba
+addi t4,t4,1 #j++
+lw t2,0(t1) #cogemos el valor de lista[j]
+lw t5,4(t1) #cogemos el valor de lista[j+1]
+#bge t5,t2,done3
+slt x1,t5,t2
+beq x1,x0,done3
+add t6,x0,t2 #temp = lista[j]
+sw t5,0(t1) #lista[j] = lista[j+1]
+sw t6,4(t1) #lista[j+1] = temp
+done3:
+addi t1,t1,4
+beq x0,x0,loopj
+done2:
+addi t4,x0,1
+beq x0,x0,loopi
+done:

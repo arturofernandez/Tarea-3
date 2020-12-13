@@ -60,9 +60,9 @@ class Scoreboard;
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] - mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]];
                                     if (target[31] === 1'b1)
-                                        target = 0;
+                                        target = 1;
                                     else
-                                       target = 1;
+                                       target = 0;
                                     targets_queue.push_front(target);
                                    dest_queue.push_front(mon.cb_monitor.idata[11:7]);
                                     $display("    instruction(%0d): slt x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
@@ -70,9 +70,9 @@ class Scoreboard;
                             4'b0011: //SLTU
                                 begin
                                     if (mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] < mon.cb_monitor.Regs[mon.cb_monitor.idata[24:20]])
-                                        target = 0;
-                                    else
                                         target = 1;
+                                    else
+                                        target = 0;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
                                     $display("    instruction(%0d): sltu x%0d, x%0d,x%0d :: 0x%08h", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.idata[24:20], mon.cb_monitor.idata);
@@ -118,9 +118,9 @@ class Scoreboard;
                                 begin
                                     target = mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] - mon.cb_monitor.imm;
                                     if (target[31] === 1'b1)
-                                        target = 0;
+                                        target = 1;
                                     else
-                                       target = 1;
+                                       target = 0;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
                                     $display("    instruction(%0d): slti x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
@@ -128,9 +128,9 @@ class Scoreboard;
                             3'b011: //SLTIU
                                 begin
                                     if (mon.cb_monitor.Regs[mon.cb_monitor.idata[19:15]] < mon.cb_monitor.imm)
-                                        target = 0;
-                                    else
                                         target = 1;
+                                    else
+                                        target = 0;
                                     targets_queue.push_front(target);
                                     dest_queue.push_front(mon.cb_monitor.idata[11:7]);
                                     $display("    instruction(%0d): sltiu x%0d, x%0d,%0d :: 0x%08h ", num_instructions, mon.cb_monitor.idata[11:7],mon.cb_monitor.idata[19:15], mon.cb_monitor.imm, mon.cb_monitor.idata);
