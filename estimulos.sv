@@ -128,12 +128,15 @@ task generar_inst;
         else $display("     ERROR: File was NOT opened succesfully: %0d", fd);
 
         $display("   Random Instructions generated");
-        for (i=0; i<12; i++) begin
+
+        $fdisplay(fd, "%h",32'h00000263);
+        $fdisplay(fd, "%h",32'h00001063);
+        for (i=0; i<1000; i++) begin
             generar_inst();
             $fdisplay(fd, "%h",inData.instr);
             $display("      0x%h",inData.instr);
         end
-
+        
         $fclose(fd);
 
         $display("END random instruction generation - time=%0t\n", $time);
@@ -148,7 +151,11 @@ task generar_inst;
             sb.monitor_output();
         join_none  
 
-        wait(monitor.cb_monitor.idata === {32{1'bx}});
+        while(monitor.cb_monitor.idata !== {32{1'bx}})
+        begin
+            @(posedge monitor.CLK) my_cg.sample();
+        end
+        
         repeat (1) @(posedge monitor.CLK);
         $display("END verification - time=%0t\n", $time);
         $stop;

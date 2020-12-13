@@ -13,16 +13,16 @@ class random_inst;
     //enum logic [6:0] {R_format==7'b0110011, I_format==7'b0010011, I_format_l==7'b0000011, S_format==7'b0100011, B_format==7'b1100011} opcodes;
 
     //Generates a random operation code of the instruction form a finite range
-    constraint opcode_const {opcode inside {[0:3]}; }
+    constraint opcode_const {opcode inside {[0:3]}; } //no añadimos la opción de las B_format para evitar saltos erróneos por casualidad
 
     // Con esta primera constraint nos quitamos sra y srl
-    constraint R_format {instr[6:0]==7'b0110011 && instr[14:12]!=3'b101 && instr[14:12]!=3'b001;}
+    constraint R_format {instr[6:0]==7'b0110011 && instr[11:7]!=4'b0000 && instr[14:12]!=3'b101 && instr[14:12]!=3'b001;}
     constraint R_format_a {(instr[6:0]==7'b0110011 && instr[14:12]!=3'b000) -> instr[31:25]==7'b0000000;}
     constraint R_format_b {(instr[6:0]==7'b0110011 && instr[14:12]==3'b000) -> instr[31:25]==7'b0000000 || instr[31:25]==7'b0100000;}
     // Con esta nos quitamos slli srli srai
-    constraint I_format {instr[6:0] == 7'b0010011 && instr[14:12]!=3'b001 && instr[14:12]!=3'b101;}
+    constraint I_format {instr[6:0] == 7'b0010011 && instr[11:7]!=4'b0000 && instr[14:12]!=3'b001 && instr[14:12]!=3'b101;}
     // Solo se permite la instruccion de load lw
-    constraint I_format_l {instr[6:0] == 7'b0000011 && instr[14:12]==3'b011 && instr[31:28]==4'b0000;} //limited to 1024
+    constraint I_format_l {instr[6:0] == 7'b0000011 && instr [11:7]!=4'b0000 && instr[14:12]==3'b011 && instr[31:28]==4'b0000;} //limited to 1024
     // Solo se permite la instruccion de store sw
     constraint S_format {instr[6:0] == 7'b0100011 && instr[14:12]==3'b010 && instr[31:28]==4'b0000;} //limited to 1024
     // Solo se permite BEQ y BNE

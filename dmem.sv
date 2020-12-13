@@ -15,8 +15,9 @@
  *  mem0_dr - Read data output.
 */
 
-module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, write_data, addr, mem_write, dout);
+module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, RESET, write_data, addr, mem_write, dout);
     input clk;
+    input RESET;
     input [DATA_WIDTH-1:0]  write_data; 
     input [$clog2(MEM_DEPTH)-1:0] addr; 
     input mem_write; 
@@ -25,9 +26,16 @@ module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, write
     logic [DATA_WIDTH-1:0] DMEM [0:MEM_DEPTH-1]; //packed and unpacked array
 
     // Synchronous Write:
-    always_ff @(posedge clk) begin
-    if (mem_write == 1'b1) 
-            DMEM[addr]<=write_data;
+    always_ff @(posedge clk or negedge RESET) 
+    begin
+        if(!RESET)
+            for (int i = 0; i < MEM_DEPTH; i++)
+            DMEM[i] <= 32'hffffffff;          
+        else
+        begin
+            if (mem_write == 1'b1) 
+                    DMEM[addr]<=write_data;
+        end
     end
 
     // Asynchronous Read:
