@@ -16,12 +16,22 @@ wire [2:0] ALUOp;
 // assign PCSrc = Branch & Zero;
 
 always_comb begin
-    if (Branch) 
-        begin
-            if ((Instruction[14:12] == 3'b000 && Zero) || (Instruction[14:12] == 3'b001 && !Zero)) //beq y bne
-                PCSrc = 1'b1;
-            else 
-                PCSrc = 1'b0;
+            case (Instruction[14:12])
+                3'b000:begin //BEQ
+                    if (Zero)
+                        PCSrc = 1'b1;
+                    else
+                        PCSrc = 1'b0;
+                3'b001:begin //BNE
+                    if (!Zero)
+                        PCSrc = 1'b1;
+                    else
+                        PCSrc = 1'b0;
+                3'b100:begin //BLT
+                    if (op1<op2)
+
+                end
+            endcase
         end
     else 
         PCSrc = 1'b0;

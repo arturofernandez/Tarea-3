@@ -60,6 +60,22 @@ always_comb begin
 				ALU_result = op1 ^ op2;
 				auxSLT = 0;
 			end
+		4'b0111: //SRL (Shift right logical)
+		    begin
+				ALU_result = op1>>op2;
+				auxSLT = 0;
+			end
+		4'b1000: //SLL (Shift left logical)
+			begin
+				ALU_result = op1<<op2;
+				auxSLT = 0;
+			end 
+		4'b1001: //SRA (Shift right arithmetic)
+			begin
+				ALU_result = op1>>>op2; // Shift Right Arithmetic Operator (keep sign)
+				auxSLT = 0;
+			end
+					
 		default: begin ALU_result = 0; auxSLT = 0; end
 	endcase
 end

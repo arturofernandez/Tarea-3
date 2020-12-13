@@ -97,6 +97,8 @@ begin
             AuipcLui = 2'b01;
         end
 
+        7'b1101111: //Instrucciones UJ (JAL)
+        begi
         default: 
         begin
             Branch = 1'b0;
