@@ -1,0 +1,62 @@
+
+.data
+cero: .word 4
+uno: .word 4
+N: .word 0x4 
+fib: .word 0x4 #aquí da igual lo que pongamos porque luego lo sustituimos, solo lo queremos para el nombre de los inmediatos en el venus 
+
+.text
+add x2,x0,x0
+sw x0,cero(x2) #como hemos dicho antes, usamos "cero" como inmediato por su posición en la memoria para que en en nuestro Core dirija los datos como en el Venus
+add x2,x0,x0
+addi x1,x0,1
+sw x1,uno(x2)
+add x2,x0,x0
+addi x1,x0,20
+sw x1,N(x2)
+add x2,x0,x0
+sw x0,fib(x2)
+
+la t1,cero #move 0,fib(0)
+lw t2,0(t1)
+la t3,fib
+sw t2,0(t3)
+
+addi a0,x0,1
+add a1,x0,t2
+ecall
+addi a0,x0,11
+addi a1,x0,13
+ecall
+
+la t1,uno #move 1,fib(1)
+lw t2,0(t1)
+sw t2,4(t3) 
+
+addi a0,x0,1
+add a1,x0,t2
+ecall
+addi a0,x0,11
+addi a1,x0,13
+ecall
+
+la t6,N #guardo la posicion de N en t1
+lw t1,0(t6) # guardo el VALOR de N en t1
+addi t2,x0,2 # guardo i = 2(minimo valor de N) en t2
+
+loop:
+beq  t2,t1,done # si N = i acaba
+addi t2,t2,1
+lw t4,0(t3)
+lw t5,4(t3)
+add t4,t4,t5
+sw t4,8(t3)
+addi a0,x0,1
+add a1,x0,t4
+ecall
+addi a0,x0,11
+addi a1,x0,13
+ecall
+addi t3,t3,4
+beq x0,x0,loop
+done:
