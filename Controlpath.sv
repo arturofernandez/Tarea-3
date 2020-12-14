@@ -21,21 +21,39 @@ module Controlpath (
     always_comb begin
         case (Instruction_MEM[14:12])
             3'b000:begin //BEQ
-                if (Zero_MEM)
+                if (Zero_MEM) //la codificamos como una SUB
                     PCSrc = 1'b1;
                 else
                     PCSrc = 1'b0;
             end
             3'b001:begin //BNE
-                if (!Zero_MEM)
+                if (!Zero_MEM) //la codificamos como una SUB
                     PCSrc = 1'b1;
                 else
                     PCSrc = 1'b0;
             end
             3'b100:begin //BLT
-                if (op1<op2)
-                    PCSrc = ;
+                if (!Zero_MEM) //la codificamos como una SLT
+                    PCSrc = 1'b1;
                 else 
+                    PCSrc = 1'b0;
+            end
+            3'b101:begin //BGE
+                if (Zero_MEM) //la codificamos como una SLT
+                    PCSrc = 1'b1;
+                else
+                    PCSrc = 1'b0;
+            end
+            3'b110:begin //BLTU
+                if (!Zero_MEM) //la codificamos como una SLTU
+                    PCSrc = 1'b1;
+                else
+                    PCSrc = 1'b0;
+            end
+            3'b111:begin //BGEU
+                if (Zero_MEM) //la codificamos como una SLTU
+                    PCSrc = 1'b1;
+                else
                     PCSrc = 1'b0;
             end
         endcase

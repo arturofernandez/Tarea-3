@@ -46,6 +46,23 @@ case (ALUOp)
         endcase
     end
     3'b010: Operation = 4'b0001; //Instrucciones B-format
+    begin
+        case (Instruction[2:0]) // El funct3
+            3'b000: //BEQ
+                Operation = 4'b0001; //SUB
+            3'b001: //BNE
+                Operation = 4'b0001; //SUB
+            3'b100: //BLT
+                Operation = 4'b0010; //SLT
+            3'b101: //BGE
+                Operation = 4'b0010; //SLT
+            3'b110: //BLTU
+                Operation = 4'b0011; //SLTU
+            3'b111: //BGEU
+                Operation = 4'b0011; //SLTU
+            default: Operation =
+        endcase
+    end
     3'b011: Operation = 4'b0000; //Load-I format y S-format
     3'b100: Operation = 4'b0000; //U-format
 
