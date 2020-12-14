@@ -28,10 +28,14 @@ module datapath
     input [1:0] AuipcLui,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
-    output [31:0] current_PC, ALU_result, Read_data2,
-    output Zero
+    output logic [31:0] current_PC, ALU_result_MEM, Read_data2_MEM,
+    output logic Zero
 );
     logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1, ALU_A;
+    logic [31:0] Instruction_ID, current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, Read_data2_EX;
+    logic [31:0] Read_data1_EX, ALU_result_WB, Read_data_WB, Instruction_EX, Instruction_MEM, Instruction_WB;
+    logic [31:0] Read_data2_MEM;
+
     /*
     * Module: ALU
     *    Main RISC-V Arithmetic Logic Unit 
@@ -63,7 +67,7 @@ module datapath
     *   ReadData1 - data on register 1
     *   ReadData2 - data on register 2.
     */
-    banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
+    banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction_ID[19:15]), .ReadReg2(Instruction_ID[24:20]), .WriteReg(Instruction_WB[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
     /*
     * Module: ImmGen
@@ -75,7 +79,7 @@ module datapath
     * Outputs:
     *   Immediate 
     */
-    ImmGen ImmGen (.Instruction(Instruction), .Immediate(Immediate));
+    ImmGen ImmGen (.Instruction(Instruction_ID), .Immediate(Immediate));
 
     /*
     * Module: PC
@@ -114,7 +118,7 @@ module datapath
     * Outputs:
     *   effective_addr - current_PC + Immediate * 4. 
     */
-    adder #(.size(32)) adder2 (.a(current_PC), .b(Immediate), .res(effective_addr));
+    adder #(.size(32)) adder2 (.a(current_PC_EX), .b(Immediate_EX), .res(effective_addr));
 
     /*
     * Module: muxPC
@@ -128,7 +132,7 @@ module datapath
     * Outputs:
     *   next_PC - Next Instruction Address to be loaded into PC Register. 
     */
-    MUX #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
+    MUX #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr_MEM), .select(PCSrc), .res(next_PC));
 
     /*
     * Module: muxALU_B
@@ -142,22 +146,8 @@ module datapath
     * Outputs:
     *   ALU_B -  ALU Second Operand. 
     */
-    MUX #(.size(32)) muxALU_B (.a(Read_data2), .b(Immediate), .select(ALUSrc), .res(ALU_B));
-
-    /*
-    * Module: muxtoReg
-    *    Selects the type of operand of the Bank of Registers input data (ALU_Result or Read_data).
-    *
-    * Inputs:
-    *   ALU_result -  ALU output.
-    *   Read_data -  RAM output (DMEM output).
-    *   MemtoReg -  Control signal.
-    *
-    * Outputs:
-    *   Write_data_reg -  Register input data (Bank of registers input). 
-    */
-    MUX #(.size(32)) muxtoReg (.a(ALU_result), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
-
+    MUX #(.size(32)) muxALU_B (.a(Read_data2_EX), .b(Immediate_EX), .select(ALUSrc), .res(ALU_B));
+    
     /*
     * Module: muxALU_A
     *    Selects the type of operand of the ALUs first operand (pc, zeros or register).
@@ -171,7 +161,44 @@ module datapath
     * Outputs:
     *   ALU_A -  ALU First Operand. 
     */
-    MUX3 #(.size(32)) muxALU_A (.a(current_PC), .b({32{1'b0}}), .c(Read_data1), .select(AuipcLui), .res(ALU_A));
+    MUX3 #(.size(32)) muxALU_A (.a(current_PC_EX), .b({32{1'b0}}), .c(Read_data1_EX), .select(AuipcLui), .res(ALU_A));
+    
+    /*
+    * Module: muxtoReg
+    *    Selects the type of operand of the Bank of Registers input data (ALU_Result or Read_data).
+    *
+    * Inputs:
+    *   ALU_result -  ALU output.
+    *   Read_data -  RAM output (DMEM output).
+    *   MemtoReg -  Control signal.
+    *
+    * Outputs:
+    *   Write_data_reg -  Register input data (Bank of registers input). 
+    */
+    MUX #(.size(32)) muxtoReg (.a(ALU_result_WB), .b(Read_data_WB), .select(MemtoReg), .res(Write_data_reg));
+
+    always_ff @(posedge CLK)
+        begin
+            //IF-ID
+            Instruction_ID <= Instruction;
+            current_PC_ID <= current_PC;
+            //ID-EX
+            Instruction_EX <= Instruction_ID;
+            current_PC_EX <= current_PC_ID;
+            Read_data1_EX <= Read_data1;
+            Read_data2_EX <= Read_data2;
+            Immediate_EX <= Immediate;
+            //EX_MEM
+            Instruction_MEM <= Instruction_EX;
+            effective_addr_MEM <= effective_addr;
+            ALU_result_MEM <= ALU_result;
+            Read_data2_MEM <= Read_data2_EX;
+            //MEM-WB
+            Instruction_WB <= Instruction_MEM;
+            Read_data_WB <= Read_data;
+            ALU_result_WB <= ALU_result_MEM;
+        end
+
 endmodule:datapath
 
 module ImmGen 

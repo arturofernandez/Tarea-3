@@ -49,13 +49,14 @@ module RVI32_Core (
         .Read_data(ddata_r),
         .ALU_operation(Operation),
         .current_PC(iaddr), 
-        .ALU_result(daddr), 
-        .Read_data2(ddata_w),
+        .ALU_result_MEM(daddr), 
+        .Read_data2_MEM(ddata_w),
         .Zero(Zero),
         .AuipcLui(AuipcLui)
     );
 
-// Asserts: RTL Asserts
+
+    // Asserts: RTL Asserts
     R_format:assert property (@(posedge CLK) idata[6:0] == 7'b0110011 |-> PCSrc == 1'b0 && ALUSrc == 1'b0 && MemtoReg == 1'b0) else $error("R_format no funciona");
     I_format:assert property (@(posedge CLK) idata[6:0] == 7'b0010011 |-> PCSrc == 1'b0 && ALUSrc == 1'b1 && MemtoReg == 1'b0) else $error("I_format no funciona");
     Load_I_format:assert property (@(posedge CLK) idata[6:0] == 7'b0000011 |-> PCSrc == 1'b0 && ALUSrc == 1'b1 && MemtoReg == 1'b1) else $error("Load_I_format no funciona");
