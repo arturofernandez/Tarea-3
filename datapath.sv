@@ -24,8 +24,8 @@
 */
 module datapath 
 (
-    input clock, reset, ALUSrc ,MemtoReg, PCSrc, RegWrite, 
-    input [1:0] AuipcLui,
+    input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, 
+    input [1:0] AuipcLui, PCSrc,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
     output logic [31:0] current_PC, ALU_result_MEM, Read_data2_MEM,
@@ -33,7 +33,7 @@ module datapath
 );
     logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1, ALU_A;
     logic [31:0] current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, Read_data2_MEM, ALU_result_WB;
-    logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB;
+    logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB, sum_adder1_ID, sum_adder1_EX, sum_adder1_MEM, sum_adder1_WB;
 
     /*
     * Module: ALU
@@ -66,7 +66,7 @@ module datapath
     *   ReadData1 - data on register 1
     *   ReadData2 - data on register 2.
     */
-    banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction_WB[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
+    banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction_WB[11:7]), .WriteData(Write_data_reg2), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
     /*
     * Module: ImmGen
@@ -131,7 +131,7 @@ module datapath
     * Outputs:
     *   next_PC - Next Instruction Address to be loaded into PC Register. 
     */
-    MUX #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr_MEM), .select(PCSrc), .res(next_PC));
+    MUX3 #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr_MEM), .c(ALU_result_MEM), .select(PCSrc), .res(next_PC));
 
     /*
     * Module: muxALU_B
@@ -176,22 +176,28 @@ module datapath
     */
     MUX #(.size(32)) muxtoReg (.a(ALU_result_WB), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
 
+    MUX #(.size(32)) muxtoReg2 (.a(Write_data_reg), .b(sum_adder1_WB), .select(Jump_RD), .res(Write_data_reg2));
+
     always_ff @(posedge CLK)
         begin
             //IF-ID
             current_PC_ID <= current_PC;
+            sum_adder1_ID <= sum_adder1;
             //ID-EX
             Instruction_EX <= Instruction;
             current_PC_EX <= current_PC_ID;
             Immediate_EX <= Immediate;
+            sum_adder1_EX <= sum_adder1_ID;
             //EX_MEM
             Instruction_MEM <= Instruction_EX;
             effective_addr_MEM <= effective_addr;
             ALU_result_MEM <= ALU_result;
             Read_data2_MEM <= Read_data2;
+            sum_adder1_MEM <= sum_adder1_EX;
             //MEM-WB
             Instruction_WB <= Instruction_MEM;
             ALU_result_WB <= ALU_result_MEM;
+            sum_adder1_WB <= sum_adder1_MEM;
         end
 
 endmodule:datapath
@@ -215,6 +221,10 @@ always_comb begin
             Immediate = {Instruction[31:12], {12{1'b0}}};
         7'b0110111: //U-Format (LUI)
             Immediate = {Instruction[31:12], {12{1'b0}}};
+        7'b1101111: //UJ-Format (JAL)
+            Immediate = {{11{Instruction[31]}},Instruction[19:12],Instruction[20],Instruction[30:21],1'b0};
+        7'b1100111: //UJ-Format (JALR)
+            Immediate = {{20{Instruction[31]}},Instruction[31:20]};
         default: Immediate = {32{1'b0}};   
     endcase
 end

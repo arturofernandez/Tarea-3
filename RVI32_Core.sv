@@ -21,9 +21,9 @@ module RVI32_Core (
     output logic d_rw 
 );
     // Conections:
-    logic ALUSrc, MemtoReg, PCSrc, RegWrite, Zero;
+    logic ALUSrc, MemtoReg, RegWrite, Zero, Jump_RD;
     logic [3:0] Operation;
-    logic [1:0] AuipcLui;
+    logic [1:0] AuipcLui, PCSrc;
     
     Controlpath Controlpath ( 
         .Instruction(idata),
@@ -35,7 +35,8 @@ module RVI32_Core (
         .RegWrite(RegWrite),
         .Operation(Operation),
         .PCSrc(PCSrc),
-        .AuipcLui(AuipcLui)
+        .AuipcLui(AuipcLui),
+        .Jump(Jump_RD)
     );
 
     datapath datapath (
@@ -52,7 +53,8 @@ module RVI32_Core (
         .ALU_result_MEM(daddr), 
         .Read_data2_MEM(ddata_w),
         .Zero(Zero),
-        .AuipcLui(AuipcLui)
+        .AuipcLui(AuipcLui),
+        .Jump_RD(Jump_RD)
     );
 
 

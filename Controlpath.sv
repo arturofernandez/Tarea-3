@@ -6,57 +6,71 @@ module Controlpath (
     output logic MemWrite,
     output logic ALUSrc,
     output logic RegWrite,
+    output logic Jump,
     output logic [3:0] Operation,
-    output logic PCSrc,
+    output logic [1:0] PCSrc,
     output logic [1:0] AuipcLui
 ); 
 
     logic [31:0] Instruction_EX, Instruction_MEM;
-    logic Branch_ID, MemRead_ID, MemtoReg_ID, MemWrite_ID, ALUSrc_ID, RegWrite_ID;
-    logic MemRead_EX, MemtoReg_EX, MemWrite_EX, RegWrite_EX, Branch_EX;
-    logic Zero_MEM, MemtoReg_MEM, RegWrite_MEM, Branch_MEM;
+    logic Branch_ID, MemRead_ID, MemtoReg_ID, MemWrite_ID, ALUSrc_ID, RegWrite_ID, Jump_ID;
+    logic MemRead_EX, MemtoReg_EX, MemWrite_EX, RegWrite_EX, Branch_EX, Jump_EX;
+    logic Zero_MEM, MemtoReg_MEM, RegWrite_MEM, Branch_MEM, Jump_MEM;
     logic [1:0] AuipcLui_ID;
     logic [2:0] ALUOp_ID, ALUOp;
 
     always_comb begin
-        case (Instruction_MEM[14:12])
-            3'b000:begin //BEQ
-                if (Zero_MEM) //la codificamos como una SUB
-                    PCSrc = 1'b1;
-                else
-                    PCSrc = 1'b0;
-            end
-            3'b001:begin //BNE
-                if (!Zero_MEM) //la codificamos como una SUB
-                    PCSrc = 1'b1;
-                else
-                    PCSrc = 1'b0;
-            end
-            3'b100:begin //BLT
-                if (!Zero_MEM) //la codificamos como una SLT
-                    PCSrc = 1'b1;
-                else 
-                    PCSrc = 1'b0;
-            end
-            3'b101:begin //BGE
-                if (Zero_MEM) //la codificamos como una SLT
-                    PCSrc = 1'b1;
-                else
-                    PCSrc = 1'b0;
-            end
-            3'b110:begin //BLTU
-                if (!Zero_MEM) //la codificamos como una SLTU
-                    PCSrc = 1'b1;
-                else
-                    PCSrc = 1'b0;
-            end
-            3'b111:begin //BGEU
-                if (Zero_MEM) //la codificamos como una SLTU
-                    PCSrc = 1'b1;
-                else
-                    PCSrc = 1'b0;
-            end
-        endcase
+        if (Branch_MEM) begin
+            case (Instruction_MEM[14:12])
+                3'b000:begin //BEQ
+                    if (Zero_MEM) //la codificamos como una SUB
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                3'b001:begin //BNE
+                    if (!Zero_MEM) //la codificamos como una SUB
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                3'b100:begin //BLT
+                    if (!Zero_MEM) //la codificamos como una SLT
+                        PCSrc = 2'b01;
+                    else 
+                        PCSrc = 2'b00;
+                end
+                3'b101:begin //BGE
+                    if (Zero_MEM) //la codificamos como una SLT
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                3'b110:begin //BLTU
+                    if (!Zero_MEM) //la codificamos como una SLTU
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                3'b111:begin //BGEU
+                    if (Zero_MEM) //la codificamos como una SLTU
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                default: PCSrc = 2'b00;
+            endcase
+        end
+        else if (Jump_MEM)
+            case (Instruction_MEM[6:0])
+                7'b1101111: //JAL
+                    PCSrc = 2'b10;
+                7'b1100111:begin //JALR
+                    PCSrc = 2'b10;
+                default: PCSrc = 2'b00;
+            endcase
+        else
+            PCSrc = 2'b00;
     end
 
     Control Control(
@@ -68,7 +82,8 @@ module Controlpath (
         .MemWrite(MemWrite_ID),
         .ALUSrc(ALUSrc_ID),
         .RegWrite(RegWrite_ID),
-        .AuipcLui(AuipcLui_ID)
+        .AuipcLui(AuipcLui_ID),
+        .Jump(Jump_ID)
     );
 
     ALU_Control ALU_Control(
@@ -90,6 +105,7 @@ module Controlpath (
             Branch_EX <= Branch_ID;
             AuipcLui <= AuipcLui_ID;
             ALUOp <= ALUOp_ID;
+            Jump_EX <= Jump_ID;
             //EX_MEM
             Instruction_MEM <= Instruction_EX;
             Zero_MEM <= Zero;
@@ -98,9 +114,11 @@ module Controlpath (
             MemWrite <= MemWrite_EX;
             RegWrite_MEM <= RegWrite_EX;
             Branch_MEM <= Branch_EX;
+            Jump_MEM <= Jump_EX;
             //MEM-WB
             MemtoReg <= MemtoReg_MEM;
             RegWrite <= RegWrite_MEM;
+            Jump <= Jump_MEM;
         end
 
 endmodule
