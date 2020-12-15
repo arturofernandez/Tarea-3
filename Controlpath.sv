@@ -11,7 +11,7 @@ module Controlpath (
     output logic [1:0] AuipcLui
 ); 
 
-    logic [31:0] Instruction_ID, Instruction_EX, Instruction_MEM;
+    logic [31:0] Instruction_EX, Instruction_MEM;
     logic Branch_ID, MemRead_ID, MemtoReg_ID, MemWrite_ID, ALUSrc_ID, RegWrite_ID;
     logic MemRead_EX, MemtoReg_EX, MemWrite_EX, RegWrite_EX, Branch_EX;
     logic Zero_MEM, MemtoReg_MEM, RegWrite_MEM, Branch_MEM;
@@ -60,7 +60,7 @@ module Controlpath (
     end
 
     Control Control(
-        .Instruction(Instruction_ID[6:0]),
+        .Instruction(Instruction[6:0]),
         .Branch(Branch_ID),
         .MemRead(MemRead_ID),
         .MemtoReg(MemtoReg_ID),
@@ -80,9 +80,8 @@ module Controlpath (
     always_ff @(posedge CLK)
         begin
             //IF-ID
-            Instruction_ID <= Instruction;
             //ID-EX
-            Instruction_EX <= Instruction_ID;
+            Instruction_EX <= Instruction;
             MemRead_EX <= MemRead_ID;
             MemtoReg_EX <= MemtoReg_ID;
             MemWrite_EX <= MemWrite_ID;

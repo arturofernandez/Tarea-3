@@ -15,29 +15,34 @@
  *  mem0_dr - Read data output.
 */
 
-module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, RESET, write_data, addr, mem_write, dout);
+module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, write_data, addr, mem_write, mem_read, dout);
     input clk;
     input RESET;
     input [DATA_WIDTH-1:0]  write_data; 
     input [$clog2(MEM_DEPTH)-1:0] addr; 
-    input mem_write; 
-    output [DATA_WIDTH-1:0] dout; 
+    input mem_write, mem_read; 
+    output logic [DATA_WIDTH-1:0] dout; 
 
     logic [DATA_WIDTH-1:0] DMEM [0:MEM_DEPTH-1]; //packed and unpacked array
 
     // Synchronous Write:
-    always_ff @(posedge clk or negedge RESET) 
-    begin
-        if(!RESET)
-            for (int i = 0; i < MEM_DEPTH; i++)
-            DMEM[i] <= 32'hffffffff;          
+    always_ff @(posedge clk) begin
+        if (mem_write == 1'b1 && mem_read == 1'b0) 
+            begin
+                DMEM[addr]<=write_data;
+                dout <= dout;
+            end
+        else if (mem_read == 1'b1 && mem_write == 1'b0)
+            dout <= DMEM[addr];
+        else if (mem_write == 1'b1 && mem_read == 1'b1) 
+            begin
+                DMEM[addr]<=write_data;
+                dout <= write_data;
+            end
         else
-        begin
-            if (mem_write == 1'b1) 
-                    DMEM[addr]<=write_data;
-        end
+            dout <= dout;
     end
 
     // Asynchronous Read:
-    assign dout = DMEM[addr];
+    //assign dout = DMEM[addr];
 endmodule

@@ -19,24 +19,30 @@ end
 always @(posedge CLK, negedge RESET)
 begin
     if(!RESET)
-        for (int i = 0; i < 32; i++) begin
-           Regs[i] <= 32'b0; 
-        end         
-    else
-    begin
-        if(RegWrite)
         begin
-            if(WriteReg != 0)
-                Regs[WriteReg] <= WriteData;
+            for (int i = 0; i < 32; i++) begin
+                Regs[i] <= 32'b0; 
+            end 
+            ReadData1 <= 32'b0; //lectura síncrona
+            ReadData2 <= 32'b0;
+        end        
+    else
+        begin
+            ReadData1 <= Regs[ReadReg1]; //lectura síncrona
+            ReadData2 <= Regs[ReadReg2];
+            if(RegWrite)
+            begin
+                if(WriteReg != 0)
+                    Regs[WriteReg] <= WriteData;
+                else
+                    Regs[WriteReg] <= 32'b0;
+            end
             else
-                Regs[WriteReg] <= 32'b0;
+                Regs <= Regs;
         end
-        else
-            Regs <= Regs;
-    end
 end
 
-assign ReadData1 = Regs[ReadReg1];
-assign ReadData2 = Regs[ReadReg2];
+//assign ReadData1 = Regs[ReadReg1];
+//assign ReadData2 = Regs[ReadReg2];
 
 endmodule

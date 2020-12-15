@@ -29,11 +29,13 @@ module tb_RVI32_Core ();
         .write_data(ddata_w), 
         .addr(daddr[11:2]),
         .mem_write(d_rw), 
+        .mem_read(),
         .dout(ddata_r)
     );
 
     imem ROM (
         .iaddr(iaddr[11:2]),
+        .clock(CLK),
         .idata(idata)
     );
 

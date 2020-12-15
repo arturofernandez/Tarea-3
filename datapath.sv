@@ -32,9 +32,8 @@ module datapath
     output logic Zero
 );
     logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1, ALU_A;
-    logic [31:0] Instruction_ID, current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, Read_data2_EX;
-    logic [31:0] Read_data1_EX, ALU_result_WB, Read_data_WB, Instruction_EX, Instruction_MEM, Instruction_WB;
-    logic [31:0] Read_data2_MEM;
+    logic [31:0] current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, Read_data2_MEM, ALU_result_WB;
+    logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB;
 
     /*
     * Module: ALU
@@ -67,7 +66,7 @@ module datapath
     *   ReadData1 - data on register 1
     *   ReadData2 - data on register 2.
     */
-    banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction_ID[19:15]), .ReadReg2(Instruction_ID[24:20]), .WriteReg(Instruction_WB[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
+    banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction_WB[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
     /*
     * Module: ImmGen
@@ -79,7 +78,7 @@ module datapath
     * Outputs:
     *   Immediate 
     */
-    ImmGen ImmGen (.Instruction(Instruction_ID), .Immediate(Immediate));
+    ImmGen ImmGen (.Instruction(Instruction), .Immediate(Immediate));
 
     /*
     * Module: PC
@@ -146,7 +145,7 @@ module datapath
     * Outputs:
     *   ALU_B -  ALU Second Operand. 
     */
-    MUX #(.size(32)) muxALU_B (.a(Read_data2_EX), .b(Immediate_EX), .select(ALUSrc), .res(ALU_B));
+    MUX #(.size(32)) muxALU_B (.a(Read_data2), .b(Immediate_EX), .select(ALUSrc), .res(ALU_B));
     
     /*
     * Module: muxALU_A
@@ -161,7 +160,7 @@ module datapath
     * Outputs:
     *   ALU_A -  ALU First Operand. 
     */
-    MUX3 #(.size(32)) muxALU_A (.a(current_PC_EX), .b({32{1'b0}}), .c(Read_data1_EX), .select(AuipcLui), .res(ALU_A));
+    MUX3 #(.size(32)) muxALU_A (.a(current_PC_EX), .b({32{1'b0}}), .c(Read_data1), .select(AuipcLui), .res(ALU_A));
     
     /*
     * Module: muxtoReg
@@ -175,27 +174,23 @@ module datapath
     * Outputs:
     *   Write_data_reg -  Register input data (Bank of registers input). 
     */
-    MUX #(.size(32)) muxtoReg (.a(ALU_result_WB), .b(Read_data_WB), .select(MemtoReg), .res(Write_data_reg));
+    MUX #(.size(32)) muxtoReg (.a(ALU_result_WB), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
 
     always_ff @(posedge CLK)
         begin
             //IF-ID
-            Instruction_ID <= Instruction;
             current_PC_ID <= current_PC;
             //ID-EX
-            Instruction_EX <= Instruction_ID;
+            Instruction_EX <= Instruction;
             current_PC_EX <= current_PC_ID;
-            Read_data1_EX <= Read_data1;
-            Read_data2_EX <= Read_data2;
             Immediate_EX <= Immediate;
             //EX_MEM
             Instruction_MEM <= Instruction_EX;
             effective_addr_MEM <= effective_addr;
             ALU_result_MEM <= ALU_result;
-            Read_data2_MEM <= Read_data2_EX;
+            Read_data2_MEM <= Read_data2;
             //MEM-WB
             Instruction_WB <= Instruction_MEM;
-            Read_data_WB <= Read_data;
             ALU_result_WB <= ALU_result_MEM;
         end
 
