@@ -24,10 +24,11 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 fM8C2U@eh_iaj8Dm5mUZ@1
-I><HzNh?ge;S^4?[VAKchO0
+!s100 Rn1a<RN`b@?9m>8okO5[`2
+IbOJ8AdgfVS9kbLf4ZQHPD2
 Z3 !s105 datapath_sv_unit
 S1
+<<<<<<< main
 R0
 Z4 w1607425827
 Z5 8datapath.sv
@@ -41,11 +42,23 @@ Z8 !s108 1607514439.030000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
 Z9 !s107 datapath.sv|
 Z10 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|datapath.sv|
+=======
+Z4 dC:/Users/sergi/OneDrive - UPV/Documentos/Isdigi/TAREA3/Tarea-3
+Z5 w1608145805
+Z6 8datapath.sv
+Z7 Fdatapath.sv
+L0 271
+Z8 OL;L;10.4;61
+Z9 !s108 1608145844.883000
+Z10 !s107 datapath.sv|
+Z11 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|datapath.sv|
+>>>>>>> Cambios COMPILADOS
 !i113 0
-Z11 !s102 -cover sbcet3
-Z12 o-work work -sv -cover sbcet3 -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z12 !s102 -cover sbcet3
+Z13 o-work work -sv -cover sbcet3 -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
 Xaleatorizacion_sv_unit
 R1
+<<<<<<< main
 <<<<<<< main
 !s110 1607895468
 !i10b 1
@@ -58,32 +71,46 @@ R0
 Z13 w1607891193
 =======
 !s110 1607514438
+=======
+!s110 1608145844
+>>>>>>> Cambios COMPILADOS
 !i10b 1
 !s100 B;1L[eo:6_gIiXmjeV2@A1
 IWG2mi=<hTWnH]1HCdBg390
 VWG2mi=<hTWnH]1HCdBg390
 !i103 1
 S1
+<<<<<<< main
 R0
 w1607510456
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
 8aleatorizacion.sv
 Z14 Faleatorizacion.sv
+=======
+R4
+Z14 w1607611400
+8aleatorizacion.sv
+Z15 Faleatorizacion.sv
+>>>>>>> Cambios COMPILADOS
 L0 9
-R7
+R8
 r1
 !s85 0
 31
+<<<<<<< main
 <<<<<<< main
 !s108 1607895468.502000
 =======
 !s108 1607514438.447000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+!s108 1608145844.271000
+>>>>>>> Cambios COMPILADOS
 !s107 aleatorizacion.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|aleatorizacion.sv|
 !i113 0
-R11
 R12
+R13
 vALU
 R1
 R2
@@ -91,6 +118,7 @@ r1
 !s85 0
 31
 !i10b 1
+<<<<<<< main
 !s100 kCRAe?a>RZ1X3fW`a;3g12
 I0RV]:;7>[Gd1daIi4Xc:`2
 !s105 ALU_sv_unit
@@ -106,11 +134,24 @@ R7
 =======
 !s108 1607514438.560000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+!s100 10POe`^WKD@8_Q9NZkgR>0
+I_DP?Z1[hlH2A<QNUQf=H73
+!s105 ALU_sv_unit
+S1
+R4
+w1607964113
+8ALU.sv
+FALU.sv
+Z16 L0 10
+R8
+!s108 1608145844.474000
+>>>>>>> Cambios COMPILADOS
 !s107 ALU.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|ALU.sv|
 !i113 0
-R11
 R12
+R13
 n@a@l@u
 vALU_Control
 R1
@@ -119,10 +160,11 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 1djdJ^a:m77K@ZCcnh98F2
-IB_HTA4Zjn1Zdn@TPkGWQV2
+!s100 B;eA:1[bG8mcMmg5MLl0N0
+ICd0GYLn<=[10[P`F5E_`62
 !s105 ALU_Control_sv_unit
 S1
+<<<<<<< main
 R0
 Z16 w1607891191
 8ALU_Control.sv
@@ -134,11 +176,20 @@ R7
 =======
 !s108 1607514438.502000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R4
+w1608145431
+8ALU_Control.sv
+FALU_Control.sv
+L0 1
+R8
+!s108 1608145844.375000
+>>>>>>> Cambios COMPILADOS
 !s107 ALU_Control.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|ALU_Control.sv|
 !i113 0
-R11
 R12
+R13
 n@a@l@u_@control
 vbanco_registros
 R1
@@ -147,26 +198,31 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 [i<:HTeHhz;@4Z=gOVogm2
-IMn0O:5`Z115n4XU`:g[9Y0
+!s100 b6`NiVbm2CXh3jH31iDXY1
+I8:=IEmIP8fPKCj6M>0C9o0
 !s105 banco_registros_sv_unit
 S1
-R0
-w1606476232
+R4
+w1608053090
 8banco_registros.sv
 Fbanco_registros.sv
 L0 1
+<<<<<<< main
 R7
 <<<<<<< main
 !s108 1607895469.025000
 =======
 !s108 1607514438.643000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R8
+!s108 1608145844.594000
+>>>>>>> Cambios COMPILADOS
 !s107 banco_registros.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|banco_registros.sv|
 !i113 0
-R11
 R12
+R13
 vControl
 R1
 R2
@@ -174,10 +230,11 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 A`R=9ViTjQ9oWlSO5z7060
-IZTBKYi[QKJ1C[hJ_IFW<o3
+!s100 :3ILQ:4aSYP1Q0G<kz=BG0
+I=Em5NT3UJdcJDH1]9>M1l1
 !s105 Control_sv_unit
 S1
+<<<<<<< main
 R0
 R16
 8Control.sv
@@ -189,11 +246,20 @@ R7
 =======
 !s108 1607514438.767000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R4
+w1608070026
+8Control.sv
+FControl.sv
+L0 1
+R8
+!s108 1608145844.687000
+>>>>>>> Cambios COMPILADOS
 !s107 Control.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|Control.sv|
 !i113 0
-R11
 R12
+R13
 n@control
 vControlpath
 R1
@@ -202,10 +268,11 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 lJh0;8]kB;ll3PYZ1gKzK2
-I22e<GmYD0LN9KG2a_G1zY2
+!s100 3Yf9:;<oi?=hnmXGofO>13
+IQ==C_XGI7LNnX3UFSf1=n3
 !s105 Controlpath_sv_unit
 S1
+<<<<<<< main
 R0
 R16
 8Controlpath.sv
@@ -217,11 +284,20 @@ R7
 =======
 !s108 1607514438.930000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R4
+w1608145457
+8Controlpath.sv
+FControlpath.sv
+L0 1
+R8
+!s108 1608145844.785000
+>>>>>>> Cambios COMPILADOS
 !s107 Controlpath.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|Controlpath.sv|
 !i113 0
-R11
 R12
+R13
 n@controlpath
 vdatapath
 R1
@@ -230,22 +306,22 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 X73]o<>j@S?IN@jPYNeZ_0
-IRMHLmo=hVdY:bVL1ocQ;c0
+!s100 TYYGh?h`KEoGN2:IMXVL?0
+IVD8YV]6<bHkz7;=j`6L0z3
 R3
 S1
-R0
 R4
 R5
 R6
-L0 25
 R7
+L0 25
 R8
 R9
 R10
-!i113 0
 R11
+!i113 0
 R12
+R13
 vdmem
 R1
 R2
@@ -253,6 +329,7 @@ r1
 !s85 0
 31
 !i10b 1
+<<<<<<< main
 !s100 CfSjfdY]]AHi=LG4LmPcX2
 INh8_nAWlNXQWOa<RNCY@D1
 !s105 dmem_sv_unit
@@ -268,11 +345,24 @@ R7
 =======
 !s108 1607514439.159000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+!s100 1b`EWlfQ_YL1SX>Jo15]R1
+I0:he0Y?8XVG8YT<UGR56g0
+!s105 dmem_sv_unit
+S1
+R4
+w1608145258
+8dmem.sv
+Fdmem.sv
+L0 18
+R8
+!s108 1608145845.004000
+>>>>>>> Cambios COMPILADOS
 !s107 dmem.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|dmem.sv|
 !i113 0
-R11
 R12
+R13
 4estimulos
 R1
 <<<<<<< main
@@ -304,19 +394,26 @@ Z22 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|estimulos.sv|
 I>BSSLkCL_J]I8EGAGiR<71
 !s105 estimulos_sv_unit
 S1
-R0
-Z15 w1607510991
-Z16 8estimulos.sv
-Z17 Festimulos.sv
+R4
+R14
+Z17 8estimulos.sv
+Z18 Festimulos.sv
 L0 4
+<<<<<<< main
 R7
 Z18 !s108 1607514439.267000
 Z19 !s107 aleatorizacion.sv|Scoreboard.sv|estimulos.sv|
 Z20 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|estimulos.sv|
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R8
+Z19 !s108 1608145845.103000
+Z20 !s107 aleatorizacion.sv|Scoreboard.sv|estimulos.sv|
+Z21 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|estimulos.sv|
+>>>>>>> Cambios COMPILADOS
 !i113 0
-R11
 R12
+R13
 Xestimulos_sv_unit
 R1
 <<<<<<< main
@@ -337,9 +434,18 @@ I>TnQ5AXG7?=CQQIZIVM`71
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
 !i103 1
 S1
+<<<<<<< main
 R0
+=======
+R4
+Z22 w1607955227
+>>>>>>> Cambios COMPILADOS
 R17
 R18
+Z23 FScoreboard.sv
+R15
+Z24 L0 11
+R8
 R19
 Z23 FScoreboard.sv
 R14
@@ -347,10 +453,13 @@ Z24 L0 11
 R7
 R20
 R21
+<<<<<<< main
 R22
+=======
+>>>>>>> Cambios COMPILADOS
 !i113 0
-R11
 R12
+R13
 YIF
 R1
 R2
@@ -362,22 +471,27 @@ r1
 IXHlKE6R9F@VDi3fgkYL@B2
 !s105 IF_sv_unit
 S1
-R0
-w1607383365
+R4
+w1607440595
 8IF.sv
 FIF.sv
 R24
+<<<<<<< main
 R7
 <<<<<<< main
 !s108 1607895469.833000
 =======
 !s108 1607514439.427000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R8
+!s108 1608145845.267000
+>>>>>>> Cambios COMPILADOS
 !s107 IF.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|IF.sv|
 !i113 0
-R11
 R12
+R13
 n@i@f
 vimem
 R1
@@ -386,26 +500,31 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 0CV5Fg^FXflDkLjF4g6hf1
-I7UGSHW42]@0=U[7M29b6_1
+!s100 ITV5`C2^JMWlKF2C[f9lE2
+I8cFP74:Yd3Z1db>^Sc>HZ3
 !s105 imem_sv_unit
 S1
-R0
-w1606953960
+R4
+w1608145529
 8imem.sv
 Fimem.sv
 L0 12
+<<<<<<< main
 R7
 <<<<<<< main
 !s108 1607895470.089000
 =======
 !s108 1607514439.543000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R8
+!s108 1608145845.376000
+>>>>>>> Cambios COMPILADOS
 !s107 imem.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|imem.sv|
 !i113 0
-R11
 R12
+R13
 vImmGen
 R1
 R2
@@ -413,22 +532,22 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 B8;hN?zGoGeSDTKTGE44D0
-I^NgRWS<CLH`4N22JgiC5E2
+!s100 ;R_IcheCoiFSBzcO^<;=41
+I>UILF;@FEMQf7AC`kC6=z1
 R3
 S1
-R0
 R4
 R5
 R6
-L0 177
 R7
+L0 205
 R8
 R9
 R10
-!i113 0
 R11
+!i113 0
 R12
+R13
 n@imm@gen
 vMUX
 R1
@@ -437,22 +556,22 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 ?4;8MhoYm>AffBSAd;Ge@3
-IY;TIFYz_V8MCIE^7Ff7Bc1
+!s100 JEl<VYJ^;<oVG4o6WGBiH2
+IEDg;VEX7hkU[^ViX9PDSd1
 R3
 S1
-R0
 R4
 R5
 R6
-L0 214
 R7
+L0 246
 R8
 R9
 R10
-!i113 0
 R11
+!i113 0
 R12
+R13
 n@m@u@x
 vMUX3
 R1
@@ -461,22 +580,22 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 kN:SlQ0S0PAd5<:I4HAL`0
-I7zfHTTaKkf^Q`hL7z:Beh1
+!s100 iM[lai?RCS<XeSkXKB[511
+IT[QC1Y[1U[I<ESbn=fDkQ2
 R3
 S1
-R0
 R4
 R5
 R6
-L0 223
 R7
+L0 255
 R8
 R9
 R10
-!i113 0
 R11
+!i113 0
 R12
+R13
 n@m@u@x3
 vregister
 R1
@@ -485,22 +604,22 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 TVNYZlAScC<M4OnKz8ki72
-I7ViFI=2;7SNN4cm8z:L7B1
+!s100 Qelgz0e<GLm7KkAmD7N@=0
+IlJGSNE98Ce4PO:jWRHHUV0
 R3
 S1
-R0
 R4
 R5
 R6
-L0 201
 R7
+L0 233
 R8
 R9
 R10
-!i113 0
 R11
+!i113 0
 R12
+R13
 vRVI32_Core
 R1
 R2
@@ -508,29 +627,35 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 0imj;IdY=2Y@md[;k_eG83
-IO7YY0kDbB`;RSGecn^8eG1
+!s100 T@V?Rf>7USBIYf;MfHg;n3
+I8ZCbkBCiNZfEY]>:I9dNT2
 !s105 RVI32_Core_sv_unit
 S1
-R0
-w1607500787
+R4
+w1608145240
 8RVI32_Core.sv
 FRVI32_Core.sv
 L0 17
+<<<<<<< main
 R7
 <<<<<<< main
 !s108 1607895470.274000
 =======
 !s108 1607514439.731000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R8
+!s108 1608145845.543000
+>>>>>>> Cambios COMPILADOS
 !s107 RVI32_Core.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|RVI32_Core.sv|
 !i113 0
-R11
 R12
+R13
 n@r@v@i32_@core
 XScoreboard_sv_unit
 R1
+<<<<<<< main
 <<<<<<< main
 !s110 1607895470
 !i10b 1
@@ -543,12 +668,16 @@ R0
 R13
 =======
 !s110 1607514439
+=======
+!s110 1608145845
+>>>>>>> Cambios COMPILADOS
 !i10b 1
 !s100 ]ZnK2W?]TLC^:3F38cdJ@2
 IzfZRiC_6fT<Bd[WgIi[Ah1
 VzfZRiC_6fT<Bd[WgIi[Ah1
 !i103 1
 S1
+<<<<<<< main
 R0
 w1607510727
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
@@ -564,11 +693,23 @@ r1
 =======
 !s108 1607514439.843000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R4
+R22
+8Scoreboard.sv
+R23
+R24
+R8
+r1
+!s85 0
+31
+!s108 1608145845.638000
+>>>>>>> Cambios COMPILADOS
 !s107 Scoreboard.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|Scoreboard.sv|
 !i113 0
-R11
 R12
+R13
 n@scoreboard_sv_unit
 vtb_ROM
 R1
@@ -583,6 +724,7 @@ I2B4ejDJ3HVFdIQn2XXPEa3
 !s105 tb_ROM_sv_unit
 S1
 R0
+<<<<<<< main
 <<<<<<< main
 Z25 w1605977817
 Z26 8tb_ROM.sv
@@ -602,9 +744,19 @@ Z26 !s108 1606384458.630000
 Z27 !s107 tb_ROM.sv|
 Z28 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|tb_ROM.sv|
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+Z25 w1605977817
+Z26 8tb_ROM.sv
+Z27 Ftb_ROM.sv
+L0 20
+R8
+Z28 !s108 1606384458.630000
+Z29 !s107 tb_ROM.sv|
+Z30 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|tb_ROM.sv|
+>>>>>>> Cambios COMPILADOS
 !i113 0
-R11
 R12
+R13
 ntb_@r@o@m
 Xtb_ROM_sv_unit
 R1
@@ -618,6 +770,7 @@ I7V8zS[bFCAagJ2F?m1hM]2
 !i103 1
 S1
 R0
+<<<<<<< main
 <<<<<<< main
 R25
 =======
@@ -637,9 +790,19 @@ R29
 R30
 =======
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+R25
+R26
+R27
+R16
+R8
+R28
+R29
+R30
+>>>>>>> Cambios COMPILADOS
 !i113 0
-R11
 R12
+R13
 ntb_@r@o@m_sv_unit
 vtb_RVI32_Core
 R1
@@ -648,6 +811,7 @@ r1
 !s85 0
 31
 !i10b 1
+<<<<<<< main
 <<<<<<< main
 !s100 A7<_RFT><=kE9kPa^od`U3
 IJoZa3ZfTK]P1f>bWO^M=?3
@@ -672,9 +836,22 @@ R7
 =======
 !s108 1607514439.944000
 >>>>>>> Añadidas instrucciones Tarea 3 (Falta probarlo y verificarlo)
+=======
+!s100 O8[o6SEZg[4jlJ1I82^<@1
+Ii@6AL]Vd9Lz7LjLg0NB__2
+!s105 tb_RVI32_Core_sv_unit
+S1
+R4
+w1608052839
+8tb_RVI32_Core.sv
+Ftb_RVI32_Core.sv
+L0 3
+R8
+!s108 1608145845.736000
+>>>>>>> Cambios COMPILADOS
 !s107 tb_RVI32_Core.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|tb_RVI32_Core.sv|
 !i113 0
-R11
 R12
+R13
 ntb_@r@v@i32_@core

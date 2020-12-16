@@ -1,4 +1,5 @@
 module Controlpath (
+    input logic clock,
     input logic [31:0] Instruction,
     input logic Zero,
     output logic MemRead,
@@ -65,7 +66,7 @@ module Controlpath (
             case (Instruction_MEM[6:0])
                 7'b1101111: //JAL
                     PCSrc = 2'b10;
-                7'b1100111:begin //JALR
+                7'b1100111: //JALR
                     PCSrc = 2'b10;
                 default: PCSrc = 2'b00;
             endcase
@@ -92,7 +93,7 @@ module Controlpath (
         .Operation(Operation)
     );
 
-    always_ff @(posedge CLK)
+    always_ff @(posedge clock)
         begin
             //IF-ID
             //ID-EX

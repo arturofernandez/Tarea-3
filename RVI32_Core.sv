@@ -26,6 +26,7 @@ module RVI32_Core (
     logic [1:0] AuipcLui, PCSrc;
     
     Controlpath Controlpath ( 
+        .clock(CLK),
         .Instruction(idata),
         .Zero(Zero),
         .MemRead(),

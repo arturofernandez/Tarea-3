@@ -31,8 +31,8 @@ module datapath
     output logic [31:0] current_PC, ALU_result_MEM, Read_data2_MEM,
     output logic Zero
 );
-    logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1, ALU_A;
-    logic [31:0] current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, Read_data2_MEM, ALU_result_WB;
+    logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Write_data_reg2, Read_data1, ALU_A;
+    logic [31:0] current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, ALU_result, ALU_result_WB, Read_data2;
     logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB, sum_adder1_ID, sum_adder1_EX, sum_adder1_MEM, sum_adder1_WB;
 
     /*
@@ -178,7 +178,7 @@ module datapath
 
     MUX #(.size(32)) muxtoReg2 (.a(Write_data_reg), .b(sum_adder1_WB), .select(Jump_RD), .res(Write_data_reg2));
 
-    always_ff @(posedge CLK)
+    always_ff @(posedge clock)
         begin
             //IF-ID
             current_PC_ID <= current_PC;

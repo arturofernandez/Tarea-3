@@ -44,7 +44,7 @@ module ALU_Control (
                     default: Operation = 4'b0000;
                 endcase
             end
-            3'b010: Operation = 4'b0001; //Instrucciones B-format
+            3'b010: //Instrucciones B-format
             begin
                 case (Instruction[2:0]) // El funct3
                     3'b000: //BEQ
@@ -59,7 +59,7 @@ module ALU_Control (
                         Operation = 4'b0011; //SLTU
                     3'b111: //BGEU
                         Operation = 4'b0011; //SLTU
-                    default: Operation =
+                    default: Operation = 4'b0000;
                 endcase
             end
             3'b011: Operation = 4'b0000; //Load-I format y S-format
