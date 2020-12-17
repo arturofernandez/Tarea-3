@@ -17,14 +17,14 @@ module imem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (iaddr,idat
     logic [DATA_WIDTH-1:0] IMEM [0:MEM_DEPTH-1]; //packed and unpacked array
 
     //lectura síncrona
-    always_ff @(posedge clock) begin
-        idata <= IMEM[iaddr];
-    end
+    //always_ff @(posedge clock) begin
+        //idata <= IMEM[iaddr];
+    //end
 
     function escribirROM (input string text);
         $readmemh(text, IMEM); 
     endfunction 
     
     //Asynchronous Read
-    //assign idata = IMEM[iaddr];
+    assign idata = IMEM[iaddr];
 endmodule

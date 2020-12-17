@@ -146,9 +146,15 @@ task generar_inst;
 
         fork
             sb.monitor_input();
-            @(posedge monitor.CLK)
-            sb.monitor_output();
+            begin
+                repeat (5) @(posedge monitor.CLK);
+                sb.monitor_output();
+            end
         join_none  
+      
+        //$display("%0h",monitor.cb_monitor.idata);
+        // $display("%0h",monitor.cb_monitor.iaddr);
+        // @(posedge monitor.CLK) my_cg.sample();
 
         while(monitor.cb_monitor.idata !== {32{1'bx}})
         begin
