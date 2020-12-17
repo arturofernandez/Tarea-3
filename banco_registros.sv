@@ -28,8 +28,15 @@ begin
         end        
     else
         begin
-            ReadData1 <= Regs[ReadReg1]; //lectura síncrona
-            ReadData2 <= Regs[ReadReg2];
+            if((ReadReg1 != WriteReg) & (ReadReg2 != WriteReg)) begin
+                ReadData1 <= Regs[ReadReg1]; //lectura síncrona
+                ReadData2 <= Regs[ReadReg2];
+            end
+            else if (ReadReg1 == WriteReg) begin
+                ReadData1 <= WriteData;
+            end else begin
+                ReadData2 <= WriteData;
+            end
             if(RegWrite)
             begin
                 if(WriteReg != 0)
