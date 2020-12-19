@@ -131,10 +131,10 @@ task generar_inst;
 
         $fdisplay(fd, "%h",32'h00000263);
         $fdisplay(fd, "%h",32'h00001063);
-        for (i=0; i<1000; i++) begin
+        for (i=0; i<50; i++) begin
             generar_inst();
             $fdisplay(fd, "%h",inData.instr);
-            $display("      0x%h",inData.instr);
+            //$display("      0x%h",inData.instr);
         end
         
         $fclose(fd);
@@ -147,7 +147,7 @@ task generar_inst;
         fork
             sb.monitor_input();
             begin
-                repeat(5) @(posedge monitor.CLK);
+                repeat(4) @(posedge monitor.CLK);
                 sb.monitor_output();
             end
         join_none  
@@ -161,7 +161,7 @@ task generar_inst;
             @(posedge monitor.CLK) my_cg.sample();
         end
         
-        repeat (1) @(posedge monitor.CLK);
+        repeat (12) @(posedge monitor.CLK);
         $display("END verification - time=%0t\n", $time);
         $stop;
     end

@@ -197,7 +197,7 @@ module datapath
             Instruction_MEM <= Instruction_EX;
             effective_addr_MEM <= effective_addr;
             ALU_result_MEM <= ALU_result;
-            Read_data2_MEM <= Read_data2;
+            Read_data2_MEM <= ALU_B_final;
             sum_adder1_MEM <= sum_adder1_EX;
             //MEM-WB
             Instruction_WB <= Instruction_MEM;

@@ -7,7 +7,7 @@ module tb_RVI32_Core ();
     
     logic CLK, RESET_N, d_rw;
     logic [31:0] idata, ddata_r, iaddr, daddr, ddata_w; 
-    logic Start_Simulation;
+    logic Start_Simulation, MemRead, MemWrite;
     //logic [31:0] inst_queue [$];
     //logic [31:0] inst;
 
@@ -20,7 +20,9 @@ module tb_RVI32_Core ();
         .iaddr(iaddr), 
         .daddr(daddr), 
         .ddata_w(ddata_w), 
-        .d_rw(d_rw) 
+        //.d_rw(d_rw) 
+        .MemRead(MemRead), 
+        .MemWrite(MemWrite)
     );
 
     dmem #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) RAM (
@@ -28,8 +30,9 @@ module tb_RVI32_Core ();
         .RESET(RESET_N), 
         .write_data(ddata_w), 
         .addr(daddr[11:2]),
-        .mem_write(d_rw), 
-        .mem_read(),
+        //.mem_write(d_rw), 
+        .mem_write(MemWrite), 
+        .mem_read(MemRead),
         .dout(ddata_r)
     );
 
@@ -55,7 +58,8 @@ module tb_RVI32_Core ();
 
         //ROM.escribirROM("./MachineCode/random_program.txt"); //escribimos en la memoria de instrucciones las instrucciones aleatorias generadas en estimulos.sv
         //ROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones del código del bubble sort
-        ROM.escribirROM("./MachineCode/fibonacci_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones del código de fibonacci para 20 ítems de la sucesión
+        //ROM.escribirROM("./MachineCode/fibonacci_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones del código de fibonacci para 20 ítems de la sucesión
+        ROM.escribirROM("prueba.txt");
         $display("ROM Writed - time=%0t\n", $time);
         
         CLK = 1'b0;

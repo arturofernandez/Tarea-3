@@ -16,8 +16,10 @@ module Controlpath (
 ); 
 
     logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB;
-    logic Branch_ID, MemRead_ID, MemtoReg_ID, MemWrite_ID, ALUSrc_ID, RegWrite_ID, Jump_ID;
-    logic MemRead_EX, MemtoReg_EX, MemWrite_EX, RegWrite_EX, Branch_EX, Jump_EX;
+    logic Branch_ID, MemtoReg_ID, ALUSrc_ID, RegWrite_ID, Jump_ID;
+    logic MemRead_ID, MemWrite_ID;
+    logic MemRead_EX, MemWrite_EX; 
+    logic MemtoReg_EX, RegWrite_EX, Branch_EX, Jump_EX;
     logic Zero_MEM, MemtoReg_MEM, RegWrite_MEM, Branch_MEM, Jump_MEM;
     logic [1:0] AuipcLui_ID;
     logic [2:0] ALUOp_ID, ALUOp;
@@ -100,6 +102,8 @@ module Controlpath (
         .Rs2_EX(Instruction_EX[24:20]), 
         .Rd_MEM(Instruction_MEM[11:7]), 
         .Rd_WB(Instruction_WB[11:7]), 
+        .RegWrite_MEM(RegWrite_MEM),
+        .RegWrite_WB(RegWrite),
         .ForwardA(ForwardA), 
         .ForwardB(ForwardB)
     );

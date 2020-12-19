@@ -23,7 +23,7 @@ always @(posedge CLK, negedge RESET)
                 for (int i = 0; i < 32; i++) begin
                     Regs[i] <= 32'b0; 
                 end 
-                ReadData1 <= 32'b0; //lectura síncrona
+                ReadData1 <= 32'b0; 
                 ReadData2 <= 32'b0;
             end        
         else if (RegWrite)

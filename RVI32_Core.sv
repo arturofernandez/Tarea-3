@@ -18,7 +18,8 @@ module RVI32_Core (
     input CLK, RESET_N, 
     input logic [31:0] idata, ddata_r, 
     output logic [31:0] iaddr, daddr, ddata_w,
-    output logic d_rw 
+    //output logic d_rw 
+    output logic MemRead, MemWrite
 );
     // Conections:
     logic ALUSrc, MemtoReg, RegWrite, Zero, Jump_RD;
@@ -29,9 +30,10 @@ module RVI32_Core (
         .clock(CLK),
         .Instruction(idata),
         .Zero(Zero),
-        .MemRead(),
+        .MemRead(MemRead),
         .MemtoReg(MemtoReg),
-        .MemWrite(d_rw),
+        //.MemWrite(d_rw),
+        .MemWrite(MemWrite),
         .ALUSrc(ALUSrc),
         .RegWrite(RegWrite),
         .Operation(Operation),
