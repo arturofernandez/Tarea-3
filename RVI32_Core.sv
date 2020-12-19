@@ -22,7 +22,7 @@ module RVI32_Core (
     output logic MemRead, MemWrite
 );
     // Conections:
-    logic ALUSrc, MemtoReg, RegWrite, Zero, Jump_RD;
+    logic ALUSrc, MemtoReg, RegWrite, Zero, Jump_RD, MemWrite_EX;
     logic [3:0] Operation;
     logic [1:0] AuipcLui, PCSrc, ForwardA, ForwardB;
     
@@ -34,6 +34,7 @@ module RVI32_Core (
         .MemtoReg(MemtoReg),
         //.MemWrite(d_rw),
         .MemWrite(MemWrite),
+        .MemWrite_EX(MemWrite_EX),
         .ALUSrc(ALUSrc),
         .RegWrite(RegWrite),
         .Operation(Operation),
@@ -61,7 +62,8 @@ module RVI32_Core (
         .Read_data2_MEM(ddata_w),
         .Zero(Zero),
         .AuipcLui(AuipcLui),
-        .Jump_RD(Jump_RD)
+        .Jump_RD(Jump_RD),
+        .MemWrite_EX(MemWrite_EX)
     );
 
 

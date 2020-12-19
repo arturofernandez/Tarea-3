@@ -24,7 +24,7 @@
 */
 module datapath 
 (
-    input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, 
+    input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, MemWrite_EX, 
     input [1:0] AuipcLui, PCSrc, ForwardA, ForwardB,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
@@ -34,7 +34,7 @@ module datapath
     logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Write_data_reg2, Read_data1, ALU_A;
     logic [31:0] current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, ALU_result, ALU_result_WB, Read_data2;
     logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB, sum_adder1_ID, sum_adder1_EX, sum_adder1_MEM, sum_adder1_WB;
-    logic [31:0] ALU_A_final, ALU_B_final;
+    logic [31:0] ALU_A_final, ALU_B2, ALU_B_final;
 
     /*
     * Module: ALU
@@ -148,8 +148,25 @@ module datapath
     */
     MUX #(.size(32)) muxALU_B (.a(Read_data2), .b(Immediate_EX), .select(ALUSrc), .res(ALU_B));
 
-    MUX3 #(.size(32)) muxALU_B2 (.a(ALU_B), .b(Write_data_reg), .c(ALU_result_MEM), .select(ForwardB), .res(ALU_B_final));
+    MUX3 #(.size(32)) muxALU_B2 (.a(ALU_B), .b(Write_data_reg), .c(ALU_result_MEM), .select(ForwardB), .res(ALU_B2));
+
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    MUX #(.size(32)) muxALU_B3 (.a(ALU_B2), .b(Immediate_EX), .select(MemWrite_EX), .res(ALU_B_final)); //este es el nuevo
+    // MemWrite_EX se activa a 1 si es una SW, entonces a la ALU le entra el immediato para calcular la posicón de memoria donde debe escribir. 
+    // Sino la ALU coge siempre la salida del MUX del forwarding
+    // Además, la salida del datapath que se acaba uniendo con la entrada de datos a escribir en la memoria, 
+    // que es Read_data2_MEM es igual (non-bloquing para registrarse) a ALU_B2, que es la salida del muxALU_B2, es decir,
+    // el dato con Forwarding realizado
     
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
     /*
     * Module: muxALU_A
     *    Selects the type of operand of the ALUs first operand (pc, zeros or register).
@@ -197,7 +214,7 @@ module datapath
             Instruction_MEM <= Instruction_EX;
             effective_addr_MEM <= effective_addr;
             ALU_result_MEM <= ALU_result;
-            Read_data2_MEM <= ALU_B_final;
+            Read_data2_MEM <= ALU_B2;
             sum_adder1_MEM <= sum_adder1_EX;
             //MEM-WB
             Instruction_WB <= Instruction_MEM;
