@@ -10,10 +10,12 @@ module Controlpath (
     output logic Jump,
     output logic [3:0] Operation,
     output logic [1:0] PCSrc,
-    output logic [1:0] AuipcLui
+    output logic [1:0] AuipcLui,
+    output logic [1:0] ForwardA, 
+    output logic [1:0] ForwardB
 ); 
 
-    logic [31:0] Instruction_EX, Instruction_MEM;
+    logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB;
     logic Branch_ID, MemRead_ID, MemtoReg_ID, MemWrite_ID, ALUSrc_ID, RegWrite_ID, Jump_ID;
     logic MemRead_EX, MemtoReg_EX, MemWrite_EX, RegWrite_EX, Branch_EX, Jump_EX;
     logic Zero_MEM, MemtoReg_MEM, RegWrite_MEM, Branch_MEM, Jump_MEM;
@@ -93,6 +95,15 @@ module Controlpath (
         .Operation(Operation)
     );
 
+    ForwardingUnit ForwardingUnit(
+        .Rs1_EX(Instruction_EX[19:15]), 
+        .Rs2_EX(Instruction_EX[24:20]), 
+        .Rd_MEM(Instruction_MEM[11:7]), 
+        .Rd_WB(Instruction_WB[11:7]), 
+        .ForwardA(ForwardA), 
+        .ForwardB(ForwardB)
+    );
+
     always_ff @(posedge clock)
         begin
             //IF-ID
@@ -117,6 +128,7 @@ module Controlpath (
             Branch_MEM <= Branch_EX;
             Jump_MEM <= Jump_EX;
             //MEM-WB
+            Instruction_WB <= Instruction_MEM;
             MemtoReg <= MemtoReg_MEM;
             RegWrite <= RegWrite_MEM;
             Jump <= Jump_MEM;

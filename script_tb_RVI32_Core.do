@@ -13,6 +13,7 @@ vlog -work work -vopt -sv -cover sbcet3 {inData.sv}
 vlog -work work -vopt -sv -cover sbcet3 {RVI32_Core.sv}
 vlog -work work -vopt -sv -cover sbcet3 {Scoreboard.sv}
 vlog -work work -vopt -sv -cover sbcet3 {tb_RVI32_Core.sv}
+vlog -work work -vopt -sv -cover sbcet3 {ForwardingUnit.sv}
 
 vsim -novopt work.tb_RVI32_Core
 add wave -position 1  sim:/tb_RVI32_Core/CLK

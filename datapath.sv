@@ -25,7 +25,7 @@
 module datapath 
 (
     input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, 
-    input [1:0] AuipcLui, PCSrc,
+    input [1:0] AuipcLui, PCSrc, ForwardA, ForwardB,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
     output logic [31:0] current_PC, ALU_result_MEM, Read_data2_MEM,
@@ -34,6 +34,7 @@ module datapath
     logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Write_data_reg2, Read_data1, ALU_A;
     logic [31:0] current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, ALU_result, ALU_result_WB, Read_data2;
     logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB, sum_adder1_ID, sum_adder1_EX, sum_adder1_MEM, sum_adder1_WB;
+    logic [31:0] ALU_A_final, ALU_B_final;
 
     /*
     * Module: ALU
@@ -47,7 +48,7 @@ module datapath
     *   ALU_result
     *   Zero - Sets to high if the result is 0. 
     */
-    ALU ALU (.ALU_operation(ALU_operation), .op1(ALU_A), .op2(ALU_B), .ALU_result(ALU_result), .Zero(Zero));
+    ALU ALU (.ALU_operation(ALU_operation), .op1(ALU_A_final), .op2(ALU_B_final), .ALU_result(ALU_result), .Zero(Zero));
 
     /*
     * Module: banco_registros
@@ -146,6 +147,8 @@ module datapath
     *   ALU_B -  ALU Second Operand. 
     */
     MUX #(.size(32)) muxALU_B (.a(Read_data2), .b(Immediate_EX), .select(ALUSrc), .res(ALU_B));
+
+    MUX3 #(.size(32)) muxALU_B2 (.a(ALU_B), .b(Write_data_reg), .c(ALU_result_MEM), .select(ForwardB), .res(ALU_B_final));
     
     /*
     * Module: muxALU_A
@@ -161,6 +164,8 @@ module datapath
     *   ALU_A -  ALU First Operand. 
     */
     MUX3 #(.size(32)) muxALU_A (.a(current_PC_EX), .b({32{1'b0}}), .c(Read_data1), .select(AuipcLui), .res(ALU_A));
+
+    MUX3 #(.size(32)) muxALU_A2 (.a(ALU_A), .b(Write_data_reg), .c(ALU_result_MEM), .select(ForwardA), .res(ALU_A_final));
     
     /*
     * Module: muxtoReg
@@ -207,6 +212,7 @@ module ImmGen
     input [31:0] Instruction,
     output logic [31:0] Immediate
 );
+
 always_comb begin
     case (Instruction[6:0])
         7'b0010011: // I-Format Intructions:

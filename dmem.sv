@@ -26,8 +26,11 @@ module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, RESET
     logic [DATA_WIDTH-1:0] DMEM [0:MEM_DEPTH-1]; //packed and unpacked array
 
     // Synchronous Write:
-    always_ff @(posedge clk) begin
-        if (mem_write == 1'b1 && mem_read == 1'b0) 
+    always_ff @(posedge clk or negedge RESET) begin
+        if(!RESET)
+            for (int i = 0; i < MEM_DEPTH; i++)
+                DMEM[i] <= 32'hffffffff;  
+        else if (mem_write == 1'b1 && mem_read == 1'b0) 
             begin
                 DMEM[addr]<=write_data;
                 dout <= dout;

@@ -17,37 +17,38 @@ initial begin
 end
 
 always @(posedge CLK, negedge RESET)
-begin
-    if(!RESET)
-        begin
-            for (int i = 0; i < 32; i++) begin
-                Regs[i] <= 32'b0; 
-            end 
-            ReadData1 <= 32'b0; //lectura síncrona
-            ReadData2 <= 32'b0;
-        end        
-    else
-        begin
-            if((ReadReg1 != WriteReg) & (ReadReg2 != WriteReg)) begin
-                ReadData1 <= Regs[ReadReg1]; //lectura síncrona
-                ReadData2 <= Regs[ReadReg2];
-            end
-            else if (ReadReg1 == WriteReg) begin
-                ReadData1 <= WriteData;
-            end else begin
-                ReadData2 <= WriteData;
-            end
-            if(RegWrite)
+    begin
+        if(!RESET)
             begin
+                for (int i = 0; i < 32; i++) begin
+                    Regs[i] <= 32'b0; 
+                end 
+                ReadData1 <= 32'b0; //lectura síncrona
+                ReadData2 <= 32'b0;
+            end        
+        else if (RegWrite)
+            begin
+                if((ReadReg1 != WriteReg) && (ReadReg2 != WriteReg)) begin
+                    ReadData1 <= Regs[ReadReg1]; //lectura síncrona
+                    ReadData2 <= Regs[ReadReg2];
+                end
+                else if (ReadReg1 == WriteReg) begin
+                    ReadData1 <= WriteData;
+                    ReadData2 <= Regs[ReadReg2];
+                end 
+                else if (ReadReg2 == WriteReg) begin
+                    ReadData1 <= Regs[ReadReg1];
+                    ReadData2 <= WriteData;
+                end
+        
                 if(WriteReg != 0)
                     Regs[WriteReg] <= WriteData;
                 else
                     Regs[WriteReg] <= 32'b0;
             end
-            else
-                Regs <= Regs;
-        end
-end
+        else
+            Regs <= Regs;
+    end
 
 //assign ReadData1 = Regs[ReadReg1];
 //assign ReadData2 = Regs[ReadReg2];

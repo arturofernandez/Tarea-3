@@ -141,13 +141,13 @@ task generar_inst;
 
         $display("END random instruction generation - time=%0t\n", $time);
         Start_Simulation = 1'b1;
-        repeat (2) @(posedge monitor.CLK);
+        repeat (3) @(posedge monitor.CLK);
         $display("INIT verification - time=%0t", $time);
 
         fork
             sb.monitor_input();
             begin
-                repeat (5) @(posedge monitor.CLK);
+                repeat(5) @(posedge monitor.CLK);
                 sb.monitor_output();
             end
         join_none  

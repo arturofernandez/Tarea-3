@@ -37,7 +37,7 @@ module RVI32_Core (
         .Operation(Operation),
         .PCSrc(PCSrc),
         .AuipcLui(AuipcLui),
-        .Jump(Jump_RD)
+        .Jump(Jump_RD),
         .ForwardA(ForwardA),
         .ForwardB(ForwardB)
     );
