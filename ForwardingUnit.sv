@@ -11,7 +11,19 @@
  *  
  * Outputs:
  *  ForwardA - Forwarded Data 1
- *  ForwardB - Frowarde Data 2
+ *  ForwardB - Frowarded Data 2
+ *
+ *  |          Conditions           | ForwardA  | ForwardB  | 
+ *  |-------------------------------|-----------|-----------|
+ *  | No data needs to be forwarded |    00     |     00    |
+ *  |          Rd_WB == Rs2         |    00     |     01    |
+ *  |          Rd_WB == Rs1         |    01     |     00    |
+ *  |      Rd_WB == Rs1 == Rs2      |    01     |     01    |
+ *  |                               |    01     |     10    |
+ *  |                               |    01     |     11    |
+ *  |
+ *
+ *
 */
 module ForwardingUnit(
     input [4:0] Rs1_EX, Rs2_EX, Rd_MEM, Rd_WB,

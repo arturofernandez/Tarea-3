@@ -19,12 +19,13 @@ module RVI32_Core (
     input logic [31:0] idata, ddata_r, 
     output logic [31:0] iaddr, daddr, ddata_w,
     //output logic d_rw 
-    output logic MemRead, MemWrite
+    output logic MemRead, MemWrite, IF_IDWrite
 );
     // Conections:
-    logic ALUSrc, MemtoReg, RegWrite, Zero, Jump_RD, MemWrite_EX;
+    logic ALUSrc, MemtoReg, RegWrite, Zero, Jump_RD, MemWrite_EX, PCWrite;
     logic [3:0] Operation;
     logic [1:0] AuipcLui, PCSrc, ForwardA, ForwardB;
+    logic ControlBubble_EX;
     
     Controlpath Controlpath ( 
         .clock(CLK),
@@ -38,11 +39,14 @@ module RVI32_Core (
         .ALUSrc(ALUSrc),
         .RegWrite(RegWrite),
         .Operation(Operation),
-        .PCSrc(PCSrc),
+        //.PCSrc(PCSrc),
         .AuipcLui(AuipcLui),
         .Jump(Jump_RD),
         .ForwardA(ForwardA),
-        .ForwardB(ForwardB)
+        .ForwardB(ForwardB),
+        .IF_IDWrite(IF_IDWrite),
+        .PCWrite(PCWrite),
+        .ControlBubble_EX(ControlBubble_EX)
     );
 
     datapath datapath (
@@ -50,7 +54,7 @@ module RVI32_Core (
         .reset(RESET_N), 
         .ALUSrc(ALUSrc),
         .MemtoReg(MemtoReg), 
-        .PCSrc(PCSrc),
+        //.PCSrc(PCSrc),
         .ForwardA(ForwardA),
         .ForwardB(ForwardB), 
         .RegWrite(RegWrite),
@@ -63,7 +67,9 @@ module RVI32_Core (
         .Zero(Zero),
         .AuipcLui(AuipcLui),
         .Jump_RD(Jump_RD),
-        .MemWrite_EX(MemWrite_EX)
+        .MemWrite_EX(MemWrite_EX),
+        .PCWrite(PCWrite),
+        .ControlBubble_EX(ControlBubble_EX)
     );
 
 

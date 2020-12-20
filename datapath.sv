@@ -24,17 +24,24 @@
 */
 module datapath 
 (
-    input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, MemWrite_EX, 
-    input [1:0] AuipcLui, PCSrc, ForwardA, ForwardB,
+    input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, MemWrite_EX,  PCWrite,
+    input [1:0] AuipcLui, ForwardA, ForwardB,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
     output logic [31:0] current_PC, ALU_result_MEM, Read_data2_MEM,
-    output logic Zero
+    output logic Zero,
+    output logic ControlBubble_EX
 );
     logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Write_data_reg2, Read_data1, ALU_A;
     logic [31:0] current_PC_ID, current_PC_EX, Immediate_EX, effective_addr_MEM, ALU_result, ALU_result_WB, Read_data2;
     logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB, sum_adder1_ID, sum_adder1_EX, sum_adder1_MEM, sum_adder1_WB;
     logic [31:0] ALU_A_final, ALU_B2, ALU_B_final;
+    logic [31:0] SumaJALR;
+    logic [1:0] PCSrc;
+    logic ControlBubble;
+
+    assign SumaJALR = Registers.Regs[Instruction[19:15]] + Immediate; //Rs1 + imm
+    assign ControlBubble = (PCSrc != 2'b00)? 1:0;
 
     /*
     * Module: ALU
@@ -69,6 +76,7 @@ module datapath
     */
     banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction_WB[11:7]), .WriteData(Write_data_reg2), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
+    Comparador Comparador (.Instruction(Instruction), .A(Registers.Regs[Instruction[19:15]]), .B(Registers.Regs[Instruction[24:20]]), .PCSrc(PCSrc));
     /*
     * Module: ImmGen
     *    Generates the immediate sign extension obtained form the instruction decode. 
@@ -93,7 +101,7 @@ module datapath
     * Outputs:
     *   current_PC - Next Instruction Address. 
     */
-    register PC (.clock(clock), .reset(reset), .a(next_PC), .b(current_PC));
+    register PC (.clock(clock), .reset(reset), .enable(PCWrite), .a(next_PC), .b(current_PC));
 
     /*
     * Module: adder1
@@ -118,7 +126,7 @@ module datapath
     * Outputs:
     *   effective_addr - current_PC + Immediate * 4. 
     */
-    adder #(.size(32)) adder2 (.a(current_PC_EX), .b(Immediate_EX), .res(effective_addr));
+    adder #(.size(32)) adder2 (.a(current_PC_ID), .b(Immediate), .res(effective_addr));
 
     /*
     * Module: muxPC
@@ -132,7 +140,7 @@ module datapath
     * Outputs:
     *   next_PC - Next Instruction Address to be loaded into PC Register. 
     */
-    MUX3 #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr_MEM), .c(ALU_result_MEM), .select(PCSrc), .res(next_PC));
+    MUX3 #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .c(SumaJALR), .select(PCSrc), .res(next_PC));
 
     /*
     * Module: muxALU_B
@@ -149,7 +157,7 @@ module datapath
     MUX #(.size(32)) muxALU_B (.a(Read_data2), .b(Immediate_EX), .select(ALUSrc), .res(ALU_B));
 
     MUX3 #(.size(32)) muxALU_B2 (.a(ALU_B), .b(Write_data_reg), .c(ALU_result_MEM), .select(ForwardB), .res(ALU_B2));
-
+    
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -159,7 +167,7 @@ module datapath
     // MemWrite_EX se activa a 1 si es una SW, entonces a la ALU le entra el immediato para calcular la posicón de memoria donde debe escribir. 
     // Sino la ALU coge siempre la salida del MUX del forwarding
     // Además, la salida del datapath que se acaba uniendo con la entrada de datos a escribir en la memoria, 
-    // que es Read_data2_MEM es igual (non-bloquing para registrarse) a ALU_B2, que es la salida del muxALU_B2, es decir,
+    // que es Read_data2_MEM es igual (non-blocking para registrarse) a ALU_B2, que es la salida del muxALU_B2, es decir,
     // el dato con Forwarding realizado
     
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -206,6 +214,7 @@ module datapath
             current_PC_ID <= current_PC;
             sum_adder1_ID <= sum_adder1;
             //ID-EX
+            ControlBubble_EX <= ControlBubble;
             Instruction_EX <= Instruction;
             current_PC_EX <= current_PC_ID;
             Immediate_EX <= Immediate;
@@ -255,15 +264,17 @@ endmodule:ImmGen
 
 module register 
 (
-    input clock, reset,
+    input clock, reset, enable,
     input [31:0] a,
     output logic [31:0] b
 );
 always_ff @(posedge clock or negedge reset)
     if (!reset)
         b <= {32{1'b0}};
-    else
+    else if(enable)
         b <= a;
+    else
+        b <= b;
 endmodule:register
 
 module MUX #(parameter size = 32) 

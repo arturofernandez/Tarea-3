@@ -2,6 +2,7 @@ module Controlpath (
     input logic clock,
     input logic [31:0] Instruction,
     input logic Zero,
+    input logic ControlBubble_EX,
     output logic MemRead,
     output logic MemtoReg,
     output logic MemWrite,
@@ -13,7 +14,9 @@ module Controlpath (
     output logic [1:0] PCSrc,
     output logic [1:0] AuipcLui,
     output logic [1:0] ForwardA, 
-    output logic [1:0] ForwardB
+    output logic [1:0] ForwardB,
+    output logic PCWrite,
+    output logic IF_IDWrite
 ); 
 
     logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB;
@@ -109,20 +112,44 @@ module Controlpath (
         .ForwardB(ForwardB)
     );
 
+    hazardUnit hazardUnit (
+        .Rs1_ID(Instruction[19:15]), 
+        .Rs2_ID(Instruction[24:20]), 
+        .Rd_EX(Instruction_EX[11:7]),
+        .MemRead_EX(MemRead_EX),
+        .ControlBubble(ControlBubble_EX),
+        .PCWrite(PCWrite), 
+        .IF_IDWrite(IF_IDWrite), 
+        .ControlSrc(ControlSrc)
+    );
+    
     always_ff @(posedge clock)
         begin
             //IF-ID
             //ID-EX
             Instruction_EX <= Instruction;
-            MemRead_EX <= MemRead_ID;
-            MemtoReg_EX <= MemtoReg_ID;
-            MemWrite_EX <= MemWrite_ID;
-            ALUSrc <= ALUSrc_ID;
-            RegWrite_EX <= RegWrite_ID;
-            Branch_EX <= Branch_ID;
-            AuipcLui <= AuipcLui_ID;
-            ALUOp <= ALUOp_ID;
-            Jump_EX <= Jump_ID;
+            if (ControlSrc) begin
+                MemRead_EX <= MemRead_ID;
+                MemtoReg_EX <= MemtoReg_ID;
+                MemWrite_EX <= MemWrite_ID;
+                ALUSrc <= ALUSrc_ID;
+                RegWrite_EX <= RegWrite_ID;
+                Branch_EX <= Branch_ID;
+                AuipcLui <= AuipcLui_ID;
+                ALUOp <= ALUOp_ID;
+                Jump_EX <= Jump_ID;
+            end
+            else begin
+                MemRead_EX <= 0;
+                MemtoReg_EX <= 0;
+                MemWrite_EX <= 0;
+                ALUSrc <= 0;
+                RegWrite_EX <= 0;
+                Branch_EX <= 0;
+                AuipcLui <= 0;
+                ALUOp <= 0;
+                Jump_EX <= 0;
+            end
             //EX_MEM
             Instruction_MEM <= Instruction_EX;
             Zero_MEM <= Zero;
