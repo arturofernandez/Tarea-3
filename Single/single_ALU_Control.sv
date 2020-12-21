@@ -1,4 +1,16 @@
-module ALU_Control (
+/*
+ * Module: single_ALU_Control
+ *    ALU Control signals Unit
+ *
+ * Inputs:
+ *
+ *  Instruction - FUNCT3 (bits [14:12]) concatenaded with 30th bit (inside FUNCT7) of 32 bit instruction
+ *  ALUOp - TODO: 
+ *
+ * Outputs:
+ *  Operation - 4 bits cobination withc associates an instrucyion with the respective ALU operation (add, substraction etc.) 
+*/
+module single_ALU_Control (
     input logic [3:0] Instruction,
     input logic [2:0] ALUOp,
     output logic [3:0] Operation

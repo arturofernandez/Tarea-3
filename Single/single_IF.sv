@@ -8,7 +8,7 @@
  *  WIDTH - Address Width 
  *  
 */
-interface IF #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (
+interface single_IF #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (
     input CLK, RESET_N,
     ref logic [31:0] Regs [31:0],
     ref logic [DATA_WIDTH-1:0] RAM [0:MEM_DEPTH-1],

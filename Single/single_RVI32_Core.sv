@@ -14,7 +14,7 @@
  *  ddata_w - Data RAM (DMEM data input). 
  *  d_rw - R/W Control signal RAM (DMEM).
 */
-module RVI32_Core (
+module single_RVI32_Core (
     input CLK, RESET_N, 
     input logic [31:0] idata, ddata_r, 
     output logic [31:0] iaddr, daddr, ddata_w,
@@ -25,7 +25,7 @@ module RVI32_Core (
     logic [3:0] Operation;
     logic [1:0] AuipcLui;
     
-    Controlpath Controlpath ( 
+    single_Controlpath Controlpath ( 
         .Instruction(idata),
         .Zero(Zero),
         .MemRead(),
@@ -38,7 +38,7 @@ module RVI32_Core (
         .AuipcLui(AuipcLui)
     );
 
-    datapath datapath (
+    single_datapath datapath (
         .clock(CLK), 
         .reset(RESET_N), 
         .ALUSrc(ALUSrc),

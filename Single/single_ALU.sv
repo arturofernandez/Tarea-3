@@ -7,7 +7,7 @@
 // SLL, SRL, SRA
 // JAL, JALR, BLT, BLTU, BGE, BGEU.
 
-module ALU (
+module single_ALU (
     input [3:0] ALU_operation,
     input [31:0] op1,
     input [31:0] op2,

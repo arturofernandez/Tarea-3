@@ -15,7 +15,7 @@
  *  mem0_dr - Read data output.
 */
 
-module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, RESET, write_data, addr, mem_write, dout);
+module single_dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, RESET, write_data, addr, mem_write, dout);
     input clk;
     input RESET;
     input [DATA_WIDTH-1:0]  write_data; 

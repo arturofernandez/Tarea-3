@@ -22,7 +22,7 @@
  *  Read_data2 -   
  *  Zero -  
 */
-module datapath 
+module single_datapath 
 (
     input clock, reset, ALUSrc ,MemtoReg, PCSrc, RegWrite, 
     input [1:0] AuipcLui,
@@ -172,7 +172,7 @@ module datapath
     *   ALU_A -  ALU First Operand. 
     */
     MUX3 #(.size(32)) muxALU_A (.a(current_PC), .b({32{1'b0}}), .c(Read_data1), .select(AuipcLui), .res(ALU_A));
-endmodule:datapath
+endmodule:single_datapath
 
 module ImmGen 
 (

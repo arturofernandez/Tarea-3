@@ -1,7 +1,7 @@
-`include "Scoreboard.sv"
-`include "aleatorizacion.sv"
+`include "single_Scoreboard.sv"
+`include "single_aleatorizacion.sv"
 `timescale 1ns/1ps 
-program estimulos (IF.monitor monitor, output logic Start_Simulation);
+program single_estimulos (IF.monitor monitor, output logic Start_Simulation);
 
     covergroup instrucciones; 
         rformat : coverpoint({monitor.cb_monitor.idata[30],monitor.cb_monitor.idata[14:12]}) iff (monitor.cb_monitor.idata[6:0]==7'b0110011&&monitor.cb_monitor.idata[31]==1'b0&&monitor.cb_monitor.idata[29:25]==5'b0000)

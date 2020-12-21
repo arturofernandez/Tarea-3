@@ -9,7 +9,7 @@
  * Outputs:
  *  idata - Read Instruction output.
 */
-module imem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (iaddr,idata);
+module single_imem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (iaddr,idata);
     input [$clog2(MEM_DEPTH)-1:0] iaddr;
     output [DATA_WIDTH-1:0] idata;
 
