@@ -15,6 +15,8 @@ module Controlpath (
     output logic [1:0] AuipcLui,
     output logic [1:0] ForwardA, 
     output logic [1:0] ForwardB,
+    output logic [1:0] ForwardBranchA,
+    output logic [1:0] ForwardBranchB,
     output logic PCWrite,
     output logic IF_IDWrite
 ); 
@@ -110,6 +112,19 @@ module Controlpath (
         .RegWrite_WB(RegWrite),
         .ForwardA(ForwardA), 
         .ForwardB(ForwardB)
+    );
+
+    ForwardingBranchUnit ForwardingBranchUnit(
+        .Rs1_ID(Instruction[19:15]), 
+        .Rs2_ID(Instruction[24:20]),
+        .Rd_EX(Instruction_EX[11:7]), 
+        .Rd_MEM(Instruction_MEM[11:7]), 
+        .Rd_WB(Instruction_WB[11:7]), 
+        .RegWrite_EX(RegWrite_EX),
+        .RegWrite_MEM(RegWrite_MEM),
+        .RegWrite_WB(RegWrite),
+        .ForwardBranchA(ForwardBranchA), 
+        .ForwardBranchB(ForwardBranchB)
     );
 
     hazardUnit hazardUnit (

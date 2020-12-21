@@ -25,7 +25,7 @@
 module datapath 
 (
     input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, MemWrite_EX,  PCWrite,
-    input [1:0] AuipcLui, ForwardA, ForwardB,
+    input [1:0] AuipcLui, ForwardA, ForwardB, ForwardBranchA, ForwardBranchB,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
     output logic [31:0] current_PC, ALU_result_MEM, Read_data2_MEM,
@@ -37,6 +37,7 @@ module datapath
     logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB, sum_adder1_ID, sum_adder1_EX, sum_adder1_MEM, sum_adder1_WB;
     logic [31:0] ALU_A_final, ALU_B2, ALU_B_final;
     logic [31:0] SumaJALR;
+    logic [31:0] CompA, CompB;
     logic [1:0] PCSrc;
     logic ControlBubble;
 
@@ -76,7 +77,7 @@ module datapath
     */
     banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction_WB[11:7]), .WriteData(Write_data_reg2), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
-    Comparador Comparador (.Instruction(Instruction), .A(Registers.Regs[Instruction[19:15]]), .B(Registers.Regs[Instruction[24:20]]), .PCSrc(PCSrc));
+    Comparador Comparador (.Instruction(Instruction), .A(CompA), .B(CompB), .PCSrc(PCSrc));
     /*
     * Module: ImmGen
     *    Generates the immediate sign extension obtained form the instruction decode. 
@@ -142,6 +143,9 @@ module datapath
     */
     MUX3 #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .c(SumaJALR), .select(PCSrc), .res(next_PC));
 
+    MUX4 #(.size(32)) muxBranchA (.a(Registers.Regs[Instruction[19:15]]), .b(Write_data_reg), .c(ALU_result_MEM), .d(ALU_result), .select(ForwardBranchA), .res(CompA));
+
+    MUX4 #(.size(32)) muxBranchB (.a(Registers.Regs[Instruction[24:20]]), .b(Write_data_reg), .c(ALU_result_MEM), .d(ALU_result), .select(ForwardBranchB), .res(CompB));
     /*
     * Module: muxALU_B
     *    Selects the type of operand of the ALUs second operand (immediate or register).
@@ -297,10 +301,27 @@ module MUX3 #(parameter size = 32)
             2'b00: res = a;
             2'b01: res = b;
             2'b10: res = c;
-            default: res = c;
+            default: res = a;
         endcase
     end 
 endmodule:MUX3
+
+module MUX4 #(parameter size = 32) 
+(
+    input [size-1:0] a, b, c, d,
+    input [1:0] select,
+    output reg [size-1:0] res
+);
+    always_comb begin
+        case(select)
+            2'b00: res = a;
+            2'b01: res = b;
+            2'b10: res = c;
+            2'b11: res = d;
+            default: res = a;
+        endcase
+    end 
+endmodule:MUX4
 
 module adder #(parameter size = 32) 
 (

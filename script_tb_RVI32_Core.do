@@ -14,6 +14,7 @@ vlog -work work -vopt -sv -cover sbcet3 {RVI32_Core.sv}
 vlog -work work -vopt -sv -cover sbcet3 {Scoreboard.sv}
 vlog -work work -vopt -sv -cover sbcet3 {tb_RVI32_Core.sv}
 vlog -work work -vopt -sv -cover sbcet3 {ForwardingUnit.sv}
+vlog -work work -vopt -sv -cover sbcet3 {ForwardingBranchUnit.sv}
 vlog -work work -vopt -sv -cover sbcet3 {hazardUnit.sv}
 vlog -work work -vopt -sv -cover sbcet3 {Comparador.sv}
 

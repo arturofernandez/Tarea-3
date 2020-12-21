@@ -73,7 +73,7 @@ begin
             MemtoReg = 1'b0;
             ALUOp = 3'b011;
             MemWrite = 1'b1;
-            ALUSrc = 1'b1;
+            ALUSrc = 1'b0;
             RegWrite = 1'b0;
             AuipcLui = 2'b10;
             Jump = 1'b0;

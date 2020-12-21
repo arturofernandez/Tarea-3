@@ -52,6 +52,7 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation);
     instrucciones my_cg;
     logic [31:0] instt_queue [$];
     logic [31:0] inst;
+    logic FINISH;
     int fd, i;
 
 
@@ -155,13 +156,17 @@ task generar_inst;
         //$display("%0h",monitor.cb_monitor.idata);
         // $display("%0h",monitor.cb_monitor.iaddr);
         // @(posedge monitor.CLK) my_cg.sample();
+        
+        FINISH = 1'b1;
 
-        while(monitor.cb_monitor.idata !== {32{1'bx}})
+        while(monitor.cb_monitor.idata === {32{1'bx}})
         begin
-            @(posedge monitor.CLK) my_cg.sample();
+            //assert property @(posedge monitor.CLK) ((monitor.cb_monitor.idata === {32{1'bx}}) |=> (monitor.cb_monitor.idata !== {32{1'bx}})) 
+            //else   FINISH = 1'b0;
+            @(posedge monitor.CLK) my_cg.sample(); 
         end
         
-        repeat (12) @(posedge monitor.CLK);
+        repeat (500) @(posedge monitor.CLK); //para que acabe el scoreboard
         $display("END verification - time=%0t\n", $time);
         $stop;
     end
