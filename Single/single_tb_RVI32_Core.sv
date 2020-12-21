@@ -12,7 +12,7 @@ module tb_RVI32_Core ();
     //logic [31:0] inst;
 
     // instanciación del core 
-    RVI32_Core Core (
+    single_RVI32_Core Core (
         .CLK(CLK), 
         .RESET_N(RESET_N), 
         .idata(idata), 
@@ -23,7 +23,7 @@ module tb_RVI32_Core ();
         .d_rw(d_rw) 
     );
 
-    dmem #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) RAM (
+    single_dmem #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) RAM (
         .clk(CLK),
         .RESET(RESET_N), 
         .write_data(ddata_w), 
@@ -32,7 +32,7 @@ module tb_RVI32_Core ();
         .dout(ddata_r)
     );
 
-    imem ROM (
+    single_imem ROM (
         .iaddr(iaddr[11:2]),
         .idata(idata)
     );
@@ -41,7 +41,7 @@ module tb_RVI32_Core ();
     IF #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) interfaz (.CLK(CLK), .RESET_N(RESET_N), .Regs(Core.datapath.Registers.Regs), .RAM(RAM.DMEM), .imm(Core.datapath.ImmGen.Immediate), .idata(idata), .ddata_r(ddata_r), .iaddr(iaddr), .daddr(daddr), .ddata_w(ddata_w), .d_rw(d_rw));
 
     //instanciación del program
-    estimulos estimulos (.monitor(interfaz), .Start_Simulation(Start_Simulation));
+    single_estimulos estimulos (.monitor(interfaz), .Start_Simulation(Start_Simulation));
 
     always begin
         #(T/2) CLK <= ~CLK;

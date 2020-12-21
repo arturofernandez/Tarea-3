@@ -1,4 +1,25 @@
-module Controlpath (
+/*
+ * Module: single_Controlpath
+ *    Englobes all the intances of the Data Path Modules.
+ *
+ * Inputs:
+ *
+ *  Instruction - 32 bit instruction stored in the Instruction Memory (IMEM).
+ *  Zero - ALU output (high if result is zero, and low for the rest of cases)
+ *  
+ * Outputs:
+ *
+ *  clock - clock signal required for synchronous events.
+ *  ALUSrc - MUX select singal.
+ *  MemtoReg - aa. 
+ *  PCSrc - aaa.
+ *  RegWrite - aaa.
+ *  Instruction - 32 bit Instruction.
+ *  Read_data - aa.
+ *  ALU_operation - aa.
+ *  RegWrite - aa.
+*/
+module single_Controlpath (
     input logic [31:0] Instruction,
     input logic Zero,
     output logic MemRead,

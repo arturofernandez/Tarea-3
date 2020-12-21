@@ -1,4 +1,4 @@
-module banco_registros(
+module single_banco_registros(
     input CLK,
     input RESET,
     input logic [4:0] ReadReg1,

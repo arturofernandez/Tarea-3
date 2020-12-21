@@ -1,4 +1,4 @@
-module duv (IF.core BUS);
+module single_duv (IF.core BUS);
     RVI32_Core DUV (
         .CLK(BUS.CLK), 
         .RESET_N(BUS.RESET_N), 

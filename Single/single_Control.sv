@@ -1,4 +1,4 @@
-module Control (
+module single_Control (
     input logic [6:0] Instruction,
     output logic Branch,
     output logic MemRead,
