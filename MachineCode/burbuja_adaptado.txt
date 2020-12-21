@@ -40,16 +40,16 @@ beq t4,t2,done2 #cuando j=Nelementos acaba
 addi t4,t4,1 #j++
 lw t2,0(t1) #cogemos el valor de lista[j]
 lw t5,4(t1) #cogemos el valor de lista[j+1]
-#bge t5,t2,done3
-slt x1,t5,t2
-beq x1,x0,done3
+bge t5,t2,done3
+#slt x1,t5,t2
+#beq x1,x0,done3
 add t6,x0,t2 #temp = lista[j]
 sw t5,0(t1) #lista[j] = lista[j+1]
 sw t6,4(t1) #lista[j+1] = temp
 done3:
 addi t1,t1,4
-beq x0,x0,loopj
+j loopj
 done2:
 addi t4,x0,1
-beq x0,x0,loopi
+j loopi
 done:

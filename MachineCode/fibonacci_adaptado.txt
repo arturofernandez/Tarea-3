@@ -45,7 +45,7 @@ lw t1,0(t6) # guardo el VALOR de N en t1
 addi t2,x0,2 # guardo i = 2(minimo valor de N) en t2
 
 loop:
-beq  t2,t1,done # si N = i acaba
+bge  t2,t1,done # si N = i acaba
 addi t2,t2,1
 lw t4,0(t3)
 lw t5,4(t3)
@@ -58,5 +58,5 @@ addi a0,x0,11
 addi a1,x0,13
 ecall
 addi t3,t3,4
-beq x0,x0,loop
+j loop
 done:

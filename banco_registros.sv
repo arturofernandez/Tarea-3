@@ -40,12 +40,17 @@ always @(posedge CLK, negedge RESET)
                     ReadData1 <= Regs[ReadReg1];
                     ReadData2 <= WriteData;
                 end
-        
-                if(WriteReg != 0)
-                    Regs[WriteReg] <= WriteData;
-                else
-                    Regs[WriteReg] <= 32'b0;
             end
+        else
+            begin
+                ReadData1 <= Regs[ReadReg1]; //lectura síncrona
+                ReadData2 <= Regs[ReadReg2];
+            end
+            
+        if(WriteReg != 0 && RegWrite)
+            Regs[WriteReg] <= WriteData;
+        else if(WriteReg == 0)
+            Regs[WriteReg] <= 32'b0;
         else
             Regs <= Regs;
     end
