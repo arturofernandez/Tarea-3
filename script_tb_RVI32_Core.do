@@ -26,5 +26,13 @@ add wave -position 4  sim:/tb_RVI32_Core/ddata_r
 add wave -position 5  sim:/tb_RVI32_Core/iaddr
 add wave -position 6  sim:/tb_RVI32_Core/daddr
 add wave -position 7  sim:/tb_RVI32_Core/ddata_w
+add wave -position 8  sim:/tb_RVI32_Core/Core/ForwardA
+add wave -position 9  sim:/tb_RVI32_Core/Core/ForwardB
+add wave -position 10  sim:/tb_RVI32_Core/Core/ControlBubble_EX
+add wave -position 11  sim:/tb_RVI32_Core/Core/IF_IDWrite
+add wave -position 12  sim:/tb_RVI32_Core/Core/Controlpath/ControlSrc
+add wave -position 13  sim:/tb_RVI32_Core/Core/datapath/ALU_A_final
+add wave -position 14  sim:/tb_RVI32_Core/Core/datapath/ALU_B_final
+add wave -position 15  sim:/tb_RVI32_Core/Core/datapath/ALU_result
 add wave -position end  sim:/tb_RVI32_Core/d_rw
 run -all
