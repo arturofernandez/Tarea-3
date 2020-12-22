@@ -160,20 +160,20 @@ task generar_inst;
         FINISH = 1'b1;
         FlagX = 1'b1;
 
-        // while(FINISH)
-        //     begin
-        //         //assert property @(posedge monitor.CLK) ((monitor.cb_monitor.idata === {32{1'bx}}) |=> (monitor.cb_monitor.idata !== {32{1'bx}})) 
-        //         //else   FINISH = 1'b0;
-        //         @(posedge monitor.CLK) my_cg.sample(); 
-        //         if(FlagX == 1'b0 && monitor.cb_monitor.idata === {32{1'bx}}) 
-        //             FINISH = 1'b0;
-        //         else if (monitor.cb_monitor.idata === {32{1'bx}})
-        //             FlagX = 1'b0;
-        //         else
-        //             FlagX = 1'b1;
-        //     end
+        while(FINISH)
+            begin
+                //assert property @(posedge monitor.CLK) ((monitor.cb_monitor.idata === {32{1'bx}}) |=> (monitor.cb_monitor.idata !== {32{1'bx}})) 
+                //else   FINISH = 1'b0;
+                @(posedge monitor.CLK) my_cg.sample(); 
+                if(FlagX == 1'b0 && monitor.cb_monitor.idata === {32{1'bx}}) 
+                    FINISH = 1'b0;
+                else if (monitor.cb_monitor.idata === {32{1'bx}})
+                    FlagX = 1'b0;
+                else
+                    FlagX = 1'b1;
+            end
         
-        repeat (200) @(posedge monitor.CLK); //para que acabe el scoreboard
+        repeat (6) @(posedge monitor.CLK); //para que acabe el scoreboard
         $display("END verification - time=%0t\n", $time);
         $stop;
     end

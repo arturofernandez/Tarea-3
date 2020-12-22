@@ -1,6 +1,7 @@
 module hazardUnit (
-    input [4:0] Rs1_ID, Rs2_ID, Rd_EX,
-    input MemRead_EX,
+    input [4:0] Rs1_ID, Rs2_ID, Rd_EX, Rd_MEM,
+    input MemRead_EX, MemRead_MEM,
+    input [6:0] opcode_ID,
     input ControlBubble,
     output logic PCWrite, IF_IDWrite, ControlSrc 
 );
@@ -12,7 +13,7 @@ module hazardUnit (
                 PCWrite = 0;
                 IF_IDWrite = 0;
             end
-        else if(MemRead_MEM && (opcode == 7'b1100011 || opcode == 7'b1100111) && ((Rd_MEM == Rs1_ID) || (Rd_MEM == Rs2_ID)))
+        else if(MemRead_MEM && (opcode_ID == 7'b1100011 || opcode_ID == 7'b1100111) && ((Rd_MEM == Rs1_ID) || (Rd_MEM == Rs2_ID)))
             begin
                 ControlSrc = 0;  // el mux elige 0 en lugar de control
                 PCWrite = 0;

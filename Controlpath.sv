@@ -18,7 +18,8 @@ module Controlpath (
     output logic [1:0] ForwardBranchA,
     output logic [1:0] ForwardBranchB,
     output logic PCWrite,
-    output logic IF_IDWrite
+    output logic IF_IDWrite,
+    output logic ControlSrc
 ); 
 
     logic [31:0] Instruction_EX, Instruction_MEM, Instruction_WB;
@@ -131,7 +132,10 @@ module Controlpath (
         .Rs1_ID(Instruction[19:15]), 
         .Rs2_ID(Instruction[24:20]), 
         .Rd_EX(Instruction_EX[11:7]),
+        .Rd_MEM(Instruction_MEM[11:7]),
         .MemRead_EX(MemRead_EX),
+        .MemRead_MEM(MemRead),
+        .opcode_ID(Instruction[6:0]),
         .ControlBubble(ControlBubble_EX),
         .PCWrite(PCWrite), 
         .IF_IDWrite(IF_IDWrite), 

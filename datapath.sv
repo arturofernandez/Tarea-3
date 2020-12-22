@@ -24,7 +24,7 @@
 */
 module datapath 
 (
-    input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, MemWrite_EX,  PCWrite,
+    input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump_RD, MemWrite_EX,  PCWrite, ControlSrc, IF_IDWrite,
     input [1:0] AuipcLui, ForwardA, ForwardB, ForwardBranchA, ForwardBranchB,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
@@ -77,7 +77,7 @@ module datapath
     */
     banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction_WB[11:7]), .WriteData(Write_data_reg2), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
-    Comparador Comparador (.Instruction(Instruction), .A(CompA), .B(CompB), .PCSrc(PCSrc));
+    Comparador Comparador (.Instruction(Instruction), .A(CompA), .B(CompB), .enable(ControlSrc), .PCSrc(PCSrc));
     /*
     * Module: ImmGen
     *    Generates the immediate sign extension obtained form the instruction decode. 
@@ -215,8 +215,16 @@ module datapath
     always_ff @(posedge clock)
         begin
             //IF-ID
-            current_PC_ID <= current_PC;
-            sum_adder1_ID <= sum_adder1;
+            if(IF_IDWrite)
+                begin
+                    current_PC_ID <= current_PC;
+                    sum_adder1_ID <= sum_adder1;
+                end
+            else
+                begin
+                    current_PC_ID <= current_PC_ID;
+                    sum_adder1_ID <= sum_adder1_ID;
+                end
             //ID-EX
             ControlBubble_EX <= ControlBubble;
             Instruction_EX <= Instruction;

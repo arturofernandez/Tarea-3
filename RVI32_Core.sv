@@ -25,7 +25,7 @@ module RVI32_Core (
     logic ALUSrc, MemtoReg, RegWrite, Zero, Jump_RD, MemWrite_EX, PCWrite;
     logic [3:0] Operation;
     logic [1:0] AuipcLui, PCSrc, ForwardA, ForwardB, ForwardBranchA, ForwardBranchB;
-    logic ControlBubble_EX;
+    logic ControlBubble_EX, ControlSrc;
     
     Controlpath Controlpath ( 
         .clock(CLK),
@@ -48,6 +48,7 @@ module RVI32_Core (
         .ForwardBranchB(ForwardBranchB),
         .IF_IDWrite(IF_IDWrite),
         .PCWrite(PCWrite),
+        .ControlSrc(ControlSrc),
         .ControlBubble_EX(ControlBubble_EX)
     );
 
@@ -71,6 +72,7 @@ module RVI32_Core (
         .Jump_RD(Jump_RD),
         .MemWrite_EX(MemWrite_EX),
         .PCWrite(PCWrite),
+        .ControlSrc(ControlSrc),
         .ControlBubble_EX(ControlBubble_EX),
         .ForwardBranchA(ForwardBranchA),
         .ForwardBranchB(ForwardBranchB)
