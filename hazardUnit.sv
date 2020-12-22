@@ -7,21 +7,21 @@ module hazardUnit (
 );
 
     always_comb begin
-        if(MemRead_EX && ((Rd_EX == Rs1_ID) || (Rd_EX == Rs2_ID)))
+        if(MemRead_EX && ((Rd_EX == Rs1_ID) || (Rd_EX == Rs2_ID))) //burbuja por LW
             begin
                 ControlSrc = 0;  // el mux elige 0 en lugar de control
                 PCWrite = 0;
                 IF_IDWrite = 0;
             end
-        else if(MemRead_MEM && (opcode_ID == 7'b1100011 || opcode_ID == 7'b1100111) && ((Rd_MEM == Rs1_ID) || (Rd_MEM == Rs2_ID)))
+        else if(MemRead_MEM && (opcode_ID == 7'b1100011 || opcode_ID == 7'b1100111) && ((Rd_MEM == Rs1_ID) || (Rd_MEM == Rs2_ID))) //burbuja por LW con Branch enla siguiente instrucción
             begin
                 ControlSrc = 0;  // el mux elige 0 en lugar de control
                 PCWrite = 0;
                 IF_IDWrite = 0;
             end    
-        else if (ControlBubble)
+        else if (ControlBubble) //burbuja por salto Branch or Jump efectivo
             begin
-                ControlSrc = 0;  // el mux elige control en lugar de 0
+                ControlSrc = 0;  // el mux elige 0 en lugar de control
                 PCWrite = 1;
                 IF_IDWrite = 1;            
             end
@@ -32,6 +32,5 @@ module hazardUnit (
                 IF_IDWrite = 1;            
             end
     end
-
 endmodule
 

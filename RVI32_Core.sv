@@ -75,7 +75,8 @@ module RVI32_Core (
         .ControlSrc(ControlSrc),
         .ControlBubble_EX(ControlBubble_EX),
         .ForwardBranchA(ForwardBranchA),
-        .ForwardBranchB(ForwardBranchB)
+        .ForwardBranchB(ForwardBranchB),
+        .IF_IDWrite(IF_IDWrite)
     );
 
 
