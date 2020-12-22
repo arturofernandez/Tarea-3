@@ -643,22 +643,23 @@ OL;O;10.4;61
 R0
 vadder
 Z83 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
-R50
-r1
-!s85 0
-31
+Z84 !s110 1608638045
 !i10b 1
 !s100 faY4oki^gnKOnG7LcO87i0
 Ihl5zSMZ`I7nzILoKMR0_D0
-Z84 !s105 datapath_sv_unit
+R50
+Z85 !s105 datapath_sv_unit
 S1
-Z85 dC:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3
-Z86 w1608575636
+Z86 dC:/Users/Alejandro/Documents/Teleco/ISDIGI/TAREA3/Tarea-3
+Z87 w1608575636
 R1
 R2
 L0 326
 R3
-Z87 !s108 1608580914.980000
+r1
+!s85 0
+31
+Z88 !s108 1608638045.879000
 R44
 R45
 !i113 0
@@ -666,15 +667,15 @@ R57
 R58
 Xaleatorizacion_sv_unit
 R83
-!s110 1608580913
+R84
 !i10b 1
 R5
 R6
 R7
 !i103 1
 S1
-R85
-Z88 w1608216454
+R86
+Z89 w1608216454
 R46
 R47
 L0 9
@@ -682,7 +683,7 @@ R3
 r1
 !s85 0
 31
-!s108 1608580913.978000
+!s108 1608638045.198000
 R59
 R60
 !i113 0
@@ -690,22 +691,23 @@ R57
 R58
 vALU
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 R48
 R49
+R50
 R9
 S1
-R85
-Z89 w1608213756
+R86
+Z90 w1608213756
 R10
 R11
 R12
 R3
-!s108 1608580914.299000
+r1
+!s85 0
+31
+!s108 1608638045.422000
 R61
 R62
 !i113 0
@@ -713,22 +715,23 @@ R57
 R58
 vALU_Control
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 B;eA:1[bG8mcMmg5MLl0N0
 ICd0GYLn<=[10[P`F5E_`62
+R50
 !s105 ALU_Control_sv_unit
 S1
-R85
-R89
+R86
+R90
 R14
 R15
 L0 1
 R3
-!s108 1608580914.123000
+r1
+!s85 0
+31
+!s108 1608638045.311000
 R63
 R64
 !i113 0
@@ -736,22 +739,23 @@ R57
 R58
 vbanco_registros
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 E2iAXWRmez`K4C9RkS9iY3
 Ie^MdoMEiT5aVg5AmU2]6L1
+R50
 !s105 banco_registros_sv_unit
 S1
-R85
+R86
 w1608579959
 8banco_registros.sv
 Fbanco_registros.sv
 L0 1
 R3
-!s108 1608580914.449000
+r1
+!s85 0
+31
+!s108 1608638045.545000
 R65
 R66
 !i113 0
@@ -768,13 +772,13 @@ r1
 I[9K4oJVo`c=JZ01cKl7ah1
 !s105 Comparador_sv_unit
 S1
-R85
 R86
+R87
 8Comparador.sv
 FComparador.sv
 L0 1
 R3
-!s108 1608580916.718000
+!s108 1608636000.305000
 !s107 Comparador.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|Comparador.sv|
 !i113 0
@@ -783,22 +787,23 @@ R58
 n@comparador
 vControl
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 e:ODDX:8Lm;FB_3`[HZz>3
 Im;>?4>Z9RNPf56:7FVbUe1
+R50
 !s105 Control_sv_unit
 S1
-R85
 R86
+R87
 R16
 R17
 L0 1
 R3
-!s108 1608580914.637000
+r1
+!s85 0
+31
+!s108 1608638045.658000
 R67
 R68
 !i113 0
@@ -806,22 +811,23 @@ R57
 R58
 vControlpath
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 E_c4XL0CZoH7aahMW5?oj2
 I00;NCiJ[LBnk7U>3<mCZ33
+R50
 !s105 Controlpath_sv_unit
 S1
-R85
 R86
+R87
 R18
 R19
 L0 1
 R3
-!s108 1608580914.764000
+r1
+!s85 0
+31
+!s108 1608638045.752000
 R69
 R70
 !i113 0
@@ -829,22 +835,23 @@ R57
 R58
 vdatapath
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 ;fVUH5QcJ0zD2@<l:KW2Q1
 I:UhlTMUCe;Rk=aQo]030Y3
-R84
-S1
+R50
 R85
+S1
 R86
+R87
 R1
 R2
 L0 25
 R3
-R87
+r1
+!s85 0
+31
+R88
 R44
 R45
 !i113 0
@@ -852,22 +859,23 @@ R57
 R58
 vdmem
 R83
-R50
-r1
-!s85 0
-31
+Z91 !s110 1608638046
 !i10b 1
 !s100 0`lKXKzoCFoYR>Y8OQmGb3
 I=jVZ`h0jW[Uo1[JWBGfc`3
+R50
 R20
 S1
-R85
 R86
+R87
 R21
 R22
 R23
 R3
-!s108 1608580915.159000
+r1
+!s85 0
+31
+!s108 1608638046.008000
 R71
 R72
 !i113 0
@@ -875,23 +883,23 @@ R57
 R58
 4estimulos
 R83
-DXx4 work 17 estimulos_sv_unit 0 22 <?j=DCdEhMe:i=FXKWkWe1
+DXx4 work 17 estimulos_sv_unit 0 22 kdbZ<ZljCNBYifmffL?kf1
 R50
 r1
 !s85 0
 31
 !i10b 1
-!s100 ?2OL^[?QHTfHPSG3giMhi3
-IW:Q95SB=RG:EI8cUYP>mA0
+!s100 FoPAB]MQ4`b4TGi9X<]fZ2
+If0B_aXbL6:fBP_S>JK_Yj0
 R24
 S1
-R85
 R86
+Z92 w1608635969
 R25
 R26
 L0 4
 R3
-Z90 !s108 1608580915.308000
+Z93 !s108 1608638046.104000
 R27
 R28
 !i113 0
@@ -899,24 +907,24 @@ R57
 R58
 Xestimulos_sv_unit
 R83
-V<?j=DCdEhMe:i=FXKWkWe1
+VkdbZ<ZljCNBYifmffL?kf1
 r1
 !s85 0
 31
 !i10b 1
-!s100 PP^nGXVjJE;8aH@b5gT]m1
-I<?j=DCdEhMe:i=FXKWkWe1
+!s100 Bz1N_=Ui2<19zW@Y8GDYY0
+IkdbZ<ZljCNBYifmffL?kf1
 !i103 1
 S1
-R85
 R86
+R92
 R25
 R26
 R53
 R47
 R54
 R3
-R90
+R93
 R27
 R28
 !i113 0
@@ -924,22 +932,23 @@ R57
 R58
 vForwardingBranchUnit
 R83
-R50
-r1
-!s85 0
-31
+R91
 !i10b 1
 !s100 _hNY7D[aJ0HX[ahfj3<j:2
 IF[0UePg=o[7IeAHad3o]33
+R50
 !s105 ForwardingBranchUnit_sv_unit
 S1
-R85
 R86
+R87
 8ForwardingBranchUnit.sv
 FForwardingBranchUnit.sv
 L0 1
 R3
-!s108 1608580916.430000
+r1
+!s85 0
+31
+!s108 1608638046.950000
 !s107 ForwardingBranchUnit.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|ForwardingBranchUnit.sv|
 !i113 0
@@ -948,22 +957,23 @@ R58
 n@forwarding@branch@unit
 vForwardingUnit
 R83
-R50
-r1
-!s85 0
-31
+R91
 !i10b 1
 !s100 4U;1YT2`SDkH6DnmkN?bX0
 IN1AkAVKdc_;VO>[Oi6JCO3
+R50
 !s105 ForwardingUnit_sv_unit
 S1
-R85
 R86
+R87
 8ForwardingUnit.sv
 FForwardingUnit.sv
 L0 28
 R3
-!s108 1608580916.329000
+r1
+!s85 0
+31
+!s108 1608638046.852000
 !s107 ForwardingUnit.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|ForwardingUnit.sv|
 !i113 0
@@ -981,13 +991,13 @@ r1
 ITomnkO0EDB8Edi6SWIY_C2
 !s105 hazardUnit_sv_unit
 S1
-R85
 R86
+R87
 8hazardUnit.sv
 FhazardUnit.sv
 L0 1
 R3
-!s108 1608580916.550000
+!s108 1608636000.181000
 !s107 hazardUnit.sv|
 !s90 -reportprogress|300|-work|work|-vopt|-sv|-cover|sbcet3|hazardUnit.sv|
 !i113 0
@@ -996,22 +1006,23 @@ R58
 nhazard@unit
 YIF
 R83
-R50
-r1
-!s85 0
-31
+R91
 !i10b 1
 !s100 _lS7]He@A=a:iD8><d@9c2
 IXHlKE6R9F@VDi3fgkYL@B2
+R50
 !s105 IF_sv_unit
 S1
-R85
+R86
 w1607422161
 8IF.sv
 FIF.sv
 R54
 R3
-!s108 1608580915.464000
+r1
+!s85 0
+31
+!s108 1608638046.237000
 R73
 R74
 !i113 0
@@ -1019,22 +1030,23 @@ R57
 R58
 vimem
 R83
-R50
-r1
-!s85 0
-31
+R91
 !i10b 1
 !s100 6TdIEnD;gPlO?9m]cSVRK0
 IKZfXBcGgUMW?71]HX]oaL3
+R50
 !s105 imem_sv_unit
 S1
-R85
 R86
+R87
 8imem.sv
 Fimem.sv
 L0 12
 R3
-!s108 1608580915.618000
+r1
+!s85 0
+31
+!s108 1608638046.356000
 R75
 R76
 !i113 0
@@ -1042,22 +1054,23 @@ R57
 R58
 vImmGen
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 j42RCRFogAGoXC_j5YX5P0
 I11HA;@>z^l5X7MQlYXkBl2
-R84
-S1
+R50
 R85
+S1
 R86
+R87
 R1
 R2
 L0 240
 R3
-R87
+r1
+!s85 0
+31
+R88
 R44
 R45
 !i113 0
@@ -1066,22 +1079,23 @@ R58
 n@imm@gen
 vMUX
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 eHMW@8N7z0`;RcV[W?8OX0
 I=]1zYQ9U@X>i0>f466J0_1
-R84
-S1
+R50
 R85
+S1
 R86
+R87
 R1
 R2
 L0 284
 R3
-R87
+r1
+!s85 0
+31
+R88
 R44
 R45
 !i113 0
@@ -1090,22 +1104,23 @@ R58
 n@m@u@x
 vMUX3
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 [hkfPX0Dl:mNzZ1SEmmzn3
 I`jO6J7PNfGV1Y<J:jCTfE1
-R84
-S1
+R50
 R85
+S1
 R86
+R87
 R1
 R2
 L0 293
 R3
-R87
+r1
+!s85 0
+31
+R88
 R44
 R45
 !i113 0
@@ -1114,22 +1129,23 @@ R58
 n@m@u@x3
 vMUX4
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 ZCAPfIh]i>NdR^B9M;[e92
 I9Ca?W:^^KOjiUW0Z4L;m@1
-R84
-S1
+R50
 R85
+S1
 R86
+R87
 R1
 R2
 L0 309
 R3
-R87
+r1
+!s85 0
+31
+R88
 R44
 R45
 !i113 0
@@ -1138,22 +1154,23 @@ R58
 n@m@u@x4
 vregister
 R83
-R50
-r1
-!s85 0
-31
+R84
 !i10b 1
 !s100 ?cb@mi`5Ha26jdH@KZFdz1
 IdcePm9al3YmAKZCE<4UCe2
-R84
-S1
+R50
 R85
+S1
 R86
+R87
 R1
 R2
 L0 269
 R3
-R87
+r1
+!s85 0
+31
+R88
 R44
 R45
 !i113 0
@@ -1161,22 +1178,23 @@ R57
 R58
 vRVI32_Core
 R83
-R50
-r1
-!s85 0
-31
+R91
 !i10b 1
 !s100 4mld3`=;CILzCddQfi_7g1
 I>Fjhc^D:nD<FicK`gjbN^2
+R50
 !s105 RVI32_Core_sv_unit
 S1
-R85
 R86
+R87
 8RVI32_Core.sv
 FRVI32_Core.sv
 L0 17
 R3
-!s108 1608580915.874000
+r1
+!s85 0
+31
+!s108 1608638046.525000
 R77
 R78
 !i113 0
@@ -1184,15 +1202,15 @@ R57
 R58
 XScoreboard_sv_unit
 R83
-!s110 1608580916
+R91
 !i10b 1
 R33
 R34
 R35
 !i103 1
 S1
-R85
-R88
+R86
+R89
 R52
 R53
 R54
@@ -1200,7 +1218,7 @@ R3
 r1
 !s85 0
 31
-!s108 1608580916.063000
+!s108 1608638046.638000
 R79
 R80
 !i113 0
@@ -1233,22 +1251,23 @@ S1
 R0
 vtb_RVI32_Core
 R83
-R50
-r1
-!s85 0
-31
+R91
 !i10b 1
 !s100 bGaE^[7^_3@2@iHH@Q>;K2
 I;ca?DHFi@RH?Mc:3IWNzd2
+R50
 R43
 S1
-R85
-w1608580911
+R86
+w1608635990
 R55
 R56
 L0 3
 R3
-!s108 1608580916.223000
+r1
+!s85 0
+31
+!s108 1608638046.753000
 R81
 R82
 !i113 0

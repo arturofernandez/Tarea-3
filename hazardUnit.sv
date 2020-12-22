@@ -12,6 +12,12 @@ module hazardUnit (
                 PCWrite = 0;
                 IF_IDWrite = 0;
             end
+        else if(MemRead_MEM && (opcode == 7'b1100011 || opcode == 7'b1100111) && ((Rd_MEM == Rs1_ID) || (Rd_MEM == Rs2_ID)))
+            begin
+                ControlSrc = 0;  // el mux elige 0 en lugar de control
+                PCWrite = 0;
+                IF_IDWrite = 0;
+            end    
         else if (ControlBubble)
             begin
                 ControlSrc = 0;  // el mux elige control en lugar de 0
