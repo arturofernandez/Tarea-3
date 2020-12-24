@@ -1,6 +1,6 @@
     `timescale 1ns/1ps
 
-module tb_RVI32_Core ();
+module single_tb_RVI32_Core ();
     localparam T = 50;
     parameter DATA_WIDTH = 32;
     parameter MEM_DEPTH = 1024;
@@ -38,7 +38,7 @@ module tb_RVI32_Core ();
     );
 
     // instanciación de la interfaz
-    IF #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) interfaz (.CLK(CLK), .RESET_N(RESET_N), .Regs(Core.datapath.Registers.Regs), .RAM(RAM.DMEM), .imm(Core.datapath.ImmGen.Immediate), .idata(idata), .ddata_r(ddata_r), .iaddr(iaddr), .daddr(daddr), .ddata_w(ddata_w), .d_rw(d_rw));
+    single_IF #(.DATA_WIDTH(DATA_WIDTH), .MEM_DEPTH(MEM_DEPTH)) interfaz (.CLK(CLK), .RESET_N(RESET_N), .Regs(Core.datapath.Registers.Regs), .RAM(RAM.DMEM), .imm(Core.datapath.ImmGen.Immediate), .idata(idata), .ddata_r(ddata_r), .iaddr(iaddr), .daddr(daddr), .ddata_w(ddata_w), .d_rw(d_rw));
 
     //instanciación del program
     single_estimulos estimulos (.monitor(interfaz), .Start_Simulation(Start_Simulation));
@@ -51,7 +51,7 @@ module tb_RVI32_Core ();
 
         wait(Start_Simulation == 1'b1)
 
-        ROM.escribirROM("./MachineCode/random_program.txt"); //escribimos en la memoria de instrucciones las instrucciones aleatorias generadas en estimulos.sv
+        ROM.escribirROM("random_program.txt"); //escribimos en la memoria de instrucciones las instrucciones aleatorias generadas en estimulos.sv
         //ROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones del código del bubble sort
         //ROM.escribirROM("./MachineCode/fibonacci_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones del código de fibonacci para 20 ítems de la sucesión
         $display("ROM Writed - time=%0t\n", $time);

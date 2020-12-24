@@ -44,7 +44,7 @@ module single_datapath
     *   ALU_result
     *   Zero - Sets to high if the result is 0. 
     */
-    ALU ALU (.ALU_operation(ALU_operation), .op1(ALU_A), .op2(ALU_B), .ALU_result(ALU_result), .Zero(Zero));
+    single_ALU ALU (.ALU_operation(ALU_operation), .op1(ALU_A), .op2(ALU_B), .ALU_result(ALU_result), .Zero(Zero));
 
     /*
     * Module: banco_registros
@@ -63,7 +63,7 @@ module single_datapath
     *   ReadData1 - data on register 1
     *   ReadData2 - data on register 2.
     */
-    banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
+    single_banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
     /*
     * Module: ImmGen
@@ -75,7 +75,7 @@ module single_datapath
     * Outputs:
     *   Immediate 
     */
-    ImmGen ImmGen (.Instruction(Instruction), .Immediate(Immediate));
+    single_ImmGen ImmGen (.Instruction(Instruction), .Immediate(Immediate));
 
     /*
     * Module: PC
@@ -89,7 +89,7 @@ module single_datapath
     * Outputs:
     *   current_PC - Next Instruction Address. 
     */
-    register PC (.clock(clock), .reset(reset), .a(next_PC), .b(current_PC));
+    single_register PC (.clock(clock), .reset(reset), .a(next_PC), .b(current_PC));
 
     /*
     * Module: adder1
@@ -101,7 +101,7 @@ module single_datapath
     * Outputs:
     *   PC - Next Instruction Address. 
     */
-    adder #(.size(32)) adder1 (.a(current_PC), .b(32'd4), .res(sum_adder1));
+    single_adder #(.size(32)) adder1 (.a(current_PC), .b(32'd4), .res(sum_adder1));
 
     /*
     * Module: adder2
@@ -114,7 +114,7 @@ module single_datapath
     * Outputs:
     *   effective_addr - current_PC + Immediate * 4. 
     */
-    adder #(.size(32)) adder2 (.a(current_PC), .b(Immediate), .res(effective_addr));
+    single_adder #(.size(32)) adder2 (.a(current_PC), .b(Immediate), .res(effective_addr));
 
     /*
     * Module: muxPC
@@ -128,7 +128,7 @@ module single_datapath
     * Outputs:
     *   next_PC - Next Instruction Address to be loaded into PC Register. 
     */
-    MUX #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
+    single_MUX #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
 
     /*
     * Module: muxALU_B
@@ -142,7 +142,7 @@ module single_datapath
     * Outputs:
     *   ALU_B -  ALU Second Operand. 
     */
-    MUX #(.size(32)) muxALU_B (.a(Read_data2), .b(Immediate), .select(ALUSrc), .res(ALU_B));
+    single_MUX #(.size(32)) muxALU_B (.a(Read_data2), .b(Immediate), .select(ALUSrc), .res(ALU_B));
 
     /*
     * Module: muxtoReg
@@ -156,7 +156,7 @@ module single_datapath
     * Outputs:
     *   Write_data_reg -  Register input data (Bank of registers input). 
     */
-    MUX #(.size(32)) muxtoReg (.a(ALU_result), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
+    single_MUX #(.size(32)) muxtoReg (.a(ALU_result), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
 
     /*
     * Module: muxALU_A
@@ -171,10 +171,10 @@ module single_datapath
     * Outputs:
     *   ALU_A -  ALU First Operand. 
     */
-    MUX3 #(.size(32)) muxALU_A (.a(current_PC), .b({32{1'b0}}), .c(Read_data1), .select(AuipcLui), .res(ALU_A));
+    single_MUX3 #(.size(32)) muxALU_A (.a(current_PC), .b({32{1'b0}}), .c(Read_data1), .select(AuipcLui), .res(ALU_A));
 endmodule:single_datapath
 
-module ImmGen 
+module single_ImmGen 
 (
     input [31:0] Instruction,
     output logic [31:0] Immediate
@@ -196,9 +196,9 @@ always_comb begin
         default: Immediate = {32{1'b0}};   
     endcase
 end
-endmodule:ImmGen
+endmodule:single_ImmGen
 
-module register 
+module single_register 
 (
     input clock, reset,
     input [31:0] a,
@@ -209,18 +209,18 @@ always_ff @(posedge clock or negedge reset)
         b <= {32{1'b0}};
     else
         b <= a;
-endmodule:register
+endmodule:single_register
 
-module MUX #(parameter size = 32) 
+module single_MUX #(parameter size = 32) 
 (
     input [size-1:0] a, b,
     input select,
     output [size-1:0] res
 );
     assign res = (select)?b:a;  
-endmodule:MUX
+endmodule:single_MUX
 
-module MUX3 #(parameter size = 32) 
+module single_MUX3 #(parameter size = 32) 
 (
     input [size-1:0] a, b, c,
     input [1:0] select,
@@ -234,13 +234,13 @@ module MUX3 #(parameter size = 32)
             default: res = c;
         endcase
     end 
-endmodule:MUX3
+endmodule:single_MUX3
 
-module adder #(parameter size = 32) 
+module single_adder #(parameter size = 32) 
 (
     input [size-1:0] a, b,
     output [size-1:0] res
 );
     assign res = a+b;   
-endmodule:adder
+endmodule:single_adder
 

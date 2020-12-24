@@ -48,7 +48,7 @@ always_comb begin
         PCSrc = 1'b0;
 end
 
-Control Control(
+single_Control Control(
     .Instruction(Instruction[6:0]),
     .Branch(Branch),
     .MemRead(MemRead),
@@ -60,7 +60,7 @@ Control Control(
     .AuipcLui(AuipcLui)
 );
 
-ALU_Control ALU_Control(
+single_ALU_Control ALU_Control(
     .Instruction({Instruction[30],Instruction[14:12]}),
     .ALUOp(ALUOp),
     .Operation(Operation)
