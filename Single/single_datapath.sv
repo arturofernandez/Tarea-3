@@ -24,14 +24,15 @@
 */
 module single_datapath 
 (
-    input clock, reset, ALUSrc ,MemtoReg, PCSrc, RegWrite, 
-    input [1:0] AuipcLui,
+    input clock, reset, ALUSrc ,MemtoReg, RegWrite, Jump, 
+    input [1:0] PCSrc, AuipcLui,
     input [31:0] Instruction, Read_data,
     input [3:0] ALU_operation,
     output [31:0] current_PC, ALU_result, Read_data2,
     output Zero
 );
-    logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1, ALU_A;
+    logic [31:0] Immediate, next_PC, sum_adder1, effective_addr, Sum, ALU_B, Write_data_reg, Read_data1, ALU_A, Write_data_reg2;
+
     /*
     * Module: ALU
     *    Main RISC-V Arithmetic Logic Unit 
@@ -63,7 +64,7 @@ module single_datapath
     *   ReadData1 - data on register 1
     *   ReadData2 - data on register 2.
     */
-    single_banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction[11:7]), .WriteData(Write_data_reg), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
+    single_banco_registros Registers (.CLK(clock), .RESET(reset), .ReadReg1(Instruction[19:15]), .ReadReg2(Instruction[24:20]), .WriteReg(Instruction[11:7]), .WriteData(Write_data_reg2), .RegWrite(RegWrite), .ReadData1(Read_data1), .ReadData2(Read_data2));
 
     /*
     * Module: ImmGen
@@ -128,7 +129,7 @@ module single_datapath
     * Outputs:
     *   next_PC - Next Instruction Address to be loaded into PC Register. 
     */
-    single_MUX #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .select(PCSrc), .res(next_PC));
+    single_MUX3 #(.size(32)) muxPC (.a(sum_adder1), .b(effective_addr), .c(ALU_result), .select(PCSrc), .res(next_PC));
 
     /*
     * Module: muxALU_B
@@ -158,6 +159,8 @@ module single_datapath
     */
     single_MUX #(.size(32)) muxtoReg (.a(ALU_result), .b(Read_data), .select(MemtoReg), .res(Write_data_reg));
 
+    single_MUX #(.size(32)) muxtoReg2 (.a(Write_data_reg), .b(sum_adder1), .select(Jump), .res(Write_data_reg2));
+
     /*
     * Module: muxALU_A
     *    Selects the type of operand of the ALUs first operand (pc, zeros or register).
@@ -172,6 +175,7 @@ module single_datapath
     *   ALU_A -  ALU First Operand. 
     */
     single_MUX3 #(.size(32)) muxALU_A (.a(current_PC), .b({32{1'b0}}), .c(Read_data1), .select(AuipcLui), .res(ALU_A));
+
 endmodule:single_datapath
 
 module single_ImmGen 
@@ -193,6 +197,10 @@ always_comb begin
             Immediate = {Instruction[31:12], {12{1'b0}}};
         7'b0110111: //U-Format (LUI)
             Immediate = {Instruction[31:12], {12{1'b0}}};
+        7'b1101111: //UJ-Format (JAL)
+            Immediate = {{11{Instruction[31]}},Instruction[19:12],Instruction[20],Instruction[30:21],1'b0};
+        7'b1100111: //UJ-Format (JALR)
+            Immediate = {{20{Instruction[31]}},Instruction[31:20]};
         default: Immediate = {32{1'b0}};   
     endcase
 end

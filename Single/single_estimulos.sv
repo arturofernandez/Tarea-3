@@ -131,7 +131,7 @@ task generar_inst;
 
         $fdisplay(fd, "%h",32'h00000263);
         $fdisplay(fd, "%h",32'h00001063);
-        for (i=0; i<1000; i++) begin
+        for (i=0; i<200; i++) begin
             generar_inst();
             $fdisplay(fd, "%h",inData.instr);
             $display("      0x%h",inData.instr);

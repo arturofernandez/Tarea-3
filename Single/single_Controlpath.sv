@@ -27,8 +27,9 @@ module single_Controlpath (
     output logic MemWrite,
     output logic ALUSrc,
     output logic RegWrite,
+    output logic Jump,
     output logic [3:0] Operation,
-    output logic PCSrc,
+    output logic [1:0] PCSrc,
     output logic [1:0] AuipcLui
 ); 
 
@@ -36,17 +37,71 @@ wire Branch;
 wire [2:0] ALUOp;
 // assign PCSrc = Branch & Zero;
 
+// always_comb begin
+//     if (Branch) 
+//         begin
+//             if ((Instruction[14:12] == 3'b000 && Zero) || (Instruction[14:12] == 3'b001 && !Zero)) //beq y bne
+//                 PCSrc = 1'b1;
+//             else 
+//                 PCSrc = 1'b0;
+//         end
+//     else 
+//         PCSrc = 1'b0;
+// end
+
 always_comb begin
-    if (Branch) 
-        begin
-            if ((Instruction[14:12] == 3'b000 && Zero) || (Instruction[14:12] == 3'b001 && !Zero)) //beq y bne
-                PCSrc = 1'b1;
-            else 
-                PCSrc = 1'b0;
+        if (Branch) begin
+            case (Instruction[14:12])
+                3'b000:begin //BEQ
+                    if (Zero) //la codificamos como una SUB
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                3'b001:begin //BNE
+                    if (!Zero) //la codificamos como una SUB
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                3'b100:begin //BLT
+                    if (!Zero) //la codificamos como una SLT
+                        PCSrc = 2'b01;
+                    else 
+                        PCSrc = 2'b00;
+                end
+                3'b101:begin //BGE
+                    if (Zero) //la codificamos como una SLT
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                3'b110:begin //BLTU
+                    if (!Zero) //la codificamos como una SLTU
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                3'b111:begin //BGEU
+                    if (Zero) //la codificamos como una SLTU
+                        PCSrc = 2'b01;
+                    else
+                        PCSrc = 2'b00;
+                end
+                default: PCSrc = 2'b00;
+            endcase
         end
-    else 
-        PCSrc = 1'b0;
-end
+        else if (Jump)
+            case (Instruction[6:0])
+                7'b1101111: //JAL
+                    PCSrc = 2'b10;
+                7'b1100111: //JALR
+                    PCSrc = 2'b10;
+                default: PCSrc = 2'b00;
+            endcase
+        else
+            PCSrc = 2'b00;
+    end
 
 single_Control Control(
     .Instruction(Instruction[6:0]),
@@ -57,7 +112,8 @@ single_Control Control(
     .MemWrite(MemWrite),
     .ALUSrc(ALUSrc),
     .RegWrite(RegWrite),
-    .AuipcLui(AuipcLui)
+    .AuipcLui(AuipcLui),
+    .Jump(Jump)
 );
 
 single_ALU_Control ALU_Control(
