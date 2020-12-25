@@ -8,16 +8,16 @@
  *  dest_queue - 
  *  inst_queue - 
 */
-class Scoreboard;
+class single_Scoreboard;
     /*!< MONITOR QUEUEs DEFINITION: */
      reg [31:0] targets_queue [$]; // Infinite Queue Definition
      reg [31:0] dest_queue [$];
      reg [31:0] inst_queue [$];
 
     /*!< Interface Instance: */
-    virtual IF.monitor mon;
+    virtual single_IF.monitor mon;
 
-    function new (virtual IF.monitor mpuertos);
+    function new (virtual single_IF.monitor mpuertos);
         this.mon = mpuertos;
     endfunction
 

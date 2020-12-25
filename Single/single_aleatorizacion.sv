@@ -6,7 +6,7 @@
  *    instr - Randomized 32 bit RISC-V instruction.
  *    opcode - Randomized Operation Code of an instruction.
 */
-class random_inst;
+class single_random_inst;
     randc logic [31:0] instr;
     rand logic [0:3] opcode;
 

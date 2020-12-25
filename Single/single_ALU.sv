@@ -24,12 +24,12 @@ always_comb begin
 				ALU_result = op1 + op2;
 				auxSLT = 0;
 			end
-      4'b0001:  //SUB
+      	4'b0001:  //SUB
 			begin
 				ALU_result = op1 - op2;
 				auxSLT = 0;
 			end
-      4'b0010:  //SLT                                        
+      	4'b0010:  //SLT                                        
 			begin               
 				auxSLT = op1-op2;      
             	if (auxSLT[31] == 1'b1)  
@@ -45,19 +45,34 @@ always_comb begin
             	else
 					ALU_result = 0;
          	end
-      4'b0100:  //AND
+      	4'b0100:  //AND
 			begin
 				ALU_result = op1 & op2;
 				auxSLT = 0;
 			end
-      4'b0101:  //OR
+      	4'b0101:  //OR
 			begin
 				ALU_result = op1 | op2;
 				auxSLT = 0;
 			end
-      4'b0110:  //XOR
+     	4'b0110:  //XOR
          	begin
 				ALU_result = op1 ^ op2;
+				auxSLT = 0;
+			end
+		4'b0111: //SRL (Shift right logical)
+		    begin
+				ALU_result = op1>>op2;
+				auxSLT = 0;
+			end
+		4'b1000: //SLL (Shift left logical)
+			begin
+				ALU_result = op1<<op2;
+				auxSLT = 0;
+			end 
+		4'b1001: //SRA (Shift right arithmetic)
+			begin
+				ALU_result = op1>>>op2; // Shift Right Arithmetic Operator (keep sign)
 				auxSLT = 0;
 			end
 		default: begin ALU_result = 0; auxSLT = 0; end

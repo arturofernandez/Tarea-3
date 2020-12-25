@@ -1,9 +1,9 @@
 `include "single_Scoreboard.sv"
 `include "single_aleatorizacion.sv"
 `timescale 1ns/1ps 
-program single_estimulos (IF.monitor monitor, output logic Start_Simulation);
+program single_estimulos (single_IF.monitor monitor, output logic Start_Simulation);
 
-    covergroup instrucciones; 
+    covergroup single_instrucciones; 
         rformat : coverpoint({monitor.cb_monitor.idata[30],monitor.cb_monitor.idata[14:12]}) iff (monitor.cb_monitor.idata[6:0]==7'b0110011&&monitor.cb_monitor.idata[31]==1'b0&&monitor.cb_monitor.idata[29:25]==5'b0000)
         {
             bins add = {4'b0000};
@@ -47,9 +47,9 @@ program single_estimulos (IF.monitor monitor, output logic Start_Simulation);
         }*/
     endgroup
 
-    Scoreboard sb;
-    random_inst inData;
-    instrucciones my_cg;
+    single_Scoreboard sb;
+    single_random_inst inData;
+    single_instrucciones my_cg;
     logic [31:0] instt_queue [$];
     logic [31:0] inst;
     int fd, i;
@@ -122,7 +122,7 @@ task generar_inst;
         Start_Simulation = 1'b0;
         $display("INIT random instruction generation - time=%0t", $time);
 
-        fd = $fopen("./MachineCode/random_program.txt","w"); 
+        fd = $fopen("random_program.txt","w"); 
 
         if(fd) $display("   File was opened succesfully with Code: %0d",fd);
         else $display("     ERROR: File was NOT opened succesfully: %0d", fd);
@@ -131,7 +131,7 @@ task generar_inst;
 
         $fdisplay(fd, "%h",32'h00000263);
         $fdisplay(fd, "%h",32'h00001063);
-        for (i=0; i<1000; i++) begin
+        for (i=0; i<200; i++) begin
             generar_inst();
             $fdisplay(fd, "%h",inData.instr);
             $display("      0x%h",inData.instr);
