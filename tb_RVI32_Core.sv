@@ -86,10 +86,14 @@ module tb_RVI32_Core ();
         .RAM(RAM.DMEM),
         .GRAM(GRAM.DMEM),
         .idata(idata),
-        .Gidata(Gidata)
+        .Gidata(Gidata),
+        .daddr(daddr[11:2]),
+        .Gdaddr(Gdaddr[11:2]),
+        .BubbleDetector(Core.ControlSrc),
+        .iaddr(iaddr[11:2]),
+        .Giaddr(Giaddr[11:2])
         // .imm(Core.datapath.ImmGen.Immediate),
         // .ddata_r(ddata_r),
-        // .iaddr(iaddr),
         // .daddr(daddr),
         // .ddata_w(ddata_w),
         // .d_rw(d_rw)

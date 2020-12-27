@@ -1,5 +1,6 @@
 //`include "Scoreboard.sv"
-`include "Scoreboard_sencillo.sv"
+//`include "Scoreboard_sencillo.sv"
+`include "Scoreboard_golden.sv"
 `include "aleatorizacion.sv"
 `timescale 1ns/1ps 
 
@@ -50,7 +51,8 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation);
     endgroup
 
     //Scoreboard sb;
-    Scoreboard_sencillo sb_sencillo;
+    //Scoreboard_sencillo sb_sencillo;
+    Scoreboard_golden sb_golden;
     random_inst inData;
     instrucciones my_cg;
     logic [31:0] instt_queue [$];
@@ -120,7 +122,7 @@ task generar_inst;
 
     initial begin
         // sb = new(monitor);
-        sb_sencillo = new(monitor);
+        sb_golden = new(monitor);
         inData = new;
         my_cg = new;
 
@@ -139,7 +141,6 @@ task generar_inst;
         for (i=0; i<50; i++) begin
             generar_inst();
             $fdisplay(fd, "%h",inData.instr);
-            //$display("      0x%h",inData.instr);
         end
         
         $fclose(fd);
@@ -149,25 +150,26 @@ task generar_inst;
         repeat (3) @(posedge monitor.CLK);
         $display("INIT verification - time=%0t", $time);
 
-        // fork
-        //     sb.monitor_input();
-        //     begin
-        //         repeat(4) @(posedge monitor.CLK);
-        //         sb.monitor_output();
-        //     end
-        // join_none  
+        fork
+            sb_golden.monitor_input();
+            begin
+                @(posedge monitor.CLK);
+                sb_golden.monitor_golden();
+                repeat(5) @(posedge monitor.CLK);
+                sb_golden.monitor_output();
+            end
+        join_none   
       
-        //$display("%0h",monitor.cb_monitor.idata);
-        // $display("%0h",monitor.cb_monitor.iaddr);
-        // @(posedge monitor.CLK) my_cg.sample();
+        display("%0h",monitor.cb_monitor.idata);
+        $display("%0h",monitor.cb_monitor.iaddr);
+        @(posedge monitor.CLK) my_cg.sample();
         
         FINISH = 1'b1;
         FlagX = 1'b1;
 
         while(FINISH)
+        //TO DO: Mejorar el fin de la simulación 0 chapuzas, 100% profesionalidad, fuerza teleca!
             begin
-                //assert property @(posedge monitor.CLK) ((monitor.cb_monitor.idata === {32{1'bx}}) |=> (monitor.cb_monitor.idata !== {32{1'bx}})) 
-                //else   FINISH = 1'b0;
                 @(posedge monitor.CLK) my_cg.sample(); 
                 if(FlagX == 1'b0 && monitor.cb_monitor.idata === {32{1'bx}}) 
                     FINISH = 1'b0;
@@ -178,8 +180,8 @@ task generar_inst;
             end
         
         repeat (6) @(posedge monitor.CLK); 
-        sb_sencillo.monitor_output();
-        repeat (3) @(posedge monitor.CLK); 
+        // sb_sencillo.monitor_output();
+        // repeat (3) @(posedge monitor.CLK); 
         $display("END verification - time=%0t\n", $time);
         $stop;
     end
