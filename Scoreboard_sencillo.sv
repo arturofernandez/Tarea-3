@@ -1,8 +1,8 @@
 class Scoreboard_sencillo;
     /*!< MONITOR QUEUEs DEFINITION: */
-     reg [31:0] targets_queue [$]; // Infinite Queue Definition
-     reg [31:0] dest_queue [$];
-     reg [31:0] inst_queue [$];
+    // reg [31:0] targets_queue [$]; // Infinite Queue Definition
+    // reg [31:0] dest_queue [$];
+    // reg [31:0] inst_queue [$];
 
     /*!< Interface Instance: */
     virtual IF.monitor mon;
@@ -12,8 +12,8 @@ class Scoreboard_sencillo;
     endfunction
 
     /*!< Class members: */
-    logic [31:0] target, target_out, dest_data_out, inst_out, dir;
-    int num_instructions = 0; // Just to know the number of instructions executed
+    // logic [31:0] target, target_out, dest_data_out, inst_out, dir;
+    // int num_instructions = 0; // Just to know the number of instructions executed
 
     task monitor_output(); 
         begin

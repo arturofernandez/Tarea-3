@@ -1,4 +1,4 @@
-`include "Scoreboard.sv"
+//`include "Scoreboard.sv"
 `include "Scoreboard_sencillo.sv"
 `include "aleatorizacion.sv"
 `timescale 1ns/1ps 
@@ -49,7 +49,7 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation);
         }*/
     endgroup
 
-    Scoreboard sb;
+    //Scoreboard sb;
     Scoreboard_sencillo sb_sencillo;
     random_inst inData;
     instrucciones my_cg;
