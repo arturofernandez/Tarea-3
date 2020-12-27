@@ -1,6 +1,8 @@
 `include "Scoreboard.sv"
+`include "Scoreboard_sencillo.sv"
 `include "aleatorizacion.sv"
 `timescale 1ns/1ps 
+
 program estimulos (IF.monitor monitor, output logic Start_Simulation);
 
     covergroup instrucciones; 
@@ -48,6 +50,7 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation);
     endgroup
 
     Scoreboard sb;
+    Scoreboard_sencillo sb_sencillo;
     random_inst inData;
     instrucciones my_cg;
     logic [31:0] instt_queue [$];
@@ -116,7 +119,8 @@ task generar_inst;
     endtask
 
     initial begin
-        sb = new(monitor);
+        // sb = new(monitor);
+        sb_sencillo = new(monitor);
         inData = new;
         my_cg = new;
 
@@ -145,13 +149,13 @@ task generar_inst;
         repeat (3) @(posedge monitor.CLK);
         $display("INIT verification - time=%0t", $time);
 
-        fork
-            sb.monitor_input();
-            begin
-                repeat(4) @(posedge monitor.CLK);
-                sb.monitor_output();
-            end
-        join_none  
+        // fork
+        //     sb.monitor_input();
+        //     begin
+        //         repeat(4) @(posedge monitor.CLK);
+        //         sb.monitor_output();
+        //     end
+        // join_none  
       
         //$display("%0h",monitor.cb_monitor.idata);
         // $display("%0h",monitor.cb_monitor.iaddr);
@@ -173,7 +177,9 @@ task generar_inst;
                     FlagX = 1'b1;
             end
         
-        repeat (6) @(posedge monitor.CLK); //para que acabe el scoreboard
+        repeat (6) @(posedge monitor.CLK); 
+        sb_sencillo.monitor_output();
+        repeat (3) @(posedge monitor.CLK); 
         $display("END verification - time=%0t\n", $time);
         $stop;
     end
