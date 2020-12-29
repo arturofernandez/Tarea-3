@@ -66,29 +66,42 @@ class Scoreboard_golden;
                 bubble_out = bubble_queue.pop_back();
                 PC_out = PC_queue.pop_back();
                 
-                if (bubble_out === 1'b0) //Detectamos burbuja para no realizar comprobaciones
+                if (bubble_out === 1'b0) begin //Detectamos burbuja para no realizar comprobaciones
                     $display("      BUBLE Detected");
+                    // assert (1 !== 1)
+                    // else $error("      BUBLE Detected");
+                    res_queue.push_back(res_out);
+                    dest_queue.push_back(dest_out);
+                end
                 else if (inst_pipe_out[6:0] == 7'b1100011 || inst_pipe_out[6:0] == 7'b1101111 || inst_pipe_out[6:0] == 7'b1100111) begin // Branch and Jump
                     bubble_out = bubble_queue.pop_back();
-                    if(bubble_out !== 1'b0) begin //salto no efectivo
-                        assert (PC_out !== res_out)
-                        else $error("       PC ERROR: the result should be %0d and DUT obtains %0d",res_out,mon.cb_monitor.RAM[dest_out]);
+                    if(bubble_out === 1'b1) begin //salto no efectivo (NextPC == PC+4), no hay burbuja
+                        assert (PC_out === res_out)
+                        else $error("       PC ERROR: the result should be %0d and DUT obtains %0d",res_out,PC_out);
                     end
-                    else begin
+                    else begin //salto efectivo (NextPC == PC+imm), hay burbuja
                         PC_out = PC_queue.pop_back();
-                        assert (PC_out !== res_out)
-                        else $error("       PC ERROR: the result should be %0d and DUT obtains %0d",res_out,mon.cb_monitor.RAM[dest_out]);
+                        assert (PC_out === res_out)
+                        else $error("       PC ERROR: the result should be %0d and DUT obtains %0d",res_out,PC_out);
                         PC_queue.push_back(PC_out);
                     end
                     bubble_queue.push_back(bubble_out);
                 end
                 else if (inst_pipe_out[6:0] == 7'b0100011) begin // S-Format (Escritura en memoria)
-                    assert (mon.cb_monitor.RAM[dest_out] !== res_out)
+                    assert (mon.cb_monitor.RAM[dest_out] === res_out)
                     else $error("       RAM ERROR: the result should be %0d and DUT obtains %0d",res_out,mon.cb_monitor.RAM[dest_out]);
                 end
                 else begin // Resto de formatos (Escritura en Registros)
-                    assert (mon.cb_monitor.Regs[dest_out] !== res_out)
-                    else $error("       Regs ERROR: the result should be %0d and DUT obtains %0d",res_out,mon.cb_monitor.Regs[dest_out]);
+                    if (res_out !== 32'bx && dest_out !== 10'bx) begin
+                        assert (mon.cb_monitor.Regs[dest_out] === res_out)
+                        else $error("       Regs ERROR: the result should be %0d and DUT obtains %0d",res_out,mon.cb_monitor.Regs[dest_out]);
+                    end
+                    else
+                        begin
+                            $display("      XXXXXXXX Instruction");
+                            // assert (1 !== 1)
+                            // else $error("      XXXXXXXX Instruction");
+                        end
                 end
             end
         end

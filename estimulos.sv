@@ -147,7 +147,7 @@ task generar_inst;
 
         $display("END random instruction generation - time=%0t\n", $time);
         Start_Simulation = 1'b1;
-        repeat (3) @(posedge monitor.CLK);
+        repeat (2) @(posedge monitor.CLK);
         $display("INIT verification - time=%0t", $time);
 
         fork
@@ -160,10 +160,10 @@ task generar_inst;
                 repeat(5) @(posedge monitor.CLK);
                 sb_golden.monitor_dut_output();
             end
-        join_none   
+        join_none 
       
-        $display("%0h",monitor.cb_monitor.idata);
-        $display("%0h",monitor.cb_monitor.iaddr);
+        // $display("%0h",monitor.cb_monitor.idata);
+        // $display("%0h",monitor.cb_monitor.iaddr);
         @(posedge monitor.CLK) my_cg.sample();
         
         FINISH = 1'b1;

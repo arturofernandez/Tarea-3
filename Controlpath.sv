@@ -11,7 +11,7 @@ module Controlpath (
     output logic RegWrite,
     output logic Jump,
     output logic [3:0] Operation,
-    output logic [1:0] PCSrc,
+    // output logic [1:0] PCSrc,
     output logic [1:0] AuipcLui,
     output logic [1:0] ForwardA, 
     output logic [1:0] ForwardB,
@@ -31,59 +31,61 @@ module Controlpath (
     logic [1:0] AuipcLui_ID;
     logic [2:0] ALUOp_ID, ALUOp;
 
-    always_comb begin
-        if (Branch_MEM) begin
-            case (Instruction_MEM[14:12])
-                3'b000:begin //BEQ
-                    if (Zero_MEM) //la codificamos como una SUB
-                        PCSrc = 2'b01;
-                    else
-                        PCSrc = 2'b00;
-                end
-                3'b001:begin //BNE
-                    if (!Zero_MEM) //la codificamos como una SUB
-                        PCSrc = 2'b01;
-                    else
-                        PCSrc = 2'b00;
-                end
-                3'b100:begin //BLT
-                    if (!Zero_MEM) //la codificamos como una SLT
-                        PCSrc = 2'b01;
-                    else 
-                        PCSrc = 2'b00;
-                end
-                3'b101:begin //BGE
-                    if (Zero_MEM) //la codificamos como una SLT
-                        PCSrc = 2'b01;
-                    else
-                        PCSrc = 2'b00;
-                end
-                3'b110:begin //BLTU
-                    if (!Zero_MEM) //la codificamos como una SLTU
-                        PCSrc = 2'b01;
-                    else
-                        PCSrc = 2'b00;
-                end
-                3'b111:begin //BGEU
-                    if (Zero_MEM) //la codificamos como una SLTU
-                        PCSrc = 2'b01;
-                    else
-                        PCSrc = 2'b00;
-                end
-                default: PCSrc = 2'b00;
-            endcase
-        end
-        else if (Jump_MEM)
-            case (Instruction_MEM[6:0])
-                7'b1101111: //JAL
-                    PCSrc = 2'b10;
-                7'b1100111: //JALR
-                    PCSrc = 2'b10;
-                default: PCSrc = 2'b00;
-            endcase
-        else
-            PCSrc = 2'b00;
-    end
+    //viejo PCSrc (ya no se usa este)
+
+    // always_comb begin
+    //     if (Branch_MEM) begin
+    //         case (Instruction_MEM[14:12])
+    //             3'b000:begin //BEQ
+    //                 if (Zero_MEM) //la codificamos como una SUB
+    //                     PCSrc = 2'b01;
+    //                 else
+    //                     PCSrc = 2'b00;
+    //             end
+    //             3'b001:begin //BNE
+    //                 if (!Zero_MEM) //la codificamos como una SUB
+    //                     PCSrc = 2'b01;
+    //                 else
+    //                     PCSrc = 2'b00;
+    //             end
+    //             3'b100:begin //BLT
+    //                 if (!Zero_MEM) //la codificamos como una SLT
+    //                     PCSrc = 2'b01;
+    //                 else 
+    //                     PCSrc = 2'b00;
+    //             end
+    //             3'b101:begin //BGE
+    //                 if (Zero_MEM) //la codificamos como una SLT
+    //                     PCSrc = 2'b01;
+    //                 else
+    //                     PCSrc = 2'b00;
+    //             end
+    //             3'b110:begin //BLTU
+    //                 if (!Zero_MEM) //la codificamos como una SLTU
+    //                     PCSrc = 2'b01;
+    //                 else
+    //                     PCSrc = 2'b00;
+    //             end
+    //             3'b111:begin //BGEU
+    //                 if (Zero_MEM) //la codificamos como una SLTU
+    //                     PCSrc = 2'b01;
+    //                 else
+    //                     PCSrc = 2'b00;
+    //             end
+    //             default: PCSrc = 2'b00;
+    //         endcase
+    //     end
+    //     else if (Jump_MEM)
+    //         case (Instruction_MEM[6:0])
+    //             7'b1101111: //JAL
+    //                 PCSrc = 2'b10;
+    //             7'b1100111: //JALR
+    //                 PCSrc = 2'b10;
+    //             default: PCSrc = 2'b00;
+    //         endcase
+    //     else
+    //         PCSrc = 2'b00;
+    // end
 
     Control Control(
         .Instruction(Instruction[6:0]),
