@@ -66,11 +66,11 @@ class Scoreboard_golden;
                 bubble_out = bubble_queue.pop_back();
                 PC_out = PC_queue.pop_back();
                 
-                if (bubble_out == 1'b0) //Detectamos burbuja para no realizar comprobaciones
+                if (bubble_out === 1'b0) //Detectamos burbuja para no realizar comprobaciones
                     $display("      BUBLE Detected");
                 else if (inst_pipe_out[6:0] == 7'b1100011 || inst_pipe_out[6:0] == 7'b1101111 || inst_pipe_out[6:0] == 7'b1100111) begin // Branch and Jump
                     bubble_out = bubble_queue.pop_back();
-                    if(bubble_out != 1'b0) begin //salto no efectivo
+                    if(bubble_out !== 1'b0) begin //salto no efectivo
                         assert (PC_out !== res_out)
                         else $error("       PC ERROR: the result should be %0d and DUT obtains %0d",res_out,mon.cb_monitor.RAM[dest_out]);
                     end
