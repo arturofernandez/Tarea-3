@@ -55,9 +55,9 @@ program estimulos (IF.monitor monitor, output logic Start_Simulation);
     Scoreboard_golden sb_golden;
     random_inst inData;
     instrucciones my_cg;
-    logic [31:0] instt_queue [$];
+    // logic [31:0] inst_queue [$];
     logic [31:0] inst;
-    logic FINISH, FlagX;
+    logic FINISH, FlagX, FlagX2;
     int fd, i;
 
 
@@ -155,28 +155,35 @@ task generar_inst;
             begin
                 @(posedge monitor.CLK);
                 sb_golden.monitor_golden();
+            end
+            begin
                 repeat(5) @(posedge monitor.CLK);
-                sb_golden.monitor_output();
+                sb_golden.monitor_dut_output();
             end
         join_none   
       
-        display("%0h",monitor.cb_monitor.idata);
+        $display("%0h",monitor.cb_monitor.idata);
         $display("%0h",monitor.cb_monitor.iaddr);
         @(posedge monitor.CLK) my_cg.sample();
         
         FINISH = 1'b1;
         FlagX = 1'b1;
+        FlagX2 = 1'b1;
 
         while(FINISH)
-        //TO DO: Mejorar el fin de la simulación 0 chapuzas, 100% profesionalidad, fuerza teleca!
+        //PROHIBIDO TOCAR, esto tiene 100% profesionalidad, 0% chapuzas.
             begin
                 @(posedge monitor.CLK) my_cg.sample(); 
-                if(FlagX == 1'b0 && monitor.cb_monitor.idata === {32{1'bx}}) 
+                if(FlagX == 1'b0 && FlagX2 == 1'b0 && monitor.cb_monitor.idata === {32{1'bx}}) 
                     FINISH = 1'b0;
-                else if (monitor.cb_monitor.idata === {32{1'bx}})
+                else if(FlagX == 1'b1 && FlagX2 == 1'b0 && monitor.cb_monitor.idata === {32{1'bx}})
                     FlagX = 1'b0;
-                else
+                else if(FlagX == 1'b1 &&  FlagX2 == 1'b1 && monitor.cb_monitor.idata === {32{1'bx}})
+                    FlagX2 = 1'b0;
+                else begin
                     FlagX = 1'b1;
+                    FlagX2 = 1'b1;
+                end
             end
         
         repeat (6) @(posedge monitor.CLK); 
