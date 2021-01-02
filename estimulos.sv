@@ -189,6 +189,8 @@ task generar_inst;
         repeat (6) @(posedge monitor.CLK); 
         // sb_sencillo.monitor_output();
         // repeat (3) @(posedge monitor.CLK); 
+        sb_golden.monitor_Regs();
+        sb_golden.monitor_RAM();
         $display("END verification - time=%0t\n", $time);
         $stop;
     end

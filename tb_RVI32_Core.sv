@@ -110,24 +110,24 @@ module tb_RVI32_Core ();
 
         wait(Start_Simulation == 1'b1)
 
-        // if ($value$plusargs("PROG_FILE=%s",filename)) begin
-        //     ROM.escribirROM({"./MachineCode/", filename, ".txt"});
-        //     GROM.escribirROM({"./MachineCode/", filename, ".txt"});
-        //     $display("ROM Writed %s program file - time=%0t\n",filename,$time);
-        // end
-        // else if ($test$plusargs("FIBONACCI")) begin
-        //     ROM.escribirROM("./MachineCode/fibonacci_adaptado_cod_maquina.txt");
-        //     GROM.escribirROM("./MachineCode/fibonacci_adaptado_cod_maquina.txt");
-        //     $display("ROM Writed FIBONACCI program file - time=%0t\n",$time);
-        // end
-        // else if ($test$plusargs("BUBLE")) begin
-        //     ROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt");
-        //     GROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt");
-        //     $display("ROM Writed BUBLE program file - time=%0t\n", $time);
-        // end
-        // else begin
-        //     $display("ROM was writed randomly - time=%0t\n", $time);
-        // end
+        if ($value$plusargs("PROG_FILE=%s",filename)) begin
+            ROM.escribirROM({"./MachineCode/", filename, ".txt"});
+            GROM.escribirROM({"./MachineCode/", filename, ".txt"});
+            $display("ROM Writed %s program file - time=%0t\n",filename,$time);
+        end
+        else if ($test$plusargs("FIBONACCI")) begin
+            ROM.escribirROM("./MachineCode/fibonacci_adaptado_cod_maquina.txt");
+            GROM.escribirROM("./MachineCode/fibonacci_adaptado_cod_maquina.txt");
+            $display("ROM Writed FIBONACCI program file - time=%0t\n",$time);
+        end
+        else if ($test$plusargs("BUBLE")) begin
+            ROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt");
+            GROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt");
+            $display("ROM Writed BUBLE program file - time=%0t\n", $time);
+        end
+        else begin
+            $display("ROM was writed randomly - time=%0t\n", $time);
+        end
         //ROM.escribirROM("./MachineCode/random_program.txt"); //escribimos en la memoria de instrucciones las instrucciones aleatorias generadas en estimulos.sv
         //GROM.escribirROM("./MachineCode/random_program.txt"); //escribimos en la memoria de instrucciones las instrucciones aleatorias generadas en estimulos.sv
         ROM.escribirROM("./MachineCode/burbuja_adaptado_cod_maquina.txt"); //escribimos en la memoria de instrucciones del código del bubble sort

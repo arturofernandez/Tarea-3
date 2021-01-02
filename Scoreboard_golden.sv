@@ -19,6 +19,7 @@ class Scoreboard_golden;
     logic [31:0] res_out, inst_out, inst_pipe_out, PC_out; 
     logic [9:0] daddr_out, dest_out; 
     logic bubble_out; 
+    bit errRAM, errRegs;
     
     task monitor_input(); // Saves Golden Inputs 
         begin
@@ -106,4 +107,36 @@ class Scoreboard_golden;
             end
         end
     endtask 
+
+    // Task: monitor_Regs
+    // Compares Golden Model Register Bank with DUTs Register Bank at the end of the program execution
+     task monitor_Regs(); 
+        begin
+            errRegs = 0;
+            for (int i = 0; i < 32; i++) begin
+                assert (mon.cb_monitor.Regs[i] === mon.cb_monitor.GRegs[i])
+                else begin 
+                    errRegs = 1; 
+                    $error("      REG[%0d] ERROR: the result should be %0d and DUT obtains %0d",i,mon.cb_monitor.GRegs[i],mon.cb_monitor.Regs[i]);
+                end
+            end
+            if (!errRegs) $display("     Golden Model and DUT Register Bank match");
+        end 
+     endtask
+
+    // Task: monitor_RAM
+    // Compares Golden Model RAM with DUTs RAM at the end of the program execution
+     task monitor_RAM();
+        begin 
+            errRAM = 0;
+            for (int j = 0; j < 1024; j++) begin
+                assert (mon.cb_monitor.RAM[j] === mon.cb_monitor.GRAM[j]) 
+                else begin
+                    errRAM = 1;    
+                    $error("      RAM[%0d] ERROR: the result should be %0d and DUT obtains %0d",j,mon.cb_monitor.GRAM[j],mon.cb_monitor.RAM[j]);
+                end
+            end
+            if(!errRAM) $display("     Golden Model and DUT RAM match");
+        end
+    endtask
 endclass
