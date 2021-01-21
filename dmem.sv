@@ -20,7 +20,7 @@ module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, RESET
     input RESET;
     input [DATA_WIDTH-1:0] write_data; 
     input [$clog2(MEM_DEPTH)-1:0] addr; 
-    input mem_write, mem_read, enable; 
+    input mem_write, mem_read; 
     output logic [DATA_WIDTH-1:0] dout; 
 
     logic [DATA_WIDTH-1:0] DMEM [0:MEM_DEPTH-1]; //packed and unpacked array
@@ -30,26 +30,20 @@ module dmem #(parameter DATA_WIDTH = 32, parameter MEM_DEPTH = 1024) (clk, RESET
         if(!RESET)
             for (int i = 0; i < MEM_DEPTH; i++)
                 DMEM[i] <= 32'hffffffff;  
-
-        else if (enable)
+        else if (mem_write)
             begin
-            if (mem_write)
-                begin
-                    DMEM[addr]<=write_data;
-                    dout <= dout;
-                end
-            else if (mem_read)
-                dout <= DMEM[addr];
+                DMEM[addr]<=write_data;
+                dout <= dout;
+            end
+        else if (mem_read)
+            dout <= DMEM[addr];
             // else if (mem_write == 1'b1 && mem_read == 1'b1) 
             //     begin
             //         DMEM[addr]<=write_data;
             //         dout <= write_data;
             //     end
-            else 
-                dout <= dout;
-            end      
-        else
-             dout <= dout;
+        else 
+            dout <= dout;
     end
 
     // Asynchronous Read:

@@ -27,7 +27,7 @@ always @(posedge CLK, negedge RESET)
                 ReadData2 <= 32'b0;
             end  
         else begin  
-            if (RegWrite)
+            if (RegWrite && WriteReg != 0)
                 begin
                     // if((ReadReg1 != WriteReg) && (ReadReg2 != WriteReg)) begin
                     //     ReadData1 <= Regs[ReadReg1]; //lectura síncrona
